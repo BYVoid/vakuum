@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+	<time_limit>6000</time_limit>
+	<output_limit>100000</output_limit>
+	<messagefile>compile_message.txt</messagefile>
+	<c><![CDATA[gcc {$source} -lm -W -Wunused -Wfloat-equal -Wformat -Wparentheses -Wswitch -Wsequence-point -O2 -static -o {$binary} 2>{$message}]]></c>
+	<cpp><![CDATA[g++ {$source} -lm -W -Wunused -Wfloat-equal -Wformat -Wparentheses -Wswitch -Wsequence-point -O2 -static -o {$binary} 2>{$message}]]></cpp>
+	<pas><![CDATA[fpc {$source} -XS -v0 -O2 -o"{$binary}" >{$message}]]></pas>
+	<java><![CDATA[]]></java>
+</document>

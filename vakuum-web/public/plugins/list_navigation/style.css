@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+.navigation
+{
+	padding-bottom: 10px;
+}
+
+.navigation span
+{
+	background-color: #FFFFFF;
+	border: 1px solid #000000;
+	color: #000000;
+	margin-right: 4px;
+	padding: 2px 3px;
+}
+
+.navigation span.pages
+{
+
+}
+
+.navigation span.current
+{
+	font-weight: bold;
+}
+
+.navigation span.extend
+{
+	
+}
+
+.navigation a:link,.navigation a:visited,.navigation a:active
+{
+	color: #666666;
+}
+
+.navigation a:hover
+{
+	color: #CC0000;
+}

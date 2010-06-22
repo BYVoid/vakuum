@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+	<private_key>vakuum-judge</private_key>
+	<path>
+		<task>/home/byvoid/develop/vakuum/judger/task/</task>
+		<testdata>/home/byvoid/develop/vakuum/judger/testdata/</testdata>
+		<compiler>/home/byvoid/develop/vakuum/judger/bin/compiler/</compiler>
+		<executor>/home/byvoid/develop/vakuum/judger/bin/executor/</executor>
+		<checker>/home/byvoid/develop/vakuum/judger/bin/checker/</checker>
+	</path>
+</document>
+

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+	<time_limit>1000</time_limit>
+	<memory_limit>32000</memory_limit>
+	<output_limit>32000</output_limit>
+	<file>/proc/meminfo</file>
+	<syscall>2</syscall>
+	<syscall>7</syscall>
+	<syscall>9</syscall>
+	<syscall>10</syscall>
+	<syscall>12</syscall>
+	<syscall>13</syscall>
+	<syscall>14</syscall>
+	<syscall>15</syscall>
+	<syscall>16</syscall>
+
+	<syscall>20</syscall>
+	<syscall>21</syscall>
+	<syscall>22</syscall>
+	<syscall>23</syscall>
+	<syscall>24</syscall>
+	<syscall>25</syscall>
+	<syscall>26</syscall>
+	<syscall>27</syscall>
+	<syscall>29</syscall>
+
+	<syscall>30</syscall>
+	<syscall>34</syscall>
+	<syscall>37</syscall>
+	<syscall>38</syscall>
+	<syscall>39</syscall>
+	<syscall>40</syscall>
+	<syscall>41</syscall>
+	<syscall>42</syscall>
+	<syscall>43</syscall>
+
+	<syscall>46</syscall>
+	<syscall>47</syscall>
+	<syscall>48</syscall>
+	<syscall>49</syscall>
+	<syscall>50</syscall>
+	<syscall>51</syscall>
+	<syscall>52</syscall>
+	<syscall>57</syscall>
+	<syscall>60</syscall>
+
+	<syscall>61</syscall>
+	<syscall>62</syscall>
+	<syscall>63</syscall>
+	<syscall>64</syscall>
+	<syscall>65</syscall>
+	<syscall>66</syscall>
+	<syscall>67</syscall>
+	<syscall>68</syscall>
+	<syscall>69</syscall>
+
+	<syscall>70</syscall>
+	<syscall>71</syscall>
+	<syscall>72</syscall>
+	<syscall>73</syscall>
+	<syscall>74</syscall>
+	<syscall>75</syscall>
+	<syscall>77</syscall>
+	<syscall>78</syscall>
+	<syscall>79</syscall>
+
+	<syscall>80</syscall>
+	<syscall>81</syscall>
+	<syscall>83</syscall>
+	<syscall>86</syscall>
+	<syscall>87</syscall>
+	<syscall>88</syscall>
+	<syscall>92</syscall>
+	<syscall>93</syscall>
+	<syscall>94</syscall>
+
+	<syscall>95</syscall>
+	<syscall>96</syscall>
+	<syscall>97</syscall>
+	<syscall>99</syscall>
+	<syscall>100</syscall>
+	<syscall>101</syscall>
+	<syscall>102</syscall>
+	<syscall>103</syscall>
+	<syscall>104</syscall>
+
+	<syscall>105</syscall>
+	<syscall>106</syscall>
+	<syscall>107</syscall>
+	<syscall>108</syscall>
+	<syscall>110</syscall>
+	<syscall>111</syscall>
+	<syscall>114</syscall>
+	<syscall>115</syscall>
+	<syscall>116</syscall>
+	<syscall>117</syscall>
+	<syscall>118</syscall>
+	<syscall>119</syscall>
+	<syscall>120</syscall>
+	<syscall>121</syscall>
+	<syscall>123</syscall>
+	<syscall>124</syscall>
+	<syscall>126</syscall>
+	<syscall>127</syscall>
+	<syscall>128</syscall>
+	<syscall>129</syscall>
+	<syscall>130</syscall>
+	<syscall>131</syscall>
+	<syscall>132</syscall>
+	<syscall>133</syscall>
+	<syscall>134</syscall>
+	<syscall>135</syscall>
+	<syscall>136</syscall>
+	<syscall>138</syscall>
+	<syscall>139</syscall>
+	<syscall>140</syscall>
+	<syscall>141</syscall>
+	<syscall>142</syscall>
+	<syscall>143</syscall>
+	<syscall>144</syscall>
+	<syscall>145</syscall>
+
+	<syscall>146</syscall>
+	<syscall>147</syscall>
+	<syscall>148</syscall>
+	<syscall>149</syscall>
+	<syscall>150</syscall>
+	<syscall>151</syscall>
+	<syscall>152</syscall>
+	<syscall>153</syscall>
+	<syscall>154</syscall>
+
+	<syscall>155</syscall>
+	<syscall>156</syscall>
+	<syscall>157</syscall>
+	<syscall>158</syscall>
+	<syscall>159</syscall>
+	<syscall>160</syscall>
+	<syscall>161</syscall>
+	<syscall>162</syscall>
+	<syscall>163</syscall>
+
+	<syscall>164</syscall>
+	<syscall>165</syscall>
+	<syscall>166</syscall>
+	<syscall>167</syscall>
+	<syscall>168</syscall>
+	<syscall>169</syscall>
+	<syscall>170</syscall>
+	<syscall>171</syscall>
+	<syscall>172</syscall>
+
+	<syscall>173</syscall>
+	<syscall>175</syscall>
+	<syscall>176</syscall>
+	<syscall>177</syscall>
+	<syscall>178</syscall>
+	<syscall>179</syscall>
+	<syscall>180</syscall>
+	<syscall>181</syscall>
+	<syscall>182</syscall>
+
+	<syscall>183</syscall>
+	<syscall>184</syscall>
+	<syscall>185</syscall>
+	<syscall>186</syscall>
+	<syscall>187</syscall>
+	<syscall>190</syscall>
+	<syscall>193</syscall>
+	<syscall>194</syscall>
+	<syscall>195</syscall>
+
+	<syscall>196</syscall>
+	<syscall>198</syscall>
+	<syscall>199</syscall>
+	<syscall>200</syscall>
+	<syscall>201</syscall>
+	<syscall>202</syscall>
+	<syscall>203</syscall>
+	<syscall>204</syscall>
+	<syscall>205</syscall>
+
+	<syscall>206</syscall>
+	<syscall>207</syscall>
+	<syscall>208</syscall>
+	<syscall>209</syscall>
+	<syscall>210</syscall>
+	<syscall>211</syscall>
+	<syscall>212</syscall>
+	<syscall>213</syscall>
+	<syscall>214</syscall>
+
+	<syscall>215</syscall>
+	<syscall>216</syscall>
+	<syscall>217</syscall>
+	<syscall>218</syscall>
+	<syscall>219</syscall>
+	<syscall>220</syscall>
+	<syscall>221</syscall>
+	<syscall>224</syscall>
+	<syscall>225</syscall>
+
+	<syscall>226</syscall>
+	<syscall>227</syscall>
+	<syscall>228</syscall>
+	<syscall>229</syscall>
+	<syscall>230</syscall>
+	<syscall>231</syscall>
+	<syscall>232</syscall>
+	<syscall>233</syscall>
+	<syscall>234</syscall>
+
+	<syscall>235</syscall>
+	<syscall>236</syscall>
+	<syscall>237</syscall>
+	<syscall>238</syscall>
+	<syscall>239</syscall>
+	<syscall>240</syscall>
+	<syscall>241</syscall>
+	<syscall>242</syscall>
+	<syscall>244</syscall>
+
+	<syscall>245</syscall>
+	<syscall>246</syscall>
+	<syscall>247</syscall>
+	<syscall>248</syscall>
+	<syscall>249</syscall>
+	<syscall>250</syscall>
+	<syscall>253</syscall>
+	<syscall>254</syscall>
+	<syscall>255</syscall>
+
+	<syscall>256</syscall>
+	<syscall>257</syscall>
+	<syscall>258</syscall>
+	<syscall>259</syscall>
+	<syscall>260</syscall>
+	<syscall>261</syscall>
+	<syscall>262</syscall>
+	<syscall>263</syscall>
+	<syscall>264</syscall>
+
+	<syscall>265</syscall>
+	<syscall>266</syscall>
+	<syscall>267</syscall>
+	<syscall>268</syscall>
+	<syscall>269</syscall>
+	<syscall>270</syscall>
+	<syscall>271</syscall>
+	<syscall>272</syscall>
+	<syscall>273</syscall>
+
+	<syscall>274</syscall>
+	<syscall>275</syscall>
+	<syscall>276</syscall>
+	<syscall>277</syscall>
+	<syscall>278</syscall>
+	<syscall>279</syscall>
+	<syscall>280</syscall>
+	<syscall>281</syscall>
+	<syscall>282</syscall>
+
+	<syscall>283</syscall>
+	<syscall>284</syscall>
+	<syscall>286</syscall>
+	<syscall>287</syscall>
+	<syscall>288</syscall>
+	<syscall>289</syscall>
+	<syscall>290</syscall>
+	<syscall>291</syscall>
+	<syscall>292</syscall>
+
+	<syscall>293</syscall>
+	<syscall>294</syscall>
+	<syscall>295</syscall>
+	<syscall>296</syscall>
+	<syscall>297</syscall>
+	<syscall>298</syscall>
+	<syscall>299</syscall>
+	<syscall>300</syscall>
+	<syscall>301</syscall>
+
+	<syscall>302</syscall>
+	<syscall>303</syscall>
+	<syscall>304</syscall>
+	<syscall>305</syscall>
+	<syscall>306</syscall>
+	<syscall>307</syscall>
+	<syscall>308</syscall>
+	<syscall>309</syscall>
+	<syscall>310</syscall>
+
+	<syscall>311</syscall>
+	<syscall>312</syscall>
+	<syscall>313</syscall>
+	<syscall>314</syscall>
+	<syscall>315</syscall>
+	<syscall>316</syscall>
+	<syscall>317</syscall>
+	<syscall>318</syscall>
+	<syscall>319</syscall>
+
+	<syscall>320</syscall>
+	<syscall>321</syscall>
+	<syscall>322</syscall>
+	<syscall>323</syscall>
+	<syscall>324</syscall>
+	<syscall>325</syscall>
+	<syscall>326</syscall>
+	<syscall>327</syscall>
+	<syscall>328</syscall>
+
+	<syscall>329</syscall>
+	<syscall>330</syscall>
+	<syscall>331</syscall>
+	<syscall>332</syscall>
+	<syscall>333</syscall>
+	<syscall>334</syscall>
+	<syscall>335</syscall>
+	<syscall>336</syscall>
+</document>
