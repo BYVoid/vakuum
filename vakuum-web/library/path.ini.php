@@ -1,4 +1,4 @@
-#<?php exit ?>
+;<?php exit ?>
 index = 
 plugins = public/plugins/
 

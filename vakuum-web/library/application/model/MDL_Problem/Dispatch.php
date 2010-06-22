@@ -101,6 +101,10 @@ class MDL_Problem_Dispatch
 		$judger = MDL_Judger_Detail::getJudger($judger_id);
 		//Upload testdata files
 		MDL_Judger_Transmit::sendTestdata($judger['judger_config'],$data_config);
-		return MDL_Judger_Data::updateTestdata($judger['judger_config']['url'],$data_config['name']);
+		
+		$judger_url = $judger['judger_config']['url'];
+		$public_key = $judger['judger_config']['public_key'];
+		
+		return MDL_Judger_Data::updateTestdata($judger_url,$public_key,$data_config['name']);
 	}
 }

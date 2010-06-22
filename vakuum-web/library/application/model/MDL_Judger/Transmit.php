@@ -8,7 +8,11 @@ class MDL_Judger_Transmit
 {
 	public static function sendTask($judger,$task_name,$source,$src_name)
 	{
-		if ($judger['upload'] == 'ftp')
+		if ($judger['upload'] == 'share')
+		{
+			MDL_Judger_Transmit_Share::uploadTask($judger['share'],$task_name,$source,$src_name);
+		}
+		else if ($judger['upload'] == 'ftp')
 		{
 			MDL_Judger_Transmit_FTP::uploadTask($judger['ftp'],$task_name,$source,$src_name);
 		}
@@ -20,7 +24,11 @@ class MDL_Judger_Transmit
 	
 	public static function sendTestdata($judger,$data_config)
 	{
-		if ($judger['upload'] == 'ftp')
+		if ($judger['upload'] == 'share')
+		{
+			MDL_Judger_Transmit_Share::uploadTestdata($judger['share'],$data_config);
+		}
+		else if ($judger['upload'] == 'ftp')
 		{
 			MDL_Judger_Transmit_FTP::uploadTestdata($judger['ftp'],$data_config);
 		}

@@ -38,18 +38,33 @@ class CTL_problem extends CTL_Abstract_Controller
 	{
 		$identifier = $this->path_option->getPathSection(1);
 
-		$problem_show = new MDL_Problem_Show();
-
 		try
 		{
 			if (is_numeric($identifier))
 			{
-				$prob_names = $problem_show->getProblemName($identifier);
-				$prob_name = $prob_names['prob_name'];
-				$this->locator->redirect('problem_single',array(),'/'.$prob_name);
+				try
+				{
+					$prob_names = MDL_Problem_Show::getProblemName($identifier);
+					$prob_name = $prob_names['prob_name'];
+				}
+				catch (MDL_Exception_Problem $e)
+				{
+					$desc = $e->getDescription();
+					if ($desc[0] == 'id')
+					{
+						$prob_name = $identifier;
+					}
+					else
+						throw $e;
+				}
+				
+				if ($prob_name != $identifier)
+				{
+					$this->locator->redirect('problem_single',array(),'/'.$prob_name);
+				}
 			}
-			else
-				$problem = $problem_show->getProblemByName($identifier);
+			
+			$problem = MDL_Problem_Show::getProblemByName($identifier);
 		}
 		catch(MDL_Exception_Problem $e)
 		{

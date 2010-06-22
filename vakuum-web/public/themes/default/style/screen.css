@@ -5,9 +5,7 @@ body
 	margin: 0px;
 	padding: 0px;
 	text-align: center;
-	
-	background: url("back_ground.jpg") repeat-x scroll left top #FFFFFF;
-	background-color: #000000;
+	background-color: #FFFFFF;
 }
 
 img

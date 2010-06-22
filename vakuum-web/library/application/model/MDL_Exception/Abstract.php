@@ -12,6 +12,12 @@ abstract class MDL_Exception_Abstract extends RuntimeException
 		return $this->desc;
 	}
 	
+	public function dieInfo()
+	{
+		print_r($this->getDescription());
+		exit;
+	}
+	
 	public function __construct()
 	{
 		reset($this->desc);

@@ -229,8 +229,7 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		}
 		catch(MDL_Exception $e)
 		{
-			$desc = $e->getDescription();
-			die($desc[0]);
+			$desc = $e->dieInfo();
 		}
 		
 		if ($rs['version'] == $data_config['version'] && $rs['hash_code'] == $verify_result['hash_code'])
