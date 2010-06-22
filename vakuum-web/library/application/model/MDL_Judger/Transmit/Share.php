@@ -6,9 +6,24 @@
  */
 class MDL_Judger_Transmit_Share
 {
-	public static function uploadTask($ftpinfo,$task_name,$source,$src_name)
-	{
+	public static function uploadTask($judger_info,$task_name,$source,$src_name)
+	{	
+		$task_path = $judger_info['path']['task'].$task_name;
 
+		$original_cwd = getcwd();
+		if (@chdir($task_path) === false)
+		{
+			if (mkdir($task_path) === false)
+				throw new MDL_Exception_Judge_Send('mkdir');
+			if (chmod($task_path,0777) === false)
+				throw new MDL_Exception_Judge_Send('chmod');
+			chdir($task_path);
+		}
+		
+		if (file_put_contents($src_name,$source) === false)
+			throw new MDL_Exception_Judge_Send('write_source_file');
+		
+		chdir($original_cwd);
 	}
 	
 	private static function copy_file($dest,$src)

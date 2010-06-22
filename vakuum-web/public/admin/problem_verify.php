@@ -104,7 +104,7 @@
 				<?php if($item['memory_limit']=='') $item['memory_limit']=$this->data_config['memory_limit'] ?>
 				<?php if($item['output_limit']=='') $item['output_limit']=$this->data_config['output_limit'] ?>
 				<?php $input_verify = $this->verify_result['case'][$case_id]['input']?"[Yes]":"[No]" ?>
-				<?php $output_verify = $this->verify_result['case'][$case_id]['input']?"[Yes]":"[No]" ?>
+				<?php $output_verify = $this->verify_result['case'][$case_id]['output']?"[Yes]":"[No]" ?>
 				<tr>
 					<td><?php echo $case_id++ ?></td>
 					<td><?php echo $this->escape($item['input']).$input_verify ?></td>

@@ -44,19 +44,25 @@ class BFL_Loader
 	
 	public static function setBFLPath($path)
 	{
-		self::$BFL_path = $path .'/';
+		if ($path[strlen($path) - 1] != '/')
+			$path .= '/';
+		self::$BFL_path = $path;
 		spl_autoload_register(array('self','loadBFL'));
 	}
 	
 	public static function setControllerPath($path)
 	{
-		self::$controller_path = $path .'/';
+		if ($path[strlen($path) - 1] != '/')
+			$path .= '/';
+		self::$controller_path = $path;
 		spl_autoload_register(array('self','loadController'));
 	}
 	
 	public static function setModelPath($path)
 	{
-		self::$model_path = $path .'/';
+		if ($path[strlen($path) - 1] != '/')
+			$path .= '/';
+		self::$model_path = $path;
 		spl_autoload_register(array('self','loadModel'));
 	}
 	

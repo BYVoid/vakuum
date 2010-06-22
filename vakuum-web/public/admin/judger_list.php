@@ -2,8 +2,6 @@
 <?php $this->display('header.php') ?>
 <?php $judger_list = $this->list ?>
 
-<p>连接密钥 <?php echo $this->server_key ?></p>
-
 <p><a href="<?php echo $this->locator->getURL('admin_judger_edit') ?>">添加</a></p>
 
 <table border="1">
