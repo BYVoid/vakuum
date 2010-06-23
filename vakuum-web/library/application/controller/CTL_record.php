@@ -43,13 +43,13 @@ class CTL_record extends CTL_Abstract_Controller
 		$record_id = $this->path_option->getPathSection(2);
 		try
 		{
-			$record = MDL_Record_Detail::getRecord($record_id);
+			$record = MDL_Record::getRecord($record_id);
 		}
 		catch(MDL_Exception $e)
 		{
 			$desc = $e->getDescription();
-			if ($desc[1]=='id')
-				$this->notFound(array('specifier' => 'record'));
+			if ($desc[1]=='record_id')
+				$this->notFound(array('specifier' => 'record_id'));
 			else
 				throw $e;
 		}
@@ -63,13 +63,13 @@ class CTL_record extends CTL_Abstract_Controller
 		$record_id = $this->path_option->getPathSection(2);
 		try
 		{
-			$record = MDL_Record_Detail::getRecord($record_id);
+			$record = MDL_Record::getRecordSource($record_id);
 		}
 		catch(MDL_Exception $e)
 		{
 			$desc = $e->getDescription();
-			if ($desc[1]=='id')
-				$this->notFound(array('specifier' => 'record'));
+			if ($desc[1]=='record_id')
+				$this->notFound(array('specifier' => 'record_id'));
 			else
 				throw $e;
 		}

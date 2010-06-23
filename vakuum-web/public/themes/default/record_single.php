@@ -30,6 +30,7 @@ $result_explaination = array
 <?php $user_name = $this->record['user_name'] ?>
 <?php $user_nickname = $this->record['user_nickname'] ?>
 <?php $user_path = $this->locator->getURL('user_detail').'/'.$user_name ?>
+<?php $record_source = $this->locator->getURL('record_source').'/'. $record_id ?>
 
 <?php $language = $this->record['detail']['lang'] ?>
 <?php $source_length = $this->record['detail']['source_length'] ?>
@@ -40,8 +41,7 @@ $display = $this->record['detail']['display'];
 
 if ($display->showRunResult())
 {
-	$status_text = showStatus($this->record['detail']['status'],
-			$this->record['detail']['result_text']);
+	$status_text = showStatus($this->record['detail']['status'],$this->record['detail']['result_text']);
 	$score = $this->record['detail']['score'];
 	$time_used = $this->record['detail']['time'];
 	$memory_used = $this->record['detail']['memory'];
@@ -49,10 +49,10 @@ if ($display->showRunResult())
 
 if ($display->showCompileResult())
 {
-	$compiled = isset($this->record['compile']);
+	$compiled = isset($this->record['detail']['result']['compile']);
 	if ($compiled)
 	{
-		$compile_result = $this->record['compile'];
+		$compile_result = $this->record['detail']['result']['compile'];
 		if (isset($compile_result['result']))
 		{
 			if ($compile_result['result'] == 0)
@@ -69,14 +69,14 @@ if ($display->showCompileResult())
 if ($display->showCaseResult())
 {
 	$execute_result = array();
-	if (isset($this->record['execute']))
-		$execute_result = $this->record['execute'];
+	if (isset($this->record['detail']['result']['execute']))
+		$execute_result = $this->record['detail']['result']['execute']['case'];
 }
 ?>
 <table border="1">
 	<tr>
 		<td>记录编号</td>
-		<td><?php echo $record_id ?></td>
+		<td><?php echo $record_id ?> <a href='<?php echo $record_source ?>'>查看代码</a></td>
 	</tr>
 	<tr>
 		<td>题目</td>

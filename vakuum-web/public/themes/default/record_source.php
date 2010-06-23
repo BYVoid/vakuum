@@ -2,9 +2,9 @@
 <?php $this->display('header.php') ?>
 
 <?php $record_id = $this->record['record_id'] ?>
-<?php $source = $this->escape($this->record['detail']['source']) ?>
+<?php $source = $this->escape($this->record['source']) ?>
 
-<a href="<?php echo $this->locator->getURL('record_detail').'/'. $record_id?>">提交记录查看</a>
+<a href="<?php echo $this->locator->getURL('record_detail').'/'. $record_id?>">查看提交记录</a>
 
 <textarea class="codearea" readonly="readonly">
 <?php echo $source ?>

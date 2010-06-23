@@ -27,9 +27,9 @@
 	<?php $user_path = $this->locator->getURL('user_detail').'/'. $user_name ?>
 	
 	<?php $judger_id = $item['judger_id']?>
-	<?php $submit_time = $item['other']['submit_time'] ?>
+	<?php $submit_time = $item['detail']['submit_time'] ?>
 	<?php $submit_time_text = $this->formatTime($submit_time)?>
-	<?php $status_text = showStatus($item['other']['status'],$item['other']['result_text'])?>
+	<?php $status_text = showStatus($item['detail']['status'],$item['detail']['result_text'])?>
 	
 	<?php $record_source = $this->locator->getURL('record_source').'/'. $record_id ?>
 	<?php $record_delete = $this->locator->getURL('admin_record_delete').'/'. $record_id ?>

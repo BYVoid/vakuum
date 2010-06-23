@@ -4,7 +4,7 @@
  *
  * @author BYVoid
  */
-class MDL_Record_List
+class MDL_Record_List extends MDL_Record
 {
 	protected static function getMetaSQL($rmeta_key,$display='')
 	{
@@ -38,18 +38,16 @@ class MDL_Record_List
 		$rs = MDL_List::getList($sql,$page,$page_size);
 		foreach($rs['list'] as $key => $value)
 		{
-			$rmeta = new MDL_Record_Meta($value['record_id']);
-			$other = $rmeta->getAll();
+			$detail = self::getRecordDetial($value['record_id']);
 			
-			$disp = new MDL_Record_DisplayConfig($other['display']);
-			if (!$disp->showInRecordList())
+			$display = $detail['display'];
+			if (!$display->showInRecordList())
 			{
 				unset($rs['list'][$key]);
 			}
 			else
-			{			
-				$other['display'] = $disp;
-				$rs['list'][$key]['other'] = $other;
+			{
+				$rs['list'][$key]['detail'] = $detail;
 			}
 		}
 

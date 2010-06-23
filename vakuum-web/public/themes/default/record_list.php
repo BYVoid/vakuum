@@ -5,7 +5,6 @@
 <table border="1">
 	<tr>
 		<td>ID</td>
-		<td>状态</td>
 		<td>题目</td>
 		<td>用户</td>
 		<td>评测机</td>
@@ -26,12 +25,18 @@
 	<?php $user_path = $this->locator->getURL('user_detail').'/'. $user_name ?>
 	
 	<?php $judger_id = $item['judger_id']?>
-	<?php $submit_time = $item['other']['submit_time'] ?>
+	<?php $submit_time = $item['detail']['submit_time'] ?>
 	<?php $submit_time_text = $this->formatTime($submit_time)?>
-	<?php $status_text = showStatus($item['other']['status'],$item['other']['result_text'])?>
+	
+	<?php
+	$display = $item['detail']['display'];
+	if ($display->showRunResult())
+	{
+		$status_text = showStatus($item['detail']['status'],$item['detail']['result_text']);
+	}
+	?>
 	<tr>
-		<td><?php echo $record_id?></td>
-		<td><a href='<?php echo $record_path ?>'><?php echo $status_text ?></a></td>
+		<td><a href='<?php echo $record_path ?>'><?php echo $record_id ?></a></td>
 		<td><a href='<?php echo $prob_path ?>'><?php echo $prob_title ?></a></td>
 		<td><a href='<?php echo $user_path ?>'><?php echo $user_nickname ?></a></td>
 		<td><?php echo $judger_id ?></td>

@@ -36,12 +36,12 @@ class CTL_admin_record extends CTL_admin_Abstract
 		$record_id = $this->path_option->getVar('record_id');
 		if ($record_id !== false)
 		{
-			$rs = MDL_Record_Detail::getRecordBase($record_id);
+			$rs = MDL_Record::exists($record_id);
 			if (empty($rs))
 			{
 				$this->notFound(array('specifier' => 'record_id'));
 			}
-			if (!MDL_Record_Detail::completed($record_id))
+			if (!MDL_Record::completed($record_id))
 			{
 				$this->locator->redirect('admin_error_record_rejudge',array('specifier' => 'record_isrunning'));
 			}
