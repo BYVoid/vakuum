@@ -6,15 +6,15 @@
  */
 class MDL_Judger_Transmit
 {
-	public static function sendTask($judger,$task_name,$source,$src_name)
+	public static function sendTask($judger_config,$task_name,$source,$src_name)
 	{
-		if ($judger['upload'] == 'share')
+		if ($judger_config['upload'] == 'share')
 		{
-			MDL_Judger_Transmit_Share::uploadTask($judger['share'],$task_name,$source,$src_name);
+			MDL_Judger_Transmit_Share::uploadTask($judger_config['share'],$task_name,$source,$src_name);
 		}
-		else if ($judger['upload'] == 'ftp')
+		else if ($judger_config['upload'] == 'ftp')
 		{
-			MDL_Judger_Transmit_FTP::uploadTask($judger['ftp'],$task_name,$source,$src_name);
+			MDL_Judger_Transmit_FTP::uploadTask($judger_config['ftp'],$task_name,$source,$src_name);
 		}
 		else
 		{
@@ -22,13 +22,13 @@ class MDL_Judger_Transmit
 		}
 	}
 	
-	public static function sendTestdata($judger,$data_config)
+	public static function sendTestdata($judger_config,$data_config)
 	{
-		if ($judger['upload'] == 'share')
+		if ($judger_config['upload'] == 'share')
 		{
-			MDL_Judger_Transmit_Share::uploadTestdata($judger['share'],$data_config);
+			MDL_Judger_Transmit_Share::uploadTestdata($judger_config['share'],$data_config);
 		}
-		else if ($judger['upload'] == 'ftp')
+		else if ($judger_config['upload'] == 'ftp')
 		{
 			MDL_Judger_Transmit_FTP::uploadTestdata($judger['ftp'],$data_config);
 		}

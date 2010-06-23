@@ -1,5 +1,5 @@
 <?php
-class MDL_Judger_Edit
+class MDL_Judger_Edit extends MDL_Judger
 {
 	public static function add($judger)
 	{
@@ -7,7 +7,7 @@ class MDL_Judger_Edit
 		if ($judger['judger_name'] == '')
 			throw new MDL_Exception('judger_name');
 		
-		$judger['judger_config'] = BFL_XML::Array2XML($judger['judger_config']);
+		$judger['judger_config'] = self::encodeConfig($judger['judger_config']);
 			
 		$db = BFL_Database :: getInstance();
 		$meta = array
@@ -30,7 +30,7 @@ class MDL_Judger_Edit
 	
 	public static function edit($judger)
 	{
-		$judger['judger_config'] = BFL_XML::Array2XML($judger['judger_config']);
+		$judger['judger_config'] = self::encodeConfig($judger['judger_config']);
 		$judger_id = $judger['judger_id'];
 		
 		$meta = array

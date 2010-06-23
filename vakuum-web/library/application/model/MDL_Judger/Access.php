@@ -3,8 +3,9 @@ class MDL_Judger_Access
 {
 	public static function getState($judger)
 	{
-		$url = $judger['judger_config']['url'];
-		$public_key = $judger['judger_config']['public_key'];
+		$judger_config = $judger['judger_config'];
+		$url = $judger_config['url'];
+		$public_key = $judger_config['public_key'];
 		$client = new BFL_RemoteAccess_Client($url,$public_key);
 		$client->__throwException(true);
 		try

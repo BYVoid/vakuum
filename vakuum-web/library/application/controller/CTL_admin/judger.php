@@ -43,7 +43,7 @@ class CTL_admin_judger extends CTL_admin_Abstract
 		{
 			try
 			{
-				$rs = MDL_Judger_Detail::getJudger($judger_id);
+				$rs = MDL_Judger::getJudger($judger_id);
 			}
 			catch(MDL_Exception $e)
 			{
@@ -132,7 +132,7 @@ class CTL_admin_judger extends CTL_admin_Abstract
 		{
 			try
 			{
-				$judger = MDL_Judger_Detail::getJudger($judger_id);
+				$judger = MDL_Judger::getJudger($judger_id);
 			}
 			catch(MDL_Exception $e)
 			{

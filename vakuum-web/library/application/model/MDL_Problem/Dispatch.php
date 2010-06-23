@@ -85,7 +85,7 @@ class MDL_Problem_Dispatch
 	
 	public static function getJudgersTestdataVersion($data_config)
 	{
-		$judgers = MDL_Judger_Detail::getJudgers();
+		$judgers = MDL_Judger::getJudgers();
 		foreach($judgers as $key=>$item)
 		{
 			$judger_url = $judgers[$key]['judger_config']['url'];
@@ -98,7 +98,7 @@ class MDL_Problem_Dispatch
 	
 	public static function transmitTestdata($judger_id,$data_config)
 	{
-		$judger = MDL_Judger_Detail::getJudger($judger_id);
+		$judger = MDL_Judger::getJudger($judger_id);
 		//Upload testdata files
 		MDL_Judger_Transmit::sendTestdata($judger['judger_config'],$data_config);
 		

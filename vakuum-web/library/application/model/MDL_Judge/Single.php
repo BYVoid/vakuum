@@ -81,7 +81,7 @@ class MDL_Judge_Single
 			$judger_id = MDL_Record::getJudgerID($record_id);
 			if ($judger_id != 0)
 			{
-				$judger = MDL_Judger_Detail::getJudger($judger_id);
+				$judger = MDL_Judger::getJudger($judger_id);
 			}
 		}
 		catch(MDL_Exception $e)

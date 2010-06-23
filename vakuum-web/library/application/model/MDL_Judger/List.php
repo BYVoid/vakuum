@@ -4,7 +4,7 @@
  *
  * @author BYVoid
  */
-class MDL_Judger_List
+class MDL_Judger_List extends MDL_Judger
 {
 	public static function getList($page,$page_size=0)
 	{
@@ -18,7 +18,7 @@ class MDL_Judger_List
 		
 		foreach($rs['list'] as $key => $value)
 		{
-			$rs['list'][$key]['judger_config'] = BFL_XML::XML2Array($rs['list'][$key]['judger_config']);
+			$rs['list'][$key]['judger_config'] = self::decodeConfig($rs['list'][$key]['judger_config']);
 		}
 
 		return $rs;
