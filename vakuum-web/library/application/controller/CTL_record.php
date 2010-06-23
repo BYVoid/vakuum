@@ -53,6 +53,10 @@ class CTL_record extends CTL_Abstract_Controller
 			else
 				throw $e;
 		}
+		if (!$record['detail']['display']->showInRecordList())
+		{
+			$this->deny();
+		}
 		
 		$this->view->record = $record;
 		$this->view->display('record_single.php');
@@ -70,6 +74,8 @@ class CTL_record extends CTL_Abstract_Controller
 			$desc = $e->getDescription();
 			if ($desc[1]=='record_id')
 				$this->notFound(array('specifier' => 'record_id'));
+			else if ($desc[1]=='deny')
+				$this->deny();
 			else
 				throw $e;
 		}

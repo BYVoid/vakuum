@@ -18,7 +18,7 @@ class MDL_Record_DisplayConfig
 		self::$administrator = BFL_ACL::getInstance()->check('administrator'); 
 	}
 	
-	public function __construct($permission = 0, $admin_privilege = 0)
+	public function __construct($permission = 0, $admin_privilege = true)
 	{
 		if (!self::$initialized)
 			self::initailize();
