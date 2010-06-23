@@ -43,7 +43,7 @@ class CTL_record extends CTL_Abstract_Controller
 		$record_id = $this->path_option->getPathSection(2);
 		try
 		{
-			$record = MDL_Record_Detail::getInfo($record_id);
+			$record = MDL_Record_Detail::getRecord($record_id);
 		}
 		catch(MDL_Exception $e)
 		{
@@ -63,7 +63,7 @@ class CTL_record extends CTL_Abstract_Controller
 		$record_id = $this->path_option->getPathSection(2);
 		try
 		{
-			$record = MDL_Record_Detail::getInfo($record_id);
+			$record = MDL_Record_Detail::getRecord($record_id);
 		}
 		catch(MDL_Exception $e)
 		{

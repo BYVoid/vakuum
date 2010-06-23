@@ -1,6 +1,26 @@
 <?php $this->title='提交记录 #'.$this->record['record_id'] ?>
 <?php $this->display('header.php') ?>
 
+<?php 
+$compile_explaination = array
+(
+	0 => '编译指令错误',
+	1 => '编译器被终止',
+	2 => '源文件不存在',
+	3 => '编译错误',
+);
+$result_explaination = array
+(
+	0 => '正常运行结束',
+	1 => '运行时错误',
+	2 => '超过时间限制',
+	3 => '超过内存空间限制',
+	4 => '超过输出空间限制',
+	5 => '禁止系统调用',
+	6 => '执行失败',
+);
+?>
+
 <?php $record_id = $this->record['record_id'] ?>
 <?php $prob_id = $this->record['record_prob_id'] ?>
 <?php $prob_name = $this->record['prob_name']?>
@@ -10,48 +30,47 @@
 <?php $user_name = $this->record['user_name'] ?>
 <?php $user_nickname = $this->record['user_nickname'] ?>
 <?php $user_path = $this->locator->getURL('user_detail').'/'.$user_name ?>
+
 <?php $language = $this->record['detail']['lang'] ?>
-<?php $status_text = showStatus($this->record['detail']['status'],$this->record['detail']['result_text'])?>
-<?php $score = $this->record['detail']['score'] ?>
+<?php $source_length = $this->record['detail']['source_length'] ?>
 <?php $submit_time = $this->formatTime($this->record['detail']['submit_time']) ?>
-<?php $time_used = $this->record['detail']['time'] ?>
-<?php $memory_used = $this->record['detail']['memory'] ?>
-<?php $source = $this->record['detail']['source'] ?>
-<?php $source_length = strlen($source) ?>
-<?php 
-$compile_explaination = array
-(
-	0 => '编译指令错误',
-	1 => '编译器被异常终止',
-	2 => '源文件不存在',
-	3 => '二进制文件不存在',
-);
-$result_explaination = array
-(
-	0 => '正常运行结束',
-	1 => '运行时错误',
-	2 => '超过时间限制',
-	3 => '超过空间限制',
-	4 => '超过输出限制',
-	5 => '禁止系统调用',
-	6 => '执行器发生错误',
-);
-?>
-<?php if (isset($this->record['execute'])) $execute_result = $this->record['execute']; else $execute_result = array() ?>
+
 <?php
-$compile_result_message ='等待编译';
-$compiled = isset($this->record['compile']);
-if ($compiled)
+$display = $this->record['detail']['display'];
+
+if ($display->showRunResult())
 {
-	$compile_result = $this->record['compile'];
-	if (isset($compile_result['result']))
+	$status_text = showStatus($this->record['detail']['status'],
+			$this->record['detail']['result_text']);
+	$score = $this->record['detail']['score'];
+	$time_used = $this->record['detail']['time'];
+	$memory_used = $this->record['detail']['memory'];
+}
+
+if ($display->showCompileResult())
+{
+	$compiled = isset($this->record['compile']);
+	if ($compiled)
 	{
-		if ($compile_result['result'] == 0)
-			$compile_result_message = '编译成功';
-		else
-			$compile_result_message = '编译失败 '.$compile_explaination[$compile_result['option']];
-		$compiler_message = $compile_result['compiler_message'];
+		$compile_result = $this->record['compile'];
+		if (isset($compile_result['result']))
+		{
+			if ($compile_result['result'] == 0)
+				$compile_result_message = '编译成功';
+			else
+				$compile_result_message = '编译失败 '.$compile_explaination[$compile_result['option']];
+			$compiler_message = $compile_result['compiler_message'];
+		}
 	}
+	else
+		$compile_result_message ='等待编译';
+}
+
+if ($display->showCaseResult())
+{
+	$execute_result = array();
+	if (isset($this->record['execute']))
+		$execute_result = $this->record['execute'];
 }
 ?>
 <table border="1">
@@ -68,20 +87,25 @@ if ($compiled)
 		<td><a href='<?php echo $user_path ?>'><?php echo $user_nickname ?></a></td>
 	</tr>
 	<tr>
-		<td>状态</td>
-		<td><?php echo $status_text ?></td>
-	</tr>
-	<tr>
-		<td>得分</td>
-		<td><?php echo $score ?></td>
-	</tr>
-	<tr>
 		<td>提交时间</td>
 		<td><?php echo $submit_time ?></td>
 	</tr>
 	<tr>
 		<td>语言</td>
 		<td><?php echo $language ?></td>
+	</tr>
+	<tr>
+		<td>代码长度</td>
+		<td><?php echo $source_length ?> Bytes</td>
+	</tr>
+<?php if ($display->showRunResult()): ?>
+	<tr>
+		<td>状态</td>
+		<td><?php echo $status_text ?></td>
+	</tr>
+	<tr>
+		<td>得分</td>
+		<td><?php echo $score ?></td>
 	</tr>
 	<tr>
 		<td>时间使用</td>
@@ -91,10 +115,8 @@ if ($compiled)
 		<td>内存使用</td>
 		<td><?php echo $memory_used ?> KB</td>
 	</tr>
-	<tr>
-		<td>代码长度</td>
-		<td><?php echo $source_length ?> Bytes</td>
-	</tr>
+<?php endif ?>
+<?php if ($display->showCompileResult()): ?>
 	<tr>
 		<td>编译结果</td>
 		<td>
@@ -106,6 +128,8 @@ if ($compiled)
 			</table>
 		</td>
 	</tr>
+<?php endif?>
+<?php if ($display->showCaseResult()): ?>
 	<tr>
 		<td>运行结果</td>
 		<td>
@@ -119,7 +143,7 @@ if ($compiled)
 					<td>得分</td>
 					<td>信息</td>
 				</tr>
-<?php foreach ($execute_result as $item): ?>
+			<?php foreach ($execute_result as $item): ?>
 				<tr>
 					<td><?php echo $item['case_id'] ?></td>
 					<td><?php echo $result_explaination[$item['result']] ?></td>
@@ -129,10 +153,11 @@ if ($compiled)
 					<td><?php echo $item['score'] ?></td>
 					<td><?php echo $item['check_message'] ?></td>
 				</tr>
-<?php endforeach ?>
+			<?php endforeach ?>
 			</table>
 		</td>
 	</tr>
+<?php endif ?>
 </table>
 
 <?php $this->display('footer.php') ?>

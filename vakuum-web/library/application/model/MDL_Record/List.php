@@ -39,7 +39,18 @@ class MDL_Record_List
 		foreach($rs['list'] as $key => $value)
 		{
 			$rmeta = new MDL_Record_Meta($value['record_id']);
-			$rs['list'][$key]['other'] = $rmeta->getAll();
+			$other = $rmeta->getAll();
+			
+			$disp = new MDL_Record_DisplayConfig($other['display']);
+			if (!$disp->showInRecordList())
+			{
+				unset($rs['list'][$key]);
+			}
+			else
+			{			
+				$other['display'] = $disp;
+				$rs['list'][$key]['other'] = $other;
+			}
 		}
 
 		return $rs;
