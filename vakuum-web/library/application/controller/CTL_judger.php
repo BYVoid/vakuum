@@ -19,14 +19,7 @@ class CTL_judger extends CTL_Abstract_Controller
 		if ($page===false)
 			$page = 1;
 		
-		try
-		{
-			$rs= MDL_Judger_List::getList($page);
-		}
-		catch(MDL_Exception $e)
-		{
-			$this->notFound(array('specifier' => 'list_page'));
-		}
+		$rs= MDL_Judger_List::getList($page);
 		
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];

@@ -36,7 +36,6 @@ abstract class CTL_Abstract_Controller
 	 */
 	protected $path_option;
 
-
 	/**
 	 * Construct and initilize
 	 */
@@ -55,11 +54,11 @@ abstract class CTL_Abstract_Controller
 	
 	public function deny()
 	{
-		$this->locator->redirect('error_permission_denied');
+		throw new MDL_Exception(MDL_Exception::PERMISSION_DENIED);
 	}
 	
-	public function notFound($request=array())
+	public function notFound()
 	{
-		$this->locator->redirect('error_not_found',$request);
+		throw new MDL_Exception(MDL_Exception::NOTFOUND);
 	}
 }

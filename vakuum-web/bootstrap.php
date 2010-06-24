@@ -35,5 +35,5 @@ MDL_Plugin::load_plugins(MDL_Locator::getInstance()->getFilePath('plugins'));
 //初始化前端控制器
 $controller = BFL_Controller::getInstance();
 $controller->setCustomControllerRouter('/admin','_admin');
-$controller->setNotFound('CTL_error','notFound');
+$controller->setNotFound(array('CTL_error','notFound'));
 $controller->dispatch();

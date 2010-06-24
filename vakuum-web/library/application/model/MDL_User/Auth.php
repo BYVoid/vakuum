@@ -8,22 +8,20 @@ require_once('Common.php');
  */
 class MDL_User_Auth extends MDL_User_Common
 {
-	public $user_info;
-
 	/**
 	 * Do user authentication and set Session
 	 *
 	 * @return boolean whether succeeded to login
 	 */
-	public function login()
+	public function login($user_info)
 	{
 		//Compute the hash code of the password submited by user
-		$user_password_hash = $this->passwordEncrypt($this->user_info['user_password']);
+		$user_password_hash = $this->passwordEncrypt($user_info['user_password']);
 		
 		//Do datebase query to get the hash code of the password
 		$db = BFL_Database :: getInstance();
 		$stmt = $db->factory('select `user_id`,`user_password` from '.DB_TABLE_USER.' WHERE `user_name` = :user_name');
-		$stmt->bindParam(':user_name', $this->user_info['user_name']);
+		$stmt->bindParam(':user_name', $user_info['user_name']);
 		$stmt->execute();
 		$rs = $stmt->fetch();
 		if (empty($rs))

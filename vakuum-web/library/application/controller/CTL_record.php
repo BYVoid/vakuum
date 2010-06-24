@@ -19,18 +19,7 @@ class CTL_record extends CTL_Abstract_Controller
 		if ($page===false)
 			$page = 1;
 		
-		try
-		{
-			$rs = MDL_Record_List::getList($page);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'page')
-				$this->notFound(array('specifier' => 'problem_list_page'));
-			else
-				throw $e;
-		}
+		$rs = MDL_Record_List::getList($page);
 		
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];
@@ -41,18 +30,10 @@ class CTL_record extends CTL_Abstract_Controller
 	public function ACT_detail()
 	{
 		$record_id = $this->path_option->getPathSection(2);
-		try
-		{
-			$record = MDL_Record::getRecord($record_id);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1]=='record_id')
-				$this->notFound(array('specifier' => 'record_id'));
-			else
-				throw $e;
-		}
+		
+		$record = MDL_Record::getRecord($record_id);
+		
+		/* FIXME */
 		if (!$record['detail']['display']->showInRecordList())
 		{
 			$this->deny();
@@ -65,20 +46,8 @@ class CTL_record extends CTL_Abstract_Controller
 	public function ACT_source()
 	{
 		$record_id = $this->path_option->getPathSection(2);
-		try
-		{
-			$record = MDL_Record::getRecordSource($record_id);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1]=='record_id')
-				$this->notFound(array('specifier' => 'record_id'));
-			else if ($desc[1]=='deny')
-				$this->deny();
-			else
-				throw $e;
-		}
+		
+		$record = MDL_Record::getRecordSource($record_id);
 		
 		$this->view->record = $record;
 		$this->view->display('record_source.php');

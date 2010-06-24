@@ -12,18 +12,7 @@ class CTL_admin_user extends CTL_admin_Abstract
 		if ($page===false)
 			$page = 1;
 
-		try
-		{
-			$rs = MDL_User_List::getList($page);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'page')
-				$this->notFound(array('specifier' => 'user_list_page'));
-			else
-				throw $e;
-		}
+		$rs = MDL_User_List::getList($page);
 		
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];

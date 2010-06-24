@@ -12,18 +12,7 @@ class CTL_admin_judger extends CTL_admin_Abstract
 		if ($page===false)
 			$page = 1;
 
-		try
-		{
-			$rs = MDL_Judger_List::getList($page);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'page')
-				$this->notFound(array('specifier' => 'user_list_page'));
-			else
-				throw $e;
-		}
+		$rs = MDL_Judger_List::getList($page);
 		
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];
@@ -41,18 +30,7 @@ class CTL_admin_judger extends CTL_admin_Abstract
 			
 		if ($judger_id != 0)
 		{
-			try
-			{
-				$rs = MDL_Judger::getJudger($judger_id);
-			}
-			catch(MDL_Exception $e)
-			{
-				$desc = $e->getDescription();
-				if ($desc[0] == 'judger_id')
-					$this->notFound(array('specifier' => 'judger'));
-				else
-					throw $e;
-			}
+			$rs = MDL_Judger::getJudger($judger_id);
 			
 			$judger = BFL_General::arrayMerge($judger,$rs);
 			
@@ -89,30 +67,21 @@ class CTL_admin_judger extends CTL_admin_Abstract
 		else if ($_POST['upload'] == 'share')
 			$judger['judger_config']['share'] = $_POST['share'];
 		
-		try
+		if ($_POST['action'] == 'add')
 		{
-			if ($_POST['action'] == 'add')
-			{
-				MDL_Judger_Edit::add($judger);
-			}
-			else if ($_POST['action'] == 'edit')
-			{
-				if (isset($_POST['remove']) && $_POST['remove']==1)
-					MDL_Judger_Edit::remove($_POST['judger_id']);
-				else
-					MDL_Judger_Edit::edit($judger);
-			}
+			MDL_Judger_Edit::add($judger);
+		}
+		else if ($_POST['action'] == 'edit')
+		{
+			if (isset($_POST['remove']) && $_POST['remove']==1)
+				MDL_Judger_Edit::remove($_POST['judger_id']);
 			else
-				$this->deny();
-			
-			$this->locator->redirect('admin_judger_list');
+				MDL_Judger_Edit::edit($judger);
 		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			$request['specifier'] = $desc[0];
-			$this->locator->redirect('admin_error_judger_edit',$request);
-		}
+		else
+			$this->deny();
+		
+		$this->locator->redirect('admin_judger_list');
 	}
 	
 	public function ACT_force()
@@ -130,18 +99,7 @@ class CTL_admin_judger extends CTL_admin_Abstract
 			
 		if ($judger_id != 0)
 		{
-			try
-			{
-				$judger = MDL_Judger::getJudger($judger_id);
-			}
-			catch(MDL_Exception $e)
-			{
-				$desc = $e->getDescription();
-				if ($desc[0] == 'judger_id')
-					$this->notFound(array('specifier' => 'judger'));
-				else
-					throw $e;
-			}
+			$judger = MDL_Judger::getJudger($judger_id);
 			
 			$state = MDL_Judger_Access::getState($judger);
 		}

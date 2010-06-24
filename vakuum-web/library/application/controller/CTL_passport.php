@@ -33,23 +33,13 @@ class CTL_passport extends CTL_Abstract_Controller
 		if (!$this->acl->check('guest'))
 			$this->deny();
 		
-		$ua = new MDL_User_Auth();
-		$ua->user_info = array
+		$user_info = array
 		(
 			'user_name'		   => $_POST['user_name'],
 			'user_password'	   => $_POST['user_password'],
 		);
 		
-		try
-		{
-			$ua->login();
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			$request['specifier'] = $desc[2];
-			$this->locator->redirect('error_login_failed',$request);
-		}
+		MDL_User_Auth::login($user_info);
 		
 		$this->locator->redirect('index');
 	}
@@ -90,16 +80,7 @@ class CTL_passport extends CTL_Abstract_Controller
 		}
 		//Plugin: reCaptcha Validate End----------------------------------------
 
-		try
-		{
-			MDL_User_Edit::create($user);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			$request['specifier'] = $desc[2];
-			$this->locator->redirect('error_register_failed',$request);
-		}
+		MDL_User_Edit::create($user);
 		
 		$this->locator->redirect('passport_login');
 	}

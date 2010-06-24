@@ -39,15 +39,19 @@ class BFL_Controller
 
 	private function notFound()
 	{
-		$nf_method = $this->nf_method;
-		$ctl = new $this->nf_class;
-		$ctl->$nf_method();
+		if (isset($this->not_found_callback))
+		{
+			$nfmtd = $this->not_found_callback[1];
+			$hdl = new $this->not_found_callback[0];
+			$hdl->$nfmtd();
+		}
+		else
+			die('not found');
 	}
 	
-	public function setNotFound($nf_class,$nf_method)
+	public function setNotFound($callback)
 	{
-		$this->nf_class = $nf_class;
-		$this->nf_method = $nf_method;
+		$this->not_found_callback = $callback;
 	}
 
 	public function dispatch()

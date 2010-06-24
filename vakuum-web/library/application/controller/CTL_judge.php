@@ -25,16 +25,8 @@ class CTL_judge extends CTL_Abstract_Controller
 		$lang = $_POST['lang'];
 		$source = file_get_contents($_FILES['source']['tmp_name']);
 
-		try
-		{
-			$record_id = MDL_Judge_Single::submit($user_id,$prob_id,$lang,$source);
-			MDL_Judger_Process::processTaskQueue();
-		}
-		catch (MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			$this->fail($desc[1]);
-		}
+		$record_id = MDL_Judge_Single::submit($user_id,$prob_id,$lang,$source);
+		MDL_Judger_Process::processTaskQueue();
 		
 		$this->locator->redirect('record_detail',array(),'/'.$record_id);
 	}

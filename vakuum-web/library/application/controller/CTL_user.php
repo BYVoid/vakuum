@@ -19,18 +19,7 @@ class CTL_user extends CTL_Abstract_Controller
 		if ($page===false)
 			$page = 1;
 		
-		try
-		{
-			$rs = MDL_User_List::getList($page,array('register_time'));
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'page')
-				$this->notFound(array('specifier' => 'user_list_page'));
-			else
-				throw $e;
-		}
+		$rs = MDL_User_List::getList($page,array('register_time'));
 		
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];
@@ -41,18 +30,8 @@ class CTL_user extends CTL_Abstract_Controller
 	public function ACT_detail()
 	{
 		$user_name = $this->path_option->getPathSection(2);
-		try
-		{
-			$user = MDL_User_Detail::getUserByName($user_name);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'name')
-				$this->notFound(array('specifier' => 'user'));
-			else
-				throw $e;
-		}
+
+		$user = MDL_User_Detail::getUserByName($user_name);
 		
 		$this->view->user = $user;
 		$this->view->display('user_single.php');
@@ -97,16 +76,7 @@ class CTL_user extends CTL_Abstract_Controller
 			'memo' => $_POST['memo'],
 		);
 
-		try
-		{
-			MDL_User_Edit::edit($user_info);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			$request['specifier'] = $desc[2];
-			$this->locator->redirect('error_user_edit',$request);
-		}
+		MDL_User_Edit::edit($user_info);
 		
 		//TODO success message
 		$this->locator->redirect('user_space');

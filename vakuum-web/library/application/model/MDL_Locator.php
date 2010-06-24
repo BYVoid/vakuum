@@ -34,7 +34,7 @@ class MDL_Locator
 		if (isset($this->_path[$key]))
 			return $this->_path[$key];
 		else
-			throw new MDL_Exception('not found');
+			return $key;
 	}
 	
 	private static function makeOptions($path_options=array(),$qs_options=array())
@@ -83,10 +83,7 @@ class MDL_Locator
 	
 	public function getURL($key,$path_options=array(),$qs_options=array())
 	{
-		if (isset($this->_path[$key]))
-			$base =  $this->_path[$key];
-		else
-			throw new MDL_Exception('not found');
+		$base = self::getFilePath($key);
 		return self::makeURL($base,$path_options,$qs_options);
 	}
 

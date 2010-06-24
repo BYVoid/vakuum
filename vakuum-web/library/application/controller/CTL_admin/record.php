@@ -12,18 +12,7 @@ class CTL_admin_record extends CTL_admin_Abstract
 		if ($page===false)
 			$page = 1;
 
-		try
-		{
-			$rs = MDL_Record_List::getList($page,50);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'page')
-				$this->notFound(array('specifier' => 'record_list_page'));
-			else
-				throw $e;
-		}
+		$rs = MDL_Record_List::getList($page,50);
 		
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];

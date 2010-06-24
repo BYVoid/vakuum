@@ -16,3 +16,5 @@ define('DB_PREFIX','vakuum_');
 define('SESSION_PREFIX','vakdev');
 //加密码
 define('PWD_ENCWORD','vakuum_develop');
+
+define('DEBUG',true);
