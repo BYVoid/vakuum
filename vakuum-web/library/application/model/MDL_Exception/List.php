@@ -6,9 +6,12 @@
  */
 class MDL_Exception_List extends MDL_Exception
 {
+	const FIELD_LIST = "list";
+	const INVALID_PAGE = "invalid_page";
+	
 	public function __construct($message)
 	{
-		array_unshift($this->desc,$message);
-		parent :: __construct('list');
+		$this->desc[self::FIELD_LIST] = $message;
+		parent :: __construct(self::FIELD_LIST);
 	}
 }

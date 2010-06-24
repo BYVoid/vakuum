@@ -122,14 +122,18 @@ class MDL_Problem_Data
 	{
 		$new_data_config = array();
 		if (!isset($data_config['id']))
-			throw new MDL_Exception_Problem_Edit('id');
+			throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_PROB_ID);
 		$prob_id = $data_config['id'];
 		$problem_meta = new MDL_Problem_Meta($prob_id);
 		
-		foreach(array('name','input','output','checker') as $key)
+		if (!isset($data_config['name']) || $data_config['name']=="")
+			throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_PROB_NAME);
+		$new_data_config['name'] = $data_config['name'];
+		
+		foreach(array('input','output','checker') as $key)
 		{
 			if (!isset($data_config[$key]) || $data_config[$key]=="")
-				throw new MDL_Exception_Problem_Edit($key);
+				throw new MDL_Exception_Problem_Edit('invalid_data_'.$key);
 			$new_data_config[$key] = $data_config[$key];
 		}
 		
@@ -153,7 +157,7 @@ class MDL_Problem_Data
 				foreach(array('input','output') as $key)
 				{
 					if (!isset($data_config['case_'.$key][$i]) || $data_config['case_'.$key][$i]=="")
-						throw new MDL_Exception_Problem_Edit('case');
+						throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_DATA_CASE);
 					$new_data_config['case'][$i][$key] = $data_config['case_'.$key][$i];
 				}
 				foreach(array('time_limit','memory_limit','output_limit') as $key)

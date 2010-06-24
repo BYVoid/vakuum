@@ -6,20 +6,23 @@
  */
 class MDL_Judger_Transmit_FTP
 {
+	const PORT = 21;
+	const TIMEOUT = 5;
+	
 	private static function connect($ftpinfo)
 	{
 		//Connect to the judger server
 		if (!isset($ftpinfo['port']))
-			$ftpinfo['port'] = 21;
-		$pftp = ftp_connect($ftpinfo['address'],$ftpinfo['port'],10);
+			$ftpinfo['port'] = self::PORT;
+		$pftp = ftp_connectct($ftpinfo['address'],$ftpinfo['port'],self::TIMEOUT);
 		if ($pftp === false)
 		{
-			throw new MDL_Exception_Judge_Send('ftp_connect');
+			throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::CONNECT);
 		}
 		$login_result = ftp_login($pftp, $ftpinfo['user'], $ftpinfo['password']);
 		if ($login_result === false)
 		{
-			throw new MDL_Exception_Judge_Send('ftp_login');
+			throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::LOGIN);
 		}
 		return $pftp;
 	}
@@ -34,19 +37,19 @@ class MDL_Judger_Transmit_FTP
 
 		//Create task dir and set permission
 		if (ftp_chdir($pftp,$ftpinfo['path']['task']) === false)
-			throw new MDL_Exception_Judge_Send('ftp_path_task');
+			throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TASK_UPLOAD);
 		if (@ftp_chdir($pftp,$task_name) === false)
 		{
 			if (ftp_mkdir($pftp,$task_name) === false)
-				throw new MDL_Exception_Judge_Send('ftp_mkdir');
+				throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TASK_UPLOAD);
 			if (ftp_chmod($pftp,0777,$task_name) === false)
-				throw new MDL_Exception_Judge_Send('ftp_chmod');
+				throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TASK_UPLOAD);
 			ftp_chdir($pftp,$task_name);
 		}
 		
 		//Upload the source file
 		if (ftp_put($pftp, $src_name, $temp_file, FTP_BINARY) === false)
-			throw new MDL_Exception_Judge_Send('ftp_upload');
+			throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TASK_UPLOAD);
 
 		//Close the file and connection
 		ftp_close($pftp);
@@ -66,7 +69,8 @@ class MDL_Judger_Transmit_FTP
 		$pftp=self::connect($ftpinfo);
 
 		if (ftp_chdir($pftp,$ftpinfo['path']['testdata']) === false)
-			throw new MDL_Exception_Judge_Send('ftp_path_testdata');
+			throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TESTDATA_UPLOAD);
+			
 		if (@ftp_chdir($pftp,$prob_name) === false)
 		{
 			ftp_mkdir($pftp,$prob_name);
@@ -76,7 +80,7 @@ class MDL_Judger_Transmit_FTP
 		
 		//Upload config.xml
 		if (ftp_put($pftp, 'config.xml', $temp_file, FTP_BINARY) === false)
-			throw new MDL_Exception_Judge_Send('ftp_upload');
+			throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TESTDATA_UPLOAD);
 		
 		if ($data_config['checker']['type']=='custom')
 		{
@@ -84,7 +88,7 @@ class MDL_Judger_Transmit_FTP
 			$checker_source = $data_config['checker']['custom']['source'];
 			$checker_file = $testdata_path.$checker_source;
 			if (ftp_put($pftp, $checker_source, $checker_file, FTP_BINARY) === false)
-				throw new MDL_Exception_Judge_Send('ftp_upload');
+				throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TESTDATA_UPLOAD);
 		}
 		
 		//Upload testdatas
@@ -94,7 +98,7 @@ class MDL_Judger_Transmit_FTP
 			{
 				$testdata_file = $testdata_path. $item[$key];
 				if (ftp_put($pftp, $item[$key], $testdata_file, FTP_BINARY) === false)
-					throw new MDL_Exception_Judge_Send('ftp_upload');
+					throw new MDL_Exception_Judge_FTP(MDL_Exception_Judge_FTP::TESTDATA_UPLOAD);
 			}
 		}
 		

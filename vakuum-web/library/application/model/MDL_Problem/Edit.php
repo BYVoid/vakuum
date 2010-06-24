@@ -118,14 +118,14 @@ class MDL_Problem_Edit
 	private static function verify($problem)
 	{
 		if (!isset($problem['prob_id']) || !is_numeric($problem['prob_id']))
-			throw new MDL_Exception_Problem_Edit('prob_id');
+			throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_PROB_ID);
 		
 		$len = strlen($problem['prob_name']);
 		if (!isset($problem['prob_name']) || $len > 32 || $len == 0 )
-			throw new MDL_Exception_Problem_Edit('prob_name');
+			throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_PROB_NAME);
 		
 		$len = strlen($problem['prob_title']);
 		if (!isset($problem['prob_title']) || $len > 32 || $len == 0 )
-			throw new MDL_Exception_Problem_Edit('prob_title');
+			throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_PROB_TITLE);
 	}
 }

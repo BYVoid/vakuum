@@ -49,6 +49,8 @@ abstract class CTL_Abstract_Controller
 		
 		$this->view->setTheme( $this->config->getVar('theme') );
 		$this->path_option = BFL_PathOption::getInstance();
+		
+		set_exception_handler(array('MDL_ExceptionHandler','exceptionHandler'));
 	}
 	
 	public function deny()

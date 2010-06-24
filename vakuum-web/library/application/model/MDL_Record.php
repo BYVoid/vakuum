@@ -60,7 +60,7 @@ class MDL_Record
 
 		if (empty($record))
 		{
-			throw new MDL_Exception_Record('record_id');
+			throw new MDL_Exception_Record(MDL_Exception_Record::INVALID_RECORD_ID);
 		}
 
 		$record_detail = self::getRecordDetial($record_id);
@@ -85,7 +85,7 @@ class MDL_Record
 	{
 		if (!self::exists($record_id))
 		{
-			throw new MDL_Exception_Record('record_id');
+			throw new MDL_Exception_Record(MDL_Exception_Record::INVALID_RECORD_ID);
 		}
 		
 		$rmeta = new MDL_Record_Meta($record_id);
@@ -95,7 +95,7 @@ class MDL_Record
 		{
 			if (!$display->showCodeToOwner() ||
 					self::getUserID($record_id) != BFL_ACL::getInstance()->getUserID())
-				throw new MDL_Exception_Record('deny');
+				throw new MDL_Exception_Record(MDL_Exception_Record::PERMISSION_DENIED);
 		}
 		
 		$record['source'] = $rmeta->getVar('source');
@@ -118,7 +118,7 @@ class MDL_Record
 		$stmt->execute();
 		$rs = $stmt->fetch();
 		if (empty($rs))
-			throw new MDL_Exception_Record('record_id');
+			throw new MDL_Exception_Record(MDL_Exception_Record::INVALID_RECORD_ID);
 		return $rs['record_user_id'];
 	}
 	
@@ -130,7 +130,7 @@ class MDL_Record
 		$stmt->execute();
 		$rs = $stmt->fetch();
 		if (empty($rs))
-			throw new MDL_Exception_Record('record_id');
+			throw new MDL_Exception_Record(MDL_Exception_Record::INVALID_RECORD_ID);
 		return $rs['record_judger_id'];
 	}
 	

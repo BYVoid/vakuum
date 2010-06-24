@@ -43,8 +43,7 @@ class CTL_user extends CTL_Abstract_Controller
 		$user_name = $this->path_option->getPathSection(2);
 		try
 		{
-			$mud = new MDL_User_Detail();
-			$rs = $mud->getUserByName($user_name);
+			$user = MDL_User_Detail::getUserByName($user_name);
 		}
 		catch(MDL_Exception $e)
 		{
@@ -55,7 +54,7 @@ class CTL_user extends CTL_Abstract_Controller
 				throw $e;
 		}
 		
-		$this->view->user = $rs;
+		$this->view->user = $user;
 		$this->view->display('user_single.php');
 	}
 	

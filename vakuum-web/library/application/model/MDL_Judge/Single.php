@@ -9,30 +9,16 @@ class MDL_Judge_Single
 	public static function submit($user_id,$prob_id,$lang,$source)
 	{
 		//TODO verify problem allowence
-		try
-		{
-			$problem = MDL_Problem_Show::getProblem($prob_id);
-		}
-		catch (MDL_Exception_Problem $e)
-		{
-			$desc = $e->getDescription();
-			switch($desc[1])
-			{
-				case 'id':
-					throw new MDL_Exception_Judge('problem_not_exist');
-					break;
-				default:
-					throw $e;
-			}
-		}
+		$problem = MDL_Problem_Show::getProblem($prob_id);
+
 		if ($problem['verified'] != 1)
-			throw new MDL_Exception_Judge('problem_not_verified');
+			throw new MDL_Exception_Problem(MDL_Exception_Problem::UNVALIDATED_PROBLEM);
 		
 		//check length
 		$config = MDL_Config::getInstance();
 		$smaxlen = $config->getVar('judge_source_length_max');
 		if (strlen($source) > $smaxlen)
-			throw new MDL_Exception_Judge('source_length');
+			throw new MDL_Exception_Judge(MDL_Exception_Judge::INVALID_SOURCE_LENGTH);
 		//encode source
 		$source = self::convertEncode($source);
 		
@@ -46,7 +32,7 @@ class MDL_Judge_Single
 	{
 		$original_encode = mb_detect_encoding($source,"UTF-8,CP936,EUC-CN,BIG5");
 		if ($original_encode == "")
-			throw new MDL_Exception_Judge('source_encode');
+			throw new MDL_Exception_Judge(MDL_Exception_Judge::INVALID_SOURCE_ENCODIND);
 		if ($original_encode != 'UTF-8')
 			$source = mb_convert_encoding($source, 'UTF-8', $original_encode);
 		return $source;		
@@ -55,14 +41,8 @@ class MDL_Judge_Single
 	public static function rejudgeSingle($record_id)
 	{
 		MDL_Judge_Record::resetRecord($record_id);
-		try
-		{
-			MDL_Judger_Process::processTaskQueue();
-		}
-		catch(MDL_Exception_Judge_Submit $e)
-		{
-			//No available judger
-		}
+
+		MDL_Judger_Process::processTaskQueue();
 	}
 	
 	public static function rejudgeProblem($prob_id)

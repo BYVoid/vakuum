@@ -21,7 +21,7 @@ class MDL_User_Detail
 
 		if (empty($rs))
 		{
-			throw new MDL_Exception_User('id');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_USER_ID);
 		}
 
 		$user = $rs;
@@ -48,7 +48,7 @@ class MDL_User_Detail
 
 		if (empty($rs))
 		{
-			throw new MDL_Exception_User('name');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_USER_NAME);
 		}
 
 		$user = $rs;
@@ -80,7 +80,7 @@ class MDL_User_Detail
 
 		if (empty($rs))
 		{
-			throw new MDL_Exception_User('id');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_USER_ID);
 		}
 		
 		return $rs;

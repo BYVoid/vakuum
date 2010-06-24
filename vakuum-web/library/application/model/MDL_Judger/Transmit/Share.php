@@ -7,21 +7,21 @@
 class MDL_Judger_Transmit_Share
 {
 	public static function uploadTask($judger_info,$task_name,$source,$src_name)
-	{	
+	{
 		$task_path = $judger_info['path']['task'].$task_name;
 
 		$original_cwd = getcwd();
 		if (@chdir($task_path) === false)
 		{
 			if (mkdir($task_path) === false)
-				throw new MDL_Exception_Judge_Send('mkdir');
+				throw new MDL_Exception_Judge_Share(MDL_Exception_Judge_Share::TASK_UPLOAD);
 			if (chmod($task_path,0777) === false)
-				throw new MDL_Exception_Judge_Send('chmod');
+				throw new MDL_Exception_Judge_Share(MDL_Exception_Judge_Share::TASK_UPLOAD);
 			chdir($task_path);
 		}
 		
 		if (file_put_contents($src_name,$source) === false)
-			throw new MDL_Exception_Judge_Send('write_source_file');
+			throw new MDL_Exception_Judge_Share(MDL_Exception_Judge_Share::TASK_UPLOAD);
 		
 		chdir($original_cwd);
 	}
@@ -29,7 +29,7 @@ class MDL_Judger_Transmit_Share
 	private static function copy_file($dest,$src)
 	{
 		if (symlink($dest,$src) == false)
-			throw new MDL_Exception_Judge_Send('copy_file');
+			throw new MDL_Exception_Judge_Share(MDL_Exception_Judge_Share::TESTDATA_UPLOAD);
 	}
 	
 	public static function uploadTestdata($judger_info,$data_config)
@@ -43,7 +43,7 @@ class MDL_Judger_Transmit_Share
 		{
 			if (@mkdir($dest_path) === false)
 			{
-				throw new MDL_Exception_Judge_Send('dest_path');
+				throw new MDL_Exception_Judge_Share(MDL_Exception_Judge_Share::TESTDATA_UPLOAD);
 			}
 			chmod($dest_path,0755);
 		}
@@ -53,7 +53,7 @@ class MDL_Judger_Transmit_Share
 		$xml = BFL_XML::Array2XML($data_config);
 		
 		if (file_put_contents($dest_path."config.xml",$xml) === false)
-			throw new MDL_Exception_Judge_Send('write_file');
+			throw new MDL_Exception_Judge_Share(MDL_Exception_Judge_Share::TESTDATA_UPLOAD);
 		
 		if ($testdata_path == $dest_path)
 			return;

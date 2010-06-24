@@ -51,14 +51,8 @@ class CTL_admin_record extends CTL_admin_Abstract
 		$prob_id = $this->path_option->getVar('prob_id');
 		if ($prob_id !== false)
 		{
-			try
-			{
-				MDL_Problem_Show::getProblemName($prob_id);
-			}
-			catch(MDL_Exception_Problem $e)
-			{
-				$this->notFound(array('specifier' => 'prob_id'));
-			}
+			MDL_Problem_Show::getProblemName($prob_id);
+			
 			MDL_Judge_Single::rejudgeProblem($prob_id);
 			$this->locator->redirect('admin_problem_list');
 		}
@@ -70,16 +64,8 @@ class CTL_admin_record extends CTL_admin_Abstract
 		if ($record_id == 0)
 			$this->notFound(array('specifier' => 'record_id'));
 		
-		try
-		{
-			MDL_Record_Edit::delete($record_id);
-		}
-		catch(MDL_Exception_Record $e)
-		{
-			$desc = $e->getDescription();
-			$request['specifier'] = $desc[2];
-			$this->locator->redirect('admin_error_record_edit',$request);
-		}
+		MDL_Record_Edit::delete($record_id);
+		
 		$this->locator->redirect('admin_record_list');
 	}
 	

@@ -16,11 +16,11 @@ class MDL_List
 		//Restrict $current_page to positive integer
 		$current_page = (int)$current_page;
 		if ($current_page <= 0)
-			throw new MDL_Exception_List('page');
+			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
 		
 		$page_size = (int)$page_size;
 		if ($page_size <= 0)
-			throw new MDL_Exception_Config('page_size');
+			throw new MDL_Exception_Config(MDL_Exception_Config::INVALID_PAGE_SIZE);
 		
 		$db = BFL_Database :: getInstance();
 		$stmt = $db->factory($sql);
@@ -42,7 +42,9 @@ class MDL_List
 		
 		//Restrict $current_page not to be more than $page_count
 		if ($current_page > $page_count)
-			throw new MDL_Exception_List('page');
+		{
+			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
+		}
 		$offset = $page_size * ($current_page - 1);
 		
 		//Fetch list with LIMIT

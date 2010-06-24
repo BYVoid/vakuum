@@ -37,18 +37,7 @@ class CTL_admin_user extends CTL_admin_Abstract
 		
 		if ($user_id != 0)
 		{
-			try
-			{
-				$rs = MDL_User_Detail::getUser($user_id);
-			}
-			catch(MDL_Exception_User $e)
-			{
-				$desc = $e->getDescription();
-				if ($desc[1] == 'id')
-					$this->notFound(array('specifier' => 'user'));
-				else
-					throw $e;
-			}
+			$rs = MDL_User_Detail::getUser($user_id);
 			
 			$rs['action'] = 'edit';
 		}
@@ -92,32 +81,24 @@ class CTL_admin_user extends CTL_admin_Abstract
 			'memo' => $_POST['memo'],
 			'identity' => $identity,
 		);
-		try
+
+		if ($_POST['action'] == 'add')
 		{
-			if ($_POST['action'] == 'add')
-			{
-				//Add New User
-				MDL_User_Edit::create($user);
-			}
-			else if ($_POST['action'] == 'edit')
-			{
-				if (isset($_POST['remove']) && $_POST['remove']==1)
-					//Remove User
-					MDL_User_Edit::remove($_POST['user_id']);
-				else
-					//Edit User
-					MDL_User_Edit::edit($user,false);
-			}
+			//Add New User
+			MDL_User_Edit::create($user);
+		}
+		else if ($_POST['action'] == 'edit')
+		{
+			if (isset($_POST['remove']) && $_POST['remove']==1)
+				//Remove User
+				MDL_User_Edit::remove($_POST['user_id']);
 			else
-				$this->deny();
-			
-			$this->locator->redirect('admin_user_list');
+				//Edit User
+				MDL_User_Edit::edit($user,false);
 		}
-		catch(MDL_Exception_User $e)
-		{
-			$desc = $e->getDescription();
-			$request['specifier'] = $desc[2];
-			$this->locator->redirect('admin_error_user_edit',$request);
-		}
+		else
+			$this->deny();
+		
+		$this->locator->redirect('admin_user_list');
 	}
 }

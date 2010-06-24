@@ -44,7 +44,7 @@ class MDL_Problem_Show
 
 		if (empty($rs))
 		{
-			throw new MDL_Exception_Problem('id');
+			throw new MDL_Exception_Problem(MDL_Exception_Problem::NOTFOUND);
 		}
 
 		$problem = $rs;
@@ -74,7 +74,7 @@ class MDL_Problem_Show
 
 		if (empty($rs))
 		{
-			throw new MDL_Exception_Problem('id');
+			throw new MDL_Exception_Problem(MDL_Exception_Problem::NOTFOUND);
 		}
 		
 		return $rs;

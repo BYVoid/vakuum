@@ -32,35 +32,35 @@ class MDL_User_Verify extends MDL_User_Common
 		//User_name verificaion
 		$re = '/^\w{'. $restrict['user_name']['length_min'] .','. $restrict['user_name']['length_max'] .'}$/';
 		if (! preg_match($re,$user_info['user_name']))
-			throw new MDL_Exception_User_Passport('user_name');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_USER_NAME);
 		
 		//User_password verificaion
 		if ($password_verify)
 		{
 			$re = '/^\w{'. $restrict['user_password']['length_min'] .','. $restrict['user_password']['length_max'] .'}$/';
 			if (! preg_match($re,$user_info['user_password']))
-				throw new MDL_Exception_User_Passport('user_password');
+				throw new MDL_Exception_User(MDL_Exception_User::INVALID_USER_PASSWORD);
 			//Password consistency verificaion
 			if ($user_info['user_password'] != $user_info['user_password_repeat'])
-				throw new MDL_Exception_User_Passport('user_password_repeat');
+				throw new MDL_Exception_User(MDL_Exception_User::INVALID_USER_PASSWORD_REPEAT);
 		}
 
 		//Nickname verificaion
 		$re = '/^.{'. $restrict['nickname']['length_min'] .','. $restrict['nickname']['length_max'] .'}$/';
 		if (! preg_match($re,$user_info['user_nickname']))
-			throw new MDL_Exception_User_Passport('user_nickname');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_NICKNAME);
 			
 		//Email verificaion
 		if (strlen($user_info['email']) > $restrict['email']['length_max'] ||
 			! preg_match('/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/',$user_info['email']))
-			throw new MDL_Exception_User_Passport('email');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_EMAIL);
 		
 		//Website verfication
 		if (strlen($user_info['website']) > $restrict['website']['length_max'])
-			throw new MDL_Exception_User_Passport('website');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_WEBSITE);
 			
 		//Memo verfication
 		if (strlen($user_info['memo']) > $restrict['memo']['length_max'])
-			throw new MDL_Exception_User_Passport('memo');
+			throw new MDL_Exception_User(MDL_Exception_User::INVALID_MEMO);
 	}
 }

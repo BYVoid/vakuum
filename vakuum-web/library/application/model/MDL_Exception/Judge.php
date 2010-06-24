@@ -6,9 +6,16 @@
  */
 class MDL_Exception_Judge extends MDL_Exception
 {
+	const FIELD_JUDGE = "judge";
+	const INVALID_SOURCE_ENCODIND = "invalid_source_encoding";
+	const INVALID_SOURCE_LENGTH = "invalid_source_length";
+	const INVALID_UPLOAD_METHOD = "invalid_upload_method";
+	const TASK_UPLOAD = "task_upload";
+	const TESTDATA_UPLOAD = "testdata_upload";
+	
 	public function __construct($message)
 	{
-		array_unshift($this->desc,$message);
-		parent :: __construct('judge');
+		$this->desc[self::FIELD_JUDGE] = $message;
+		parent :: __construct(self::FIELD_JUDGE);
 	}
 }

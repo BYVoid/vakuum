@@ -15,18 +15,7 @@ class CTL_problem extends CTL_Abstract_Controller
 		if ($page===false)
 			$page = 1;
 		
-		try
-		{
-			$list = MDL_Problem_List::getList($page,true);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'page')
-				$this->notFound(array('specifier' => 'problem_list_page'));
-			else
-				throw $e;
-		}
+		$list = MDL_Problem_List::getList($page,true);
 		
 		$this->view->list = $list['list'];
 		$this->view->info = $list['info'];
@@ -38,42 +27,36 @@ class CTL_problem extends CTL_Abstract_Controller
 	{
 		$identifier = $this->path_option->getPathSection(1);
 
-		try
+		if (is_numeric($identifier))
 		{
-			if (is_numeric($identifier))
+			$prob_id = $identifier;
+			try
 			{
-				try
+				$prob_names = MDL_Problem_Show::getProblemName($prob_id);
+				$prob_name = $prob_names['prob_name'];
+			}
+			catch (MDL_Exception_Problem $e)
+			{
+				if ($e->testTopDesc(MDL_Exception_Problem::NOTFOUND))
 				{
-					$prob_names = MDL_Problem_Show::getProblemName($identifier);
-					$prob_name = $prob_names['prob_name'];
+					/* $identifier作爲prob_id未找到對應記錄，作爲prob_name再次査找 */
+					$prob_name = $identifier;
 				}
-				catch (MDL_Exception_Problem $e)
-				{
-					$desc = $e->getDescription();
-					if ($desc[0] == 'id')
-					{
-						$prob_name = $identifier;
-					}
-					else
-						throw $e;
-				}
-				
-				if ($prob_name != $identifier)
-				{
-					$this->locator->redirect('problem_single',array(),'/'.$prob_name);
-				}
+				else
+					throw $e;
 			}
 			
-			$problem = MDL_Problem_Show::getProblemByName($identifier);
+			if ($prob_name != $prob_id)
+			{
+				/* 重定向到$prob_name路徑頁，如果$prob_name和$prob_id不同 */
+				$this->locator->redirect('problem_single',array(),'/'.$prob_name);
+			}
 		}
-		catch(MDL_Exception_Problem $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'id')
-				$this->notFound(array('specifier' => 'problem'));
-			else
-				throw $e;
-		}
+		
+		$prob_name = $identifier;
+		
+		/* $identifier作爲prob_name査找 */
+		$problem = MDL_Problem_Show::getProblemByName($prob_name);
 		
 		$this->view->problem = $problem;
 		$this->view->display('problem_single.php');

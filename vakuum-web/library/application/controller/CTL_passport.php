@@ -119,16 +119,7 @@ class CTL_passport extends CTL_Abstract_Controller
 		$user_name = $this->path_option->getVar('user_name');
 		$validation_code = $this->path_option->getVar('code');
 		
-		try
-		{
-			MDL_User_Edit::validate($user_name,$validation_code);
-		}
-		catch(MDL_Exception_User $e)
-		{
-			$desc = $e->getDescription();
-			$request['specifier'] = $desc[1];
-			$this->locator->redirect('error_validation',$request);
-		}
+		MDL_User_Edit::validate($user_name,$validation_code);
 		
 		$this->locator->redirect('index');
 	}

@@ -108,4 +108,9 @@ class BFL_PathOption
 	{
 		return array_merge($this->path_option,$this->query_string);
 	}
+	
+	public function getQueryString()
+	{
+		return $_SERVER['QUERY_STRING'];
+	}
 }

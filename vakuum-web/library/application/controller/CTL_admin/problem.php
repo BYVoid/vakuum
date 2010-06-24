@@ -12,18 +12,7 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		if ($page===false)
 			$page = 1;
 
-		try
-		{
-			$rs = MDL_Problem_List::getList($page);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->getDescription();
-			if ($desc[1] == 'page')
-				$this->notFound(array('specifier' => 'problem_list_page'));
-			else
-				throw $e;
-		}
+		$rs = MDL_Problem_List::getList($page);
 		
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];
@@ -36,18 +25,7 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		$prob_id = (int)$this->path_option->getPathSection(2);
 		if ($prob_id != 0)
 		{
-			try
-			{
-				$rs = MDL_Problem_Show::getProblem($prob_id);
-			}
-			catch(MDL_Exception_Problem $e)
-			{
-				$desc = $e->getDescription();
-				if ($desc[1] == 'id')
-					$this->notFound(array('specifier' => 'problem'));
-				else
-					throw $e;
-			}
+			$rs = MDL_Problem_Show::getProblem($prob_id);
 			
 			$rs['action'] = 'edit';
 		}
@@ -75,14 +53,7 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		if ($prob_id == 0)
 			$this->notFound();
 		
-		try
-		{
-			$prob_names = MDL_Problem_Show::getProblemName($prob_id);
-		}
-		catch(MDL_Exception_Problem $e)
-		{
-			$this->notFound();
-		}
+		$prob_names = MDL_Problem_Show::getProblemName($prob_id);
 
 		$this->view->data_config = MDL_Problem_Data::getDataConfig($prob_id,$prob_names['prob_name'],$prob_names['prob_title']);
 
@@ -95,14 +66,7 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		if ($prob_id == 0)
 			$this->notFound();
 		
-		try
-		{
-			$prob_names = MDL_Problem_Show::getProblemName($prob_id);
-		}
-		catch(MDL_Exception_Problem $e)
-		{
-			$this->notFound();
-		}
+		$prob_names = MDL_Problem_Show::getProblemName($prob_id);
 
 		$data_config = MDL_Problem_Data::getDataConfig($prob_id,$prob_names['prob_name'],$prob_names['prob_title']);
 		$verify_result = MDL_Problem_Dispatch::verify($data_config);
@@ -118,14 +82,7 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		if ($prob_id == 0)
 			$this->notFound();
 		
-		try
-		{
-			$prob_names = MDL_Problem_Show::getProblemName($prob_id);
-		}
-		catch(MDL_Exception_Problem $e)
-		{
-			$this->notFound();
-		}
+		$prob_names = MDL_Problem_Show::getProblemName($prob_id);
 
 		$data_config = MDL_Problem_Data::getDataConfig($prob_id,$prob_names['prob_name'],$prob_names['prob_title']);
 		$verify_result = MDL_Problem_Dispatch::verify($data_config);
@@ -153,46 +110,31 @@ class CTL_admin_problem extends CTL_admin_Abstract
 				'prob_content' => $_POST['prob_content'],
 				'display' => isset($_POST['display'])?$_POST['display']:0,
 			);
-			try
+
+			if ($_POST['action'] == 'add')
 			{
-				if ($_POST['action'] == 'add')
-				{
-					//Add New Problem
-					MDL_Problem_Edit::add($problem);
-					$this->locator->redirect('admin_problem_data',array(),'/'.$_POST['prob_id']);
-				}
-				else if ($_POST['action'] == 'edit')
-				{
-					if (isset($_POST['remove']) && $_POST['remove']==1)
-						//Remove Problem
-						MDL_Problem_Edit::remove($_POST['prob_id']);
-					else
-						//Edit Problem
-						MDL_Problem_Edit::edit($problem);
-					$this->locator->redirect('admin_problem_list');
-				}
+				//Add New Problem
+				MDL_Problem_Edit::add($problem);
+				$this->locator->redirect('admin_problem_data',array(),'/'.$_POST['prob_id']);
+			}
+			else if ($_POST['action'] == 'edit')
+			{
+				if (isset($_POST['remove']) && $_POST['remove']==1)
+					//Remove Problem
+					MDL_Problem_Edit::remove($_POST['prob_id']);
 				else
-					$this->deny();
+					//Edit Problem
+					MDL_Problem_Edit::edit($problem);
+				$this->locator->redirect('admin_problem_list');
 			}
-			catch(MDL_Exception_Problem_Edit $e)
-			{
-				$desc = $e->getDescription();
-				$request['specifier'] = $desc[2];
-				$this->locator->redirect('admin_error_problem_edit',$request);
-			}
+			else
+				$this->deny();
+
 		}
 		else if ($_POST['data'] == 'data')
 		{
-			try
-			{
-				MDL_Problem_Data::edit($_POST);
-			}
-			catch (MDL_Exception_Problem_Edit $e)
-			{
-				$desc = $e->getDescription();
-				$request['specifier'] = $desc[2];
-				$this->locator->redirect('admin_error_problem_edit',$request);
-			}
+			MDL_Problem_Data::edit($_POST);
+
 			$this->locator->redirect('admin_problem_verify',array(),'/'.$_POST['id']);
 		}
 		else
@@ -209,14 +151,8 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		
 		$prob_id = $_POST['prob_id'];
 		$judger_id = $_POST['judger_id'];
-		try
-		{
-			$prob_names = MDL_Problem_Show::getProblemName($prob_id);
-		}
-		catch(MDL_Exception_Problem $e)
-		{
-			die('problem not found');
-		}
+
+		$prob_names = MDL_Problem_Show::getProblemName($prob_id);
 
 		$data_config = MDL_Problem_Data::getDataConfig($prob_id,$prob_names['prob_name'],$prob_names['prob_title']);
 		$verify_result = MDL_Problem_Dispatch::verify($data_config);

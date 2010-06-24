@@ -18,7 +18,7 @@ class MDL_Judger_Transmit
 		}
 		else
 		{
-			throw new MDL_Exception_Judge_Send('upload_mothod');
+			throw new MDL_Exception_Judge(MDL_Exception_Judge::INVALID_UPLOAD_METHOD);
 		}
 	}
 	
@@ -34,7 +34,7 @@ class MDL_Judger_Transmit
 		}
 		else
 		{
-			throw new MDL_Exception_Judge_Send('upload_mothod');
+			throw new MDL_Exception_Judge(MDL_Exception_Judge::INVALID_UPLOAD_METHOD);
 		}
 	}
 }

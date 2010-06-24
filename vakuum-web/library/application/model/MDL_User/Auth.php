@@ -27,10 +27,10 @@ class MDL_User_Auth extends MDL_User_Common
 		$stmt->execute();
 		$rs = $stmt->fetch();
 		if (empty($rs))
-			throw new MDL_Exception_User_Passport('user_name');
+			throw new MDL_Exception_User_Passport(MDL_Exception_User_Passport::INVALID_USER_NAME);
 		
 		if ($rs['user_password'] != $user_password_hash)
-			throw new MDL_Exception_User_Passport('user_password');
+			throw new MDL_Exception_User_Passport(MDL_Exception_User_Passport::INVALID_USER_PASSWORD);
 
 		//Set user session
 		$auth = BFL_ACL :: getInstance();
@@ -67,9 +67,16 @@ class MDL_User_Auth extends MDL_User_Common
 			}
 			catch(MDL_Exception_User $e)
 			{
-				$acl = BFL_ACL::getInstance();
-				$acl->resetSession();
-				$acl->initialize(SESSION_PREFIX,'guest');
+				if ($e->testDesc(MDL_Exception_User::FIELD_USER,MDL_Exception_User::INVALID_USER_ID))
+				{
+					$acl = BFL_ACL::getInstance();
+					$acl->resetSession();
+					$acl->initialize(SESSION_PREFIX,'guest');
+				}
+				else
+				{
+					throw $e;
+				}
 			}
 		}
 	}

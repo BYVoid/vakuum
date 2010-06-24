@@ -6,7 +6,7 @@ class MDL_User_Edit extends MDL_User_Common
 	public static function create($user)
 	{
 		if (!MDL_User_Verify::checkUserName($user['user_name']))
-			throw new MDL_Exception_User_Passport('user_name_occupied');
+			throw new MDL_Exception_User(MDL_Exception_User::USER_NAME_OCCUPIED);
 		MDL_User_Verify::verify($user);
 		
 		$config = MDL_Config::getInstance();
@@ -96,7 +96,7 @@ class MDL_User_Edit extends MDL_User_Common
 				//重新验证密码
 				$original_hash=self::passwordEncrypt($user['user_password_original']);
 				if ($original_hash != $user['user_password_correct'])
-					throw new MDL_Exception_User_Passport('user_password_original');
+					throw new MDL_Exception_User(MDL_Exception_User::INVALID_USER_PASSWORD);
 			}
 			$meta[] = '`user_password` = :user_password';
 			$edit_password = true;
@@ -161,7 +161,7 @@ class MDL_User_Edit extends MDL_User_Common
 		$user = MDL_User_Detail::getUserByName($user_name);
 		
 		if ($user['identity'] != 'unvalidated' || !isset($user['validation_code']))
-			throw new MDL_Exception_User('no validation');
+			throw new MDL_Exception_User(MDL_Exception_User::UNVALIDATED_USER);
 		
 		if ($user['validation_code'] == $validation_code)
 		{
