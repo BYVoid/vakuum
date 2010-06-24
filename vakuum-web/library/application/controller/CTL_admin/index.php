@@ -1,4 +1,6 @@
 <?php
+require_once("Abstract.php");
+
 class CTL_admin_index extends CTL_admin_Abstract
 {
 	public function ACT_index()

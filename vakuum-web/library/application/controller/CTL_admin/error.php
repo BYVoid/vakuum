@@ -1,11 +1,13 @@
 <?php
+require_once("Abstract.php");
+
 class CTL_admin_error extends CTL_admin_Abstract
 {
 	public function SAC_otherAction()
 	{
-		$action = $this->path_option->getPathSection(1);
-		$this->view->action = $action;
-		$this->view->option = $this->path_option->getAll();
+		$desc = BFL_Serializer::transmitDecode($this->path_option->getQueryString());
+		
+		$this->view->error = $desc; 
 		$this->view->display('error.php');
 	}
 }

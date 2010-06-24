@@ -13,10 +13,10 @@ class MDL_User_Auth extends MDL_User_Common
 	 *
 	 * @return boolean whether succeeded to login
 	 */
-	public function login($user_info)
+	public static function login($user_info)
 	{
 		//Compute the hash code of the password submited by user
-		$user_password_hash = $this->passwordEncrypt($user_info['user_password']);
+		$user_password_hash = self::passwordEncrypt($user_info['user_password']);
 		
 		//Do datebase query to get the hash code of the password
 		$db = BFL_Database :: getInstance();
