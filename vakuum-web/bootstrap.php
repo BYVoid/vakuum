@@ -1,5 +1,4 @@
 <?php
-error_reporting(E_ALL|E_STRICT);
 require_once('library/global.php');
 require_once('library/BFL/BFL_Loader.php');
 

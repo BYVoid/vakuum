@@ -1,5 +1,10 @@
 <?php
 
+function showBool($value)
+{
+	return $value ? '是' : '否';
+}
+
 function showStatus($status,$result_text)
 {
 	if ($status == MDL_Judge_Record::STATUS_WAITING)

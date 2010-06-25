@@ -15,15 +15,16 @@
 <h1>Vakuum</h1>
 <p>
 	<a href="<?php echo $this->locator->getURL('index')?>">首页</a>
-	<a href="<?php echo $this->locator->getURL('problem_list')?>">题目列表</a>
-	<a href="<?php echo $this->locator->getURL('user_list')?>">用户列表</a>
-	<a href="<?php echo $this->locator->getURL('record_list')?>">记录列表</a>
-	<a href="<?php echo $this->locator->getURL('judger_list')?>">评测机列表</a>
+	<a href="<?php echo $this->locator->getURL('problem_list')?>">题库</a>
+	<a href="<?php echo $this->locator->getURL('record_list')?>">记录</a>
+	<a href="<?php echo $this->locator->getURL('contest_list')?>">比赛</a>
+	<a href="<?php echo $this->locator->getURL('user_list')?>">用户</a>
+	<a href="<?php echo $this->locator->getURL('judger_list')?>">评测机</a>
 <?php if(BFL_ACL::getInstance()->check(array('general','unvalidated'))):?>
-	<a href="<?php echo $this->locator->getURL('user_space')?>">个人中心</a>
-	<a href="<?php echo $this->locator->getURL('passport_dologout')?>">用户登出</a>
+	<a href="<?php echo $this->locator->getURL('user_space')?>">个人</a>
+	<a href="<?php echo $this->locator->getURL('passport_dologout')?>">登出</a>
 <?php else:?>
-	<a href="<?php echo $this->locator->getURL('passport')?>">用户登录</a>
+	<a href="<?php echo $this->locator->getURL('passport')?>">登录</a>
 <?php endif ?>
 <?php if(BFL_ACL::getInstance()->check('administrator')):?>
 	<a href="<?php echo $this->locator->getURL('admin_index')?>">后台管理</a>

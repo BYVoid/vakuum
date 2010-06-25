@@ -5,6 +5,9 @@ plugins = public/plugins/
 problem_list = problem
 problem_single = problem
 
+contest_list = contest/list
+contest_entry = contest/entry
+
 user_list = user/list
 user_detail = user/detail
 user_space = user/space

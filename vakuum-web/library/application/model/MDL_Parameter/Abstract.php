@@ -29,7 +29,7 @@ abstract class MDL_Parameter_Abstract
 			foreach($this->ids as $key => $value)
 			{
 				$condition .= "`{$key}` = {$value} and ";
-				$this->idmeta[] = array($key => $value);
+				$this->idmeta[$key] = $value;
 			}
 			$condition .= " 1)";
 		}

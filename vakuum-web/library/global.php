@@ -1,4 +1,9 @@
 <?php
+if (DEBUG)
+	error_reporting(E_ALL|E_STRICT);
+else
+	error_reporting(0);
+
 define('DB_TABLE_CONFIG','`' . DB_PREFIX . 'config' . '`');
 define('DB_TABLE_USER','`' . DB_PREFIX . 'user' . '`');
 define('DB_TABLE_USERMETA','`' . DB_PREFIX . 'usermeta' . '`');
@@ -7,6 +12,8 @@ define('DB_TABLE_PROBMETA','`' . DB_PREFIX . 'probmeta' . '`');
 define('DB_TABLE_JUDGER','`' . DB_PREFIX . 'judger' . '`');
 define('DB_TABLE_RECORD','`' . DB_PREFIX . 'record' . '`');
 define('DB_TABLE_RECORDMETA','`' . DB_PREFIX . 'recordmeta' . '`');
+define('DB_TABLE_CONTEST','`' . DB_PREFIX . 'contest' . '`');
+define('DB_TABLE_CONTESTMETA','`' . DB_PREFIX . 'contestmeta' . '`');
 
 if (get_magic_quotes_gpc())
 {
