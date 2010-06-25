@@ -90,7 +90,6 @@ class MDL_Problem_Edit
 	public static function remove($prob_id)
 	{
 		$db = BFL_Database::getInstance();
-		$db->beginTransaction();
 		
 		$stmt = $db->delete(DB_TABLE_PROB,'where `prob_id`=:prob_id');
 		$stmt->bindParam(':prob_id', $prob_id);
@@ -106,8 +105,6 @@ class MDL_Problem_Edit
 		{
 			MDL_Record_Edit::delete($record['record_id']);
 		}
-		
-		$db->commit();
 	}
 	
 	/**

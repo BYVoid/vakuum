@@ -74,6 +74,7 @@ class CTL_user extends CTL_Abstract_Controller
 			'email'	=> $_POST['email'],
 			'website' => $_POST['website'],
 			'memo' => $_POST['memo'],
+			'identity' => $user['identity'],
 		);
 
 		MDL_User_Edit::edit($user_info);

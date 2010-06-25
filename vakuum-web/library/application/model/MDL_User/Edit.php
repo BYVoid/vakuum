@@ -132,7 +132,6 @@ class MDL_User_Edit extends MDL_User_Common
 	public static function remove($user_id)
 	{
 		$db = BFL_Database::getInstance();
-		$db->beginTransaction();
 		
 		$stmt = $db->delete(DB_TABLE_USER,'where `user_id`=:user_id');
 		$stmt->bindParam(':user_id', $user_id);
@@ -141,7 +140,6 @@ class MDL_User_Edit extends MDL_User_Common
 		$stmt = $db->delete(DB_TABLE_USERMETA,'where `umeta_user_id`=:user_id');
 		$stmt->bindParam(':user_id', $user_id);
 		$stmt->execute();
-		
 		
 		$stmt = $db->factory('select `record_id` from '.DB_TABLE_RECORD.' where `record_user_id`=:user_id');
 		$stmt->bindParam(':user_id', $user_id);
@@ -152,8 +150,6 @@ class MDL_User_Edit extends MDL_User_Common
 		{
 			MDL_Record_Edit::delete($record['record_id']);
 		}
-		
-		$db->commit();
 	}
 	
 	public static function validate($user_name,$validation_code)

@@ -15,6 +15,10 @@ BFL_Timer::initialize();
 BFL_Register::setVar('password_encode_word',PWD_ENCWORD);
 BFL_Register::setVar('db_info',getDBInfo());
 
+//初始化數據庫事務處理
+$db = BFL_Database::getInstance();
+$db->beginTransaction();
+
 //初始化參數表
 $config = MDL_Config::getInstance();
 
@@ -37,3 +41,6 @@ $controller = BFL_Controller::getInstance();
 $controller->setCustomControllerRouter('/admin','_admin');
 $controller->setNotFound(array('CTL_error','notFound'));
 $controller->dispatch();
+
+//提交事務
+$db->commit();

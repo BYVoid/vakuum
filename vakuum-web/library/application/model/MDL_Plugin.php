@@ -24,6 +24,7 @@ class MDL_Plugin
 						self::$plugins[]= strtolower($file);
 						BFL_Register::setVar('plugin_file',$plugin_file);
 						include_once($interface);
+						BFL_Register::unsetVar('plugin_file');
 					}
 				}
 			}
