@@ -22,6 +22,12 @@ $db->beginTransaction();
 //初始化參數表
 $config = MDL_Config::getInstance();
 
+//設置全局異常捕捉函數
+set_exception_handler(array('MDL_GlobalControl','exceptionHandler'));
+
+//設置退出回調函數
+register_shutdown_function(array('MDL_GlobalControl','shutdownHandler'));
+
 //檢查地址綁定
 $bind_address = $config->getVar('site_address');
 if ($bind_address != '' && $bind_address != BFL_General::getServerAddress())
@@ -41,6 +47,3 @@ $controller = BFL_Controller::getInstance();
 $controller->setCustomControllerRouter('/admin','_admin');
 $controller->setNotFound(array('CTL_error','notFound'));
 $controller->dispatch();
-
-//提交事務
-$db->commit();

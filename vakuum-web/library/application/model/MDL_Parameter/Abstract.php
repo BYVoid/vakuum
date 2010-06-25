@@ -141,7 +141,7 @@ abstract class MDL_Parameter_Abstract
 	protected function writeVar($key, $value, $action)
 	{
 		$db = BFL_Database :: getInstance();
-
+		
 		switch($action)
 		{
 			case self::ADD:
@@ -182,5 +182,7 @@ abstract class MDL_Parameter_Abstract
 			default:
 				throw new MDL_Exception_Meta(MDL_Exception_Meta::INVALID_WRITE_ACTION);
 		}
+		
+		$stmt->execute();
 	}
 }
