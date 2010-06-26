@@ -69,7 +69,7 @@
 	</tr>
 	<tr>
 		<td>
-			<form action="<?php echo $this->locator->getURL('dosubmit') ?>" method="post" enctype="multipart/form-data" >
+			<form action="<?php echo $this->submit_url ?>" method="post" enctype="multipart/form-data" >
 				<input type="file" name="source"/>
 				<select name="lang">
 					<option value="cpp">C++</option>
@@ -79,7 +79,10 @@
 				<input type="submit" value="提交" />
 				<input name="prob_id" type="hidden" value="<?php echo $prob_id ?>" />
 				<input name="prob_name" type="hidden" value="<?php echo $prob_name ?>" />
-				<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $judge_source_length_max?>" />
+			<?php if (isset($this->contest)): ?>
+				<input name="contest_id" type="hidden" value="<?php echo $this->contest->getID() ?>" />
+			<?php endif ?>
+				<input name="MAX_FILE_SIZE" type="hidden" value="<?php echo $judge_source_length_max?>" />
 			</form>
 		</td>
 	</tr>

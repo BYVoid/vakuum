@@ -14,15 +14,15 @@ class CTL_problem extends CTL_Abstract_Controller
 		$page = $this->path_option->getVar('page');
 		if ($page===false)
 			$page = 1;
-		
+
 		$list = MDL_Problem_List::getList($page,true);
-		
+
 		$this->view->list = $list['list'];
 		$this->view->info = $list['info'];
-		
+
 		$this->view->display('problem_list.php');
 	}
-	
+
 	public function SAC_otherAction()
 	{
 		$identifier = $this->path_option->getPathSection(1);
@@ -45,20 +45,21 @@ class CTL_problem extends CTL_Abstract_Controller
 				else
 					throw $e;
 			}
-			
+
 			if ($prob_name != $prob_id)
 			{
 				/* 重定向到$prob_name路徑頁，如果$prob_name和$prob_id不同 */
 				$this->locator->redirect('problem_single',array(),'/'.$prob_name);
 			}
 		}
-		
+
 		$prob_name = $identifier;
-		
+
 		/* $identifier作爲prob_name査找 */
 		$problem = MDL_Problem_Show::getProblemByName($prob_name);
-		
+
 		$this->view->problem = $problem;
+		$this->view->submit_url = $this->locator->getURL('judge/submit');
 		$this->view->display('problem_single.php');
 	}
 }

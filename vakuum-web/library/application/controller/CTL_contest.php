@@ -48,6 +48,7 @@ class CTL_contest extends CTL_Abstract_Controller
 			$problem = MDL_Problem_Show::getProblem($prob_id);
 
 			$this->view->problem = $problem;
+			$this->view->submit_url = $this->locator->getURL('contest/submit');
 			$this->view->display('problem_single.php');
 		}
 	}
@@ -76,5 +77,32 @@ class CTL_contest extends CTL_Abstract_Controller
 		$contest->signUp($user_id);
 
 		$this->locator->redirect('contest/list');
+	}
+
+	public function ACT_submit()
+	{
+		if (!$this->acl->check('general'))
+			$this->deny();
+
+		if ($this->config->getVar('judge_allowed') != 1)
+			$this->deny();
+
+
+		$user_id = BFL_ACL::getInstance()->getUserID();
+		$contest_id = $_POST['contest_id'];
+		$contest = new MDL_Contest($contest_id);
+		$contest->checkContestPermission($user_id);
+
+		$prob_id = $_POST['prob_id'];
+		$language = $_POST['lang'];
+		$source = file_get_contents($_FILES['source']['tmp_name']);
+
+		$record_id = MDL_Judge_Single::submit($user_id,$prob_id,$language,$source);
+
+		$contest->addRecord($user_id,$record_id);
+
+		MDL_Judger_Process::processTaskQueue();
+
+		$this->locator->redirect('record_detail',array(),'/'.$record_id);
 	}
 }

@@ -9,7 +9,7 @@ abstract class MDL_Parameter_Abstract
 	const ADD = 0;
 	const MODIFY = 1;
 	const REMOVE = 2;
-	
+
 	/**
 	 * Array to store metas
 	 * @var array
@@ -17,12 +17,12 @@ abstract class MDL_Parameter_Abstract
 	protected $_array, $modified;
 	protected $key_name,$value_name,$table_name,$ids;
 	protected $condition, $idmeta;
-	
+
 	protected function initialize()
 	{
 		$condition = "";
 		$this->idmeta = array();
-		
+
 		if (is_array($this->ids) && count($this->ids) > 0)
 		{
 			$condition = "(";
@@ -33,23 +33,23 @@ abstract class MDL_Parameter_Abstract
 			}
 			$condition .= " 1)";
 		}
-		
+
 		$this->condition = $condition;
 		if ($condition != "")
 			$condition = "WHERE ". $condition;
-		
+
 		//Read database to fetch all metas of $ids
 		$db = BFL_Database :: getInstance();
 		$stmt = $db->factory("select `{$this->key_name}`,`{$this->value_name}` from {$this->table_name} {$condition}");
 		$stmt->execute();
-		
+
 		$this->_array = array();
 		$this->modified = array();
-		
+
 		while ($rs = $stmt->fetch())
 			$this->_array[ $rs[ $this->key_name ] ] = $rs[ $this->value_name ];
 	}
-	
+
 	public function __destruct()
 	{
 		$this->sync();
@@ -59,12 +59,13 @@ abstract class MDL_Parameter_Abstract
 	{
 		if (count($this->modified) == 0)
 			return;
-		foreach ($this->modified as $key => $value)
+		foreach ($this->modified as $key => $action)
 		{
-			$this->writeVar($key, $this->_array[$key], $value);
+			$this->writeVar($key, $this->_array[$key], $action);
 		}
+		$this->modified = array();
 	}
-	
+
 	/**
 	 * judge whether var $key is set
 	 * @param string $key
@@ -74,7 +75,7 @@ abstract class MDL_Parameter_Abstract
 	{
 		return isset($this->_array[$key]);
 	}
-	
+
 	/**
 	 * Set varible
 	 * @param string $key
@@ -86,13 +87,20 @@ abstract class MDL_Parameter_Abstract
 		{
 			if ($this->_array[$key] == $value)
 				return;
-			$this->modified[$key] = self::MODIFY;
+
+			if (!isset($this->modified[$key]))
+				$this->modified[$key] = self::MODIFY;
 		}
 		else
-			$this->modified[$key] = self::ADD;
+		{
+			if (!isset($this->modified[$key]))
+				$this->modified[$key] = self::ADD;
+			else
+				$this->modified[$key] = self::MODIFY;
+		}
 		$this->_array[$key] = $value;
 	}
-	
+
 	/**
 	 * unset var $key
 	 * @param string $key
@@ -102,7 +110,7 @@ abstract class MDL_Parameter_Abstract
 		if (!$this->haveVar($key))
 			return;
 		unset($this->_array[$key]);
-		$this->modified[$key] = self::REMOVE; 
+		$this->modified[$key] = self::REMOVE;
 	}
 
 	/**
@@ -113,7 +121,7 @@ abstract class MDL_Parameter_Abstract
 	public function getVar($key)
 	{
 		if (!$this->haveVar($key))
-			$this->_array[$key] = false;
+			return false;
 		return $this->_array[$key];
 	}
 
@@ -137,15 +145,15 @@ abstract class MDL_Parameter_Abstract
 			$this->setVar($key,$value);
 		}
 	}
-	
+
 	protected function writeVar($key, $value, $action)
 	{
 		$db = BFL_Database :: getInstance();
-		
+
 		switch($action)
 		{
 			case self::ADD:
-				
+
 				$meta = array
 				(
 					$this->key_name => ':key',
@@ -156,11 +164,11 @@ abstract class MDL_Parameter_Abstract
 				$stmt = $db->insert($this->table_name , $meta);
 				$stmt->bindParam(':key', $key);
 				$stmt->bindParam(':value', $value);
-				
+
 				break;
-			
+
 			case self::MODIFY:
-				
+
 				$meta = array
 				(
 					"`{$this->value_name}` = :value",
@@ -169,20 +177,18 @@ abstract class MDL_Parameter_Abstract
 				$stmt = $db->update($this->table_name , $meta ,$condition);
 				$stmt->bindParam(':key', $key);
 				$stmt->bindParam(':value', $value);
-				
 				break;
-			
+
 			case self::REMOVE:
-				
+
 				$stmt = $db->delete($this->table_name,"where `{$this->key_name}`=:key and {$this->condition}");
 				$stmt->bindParam(':key', $key);
-				
+
 				break;
-			
+
 			default:
 				throw new MDL_Exception_Meta(MDL_Exception_Meta::INVALID_WRITE_ACTION);
 		}
-		
 		$stmt->execute();
 	}
 }

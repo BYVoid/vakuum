@@ -65,10 +65,10 @@ class MDL_Contest
 		if (!isset($this->cmeta[$user_id]))
 			$this->cmeta[$user_id] = new MDL_Contest_Meta($this->contest_id, $user_id);
 
-		if ($this->cmeta[$user_id]->haveVar("sign_up"))
+		if ($this->cmeta[$user_id]->haveVar('sign_up'))
 			throw new MDL_Exception_Contest(MDL_Exception_Contest::SIGN_UP_ALREADY);
 
-		$this->cmeta[$user_id]->setVar("sign_up", time());
+		$this->cmeta[$user_id]->setVar('sign_up', time());
 	}
 
 	public function checkSignUp($user_id)
@@ -76,7 +76,7 @@ class MDL_Contest
 		if (!isset($this->cmeta[$user_id]))
 			$this->cmeta[$user_id] = new MDL_Contest_Meta($this->contest_id, $user_id);
 
-		return $this->cmeta[$user_id]->haveVar("sign_up");
+		return $this->cmeta[$user_id]->haveVar('sign_up');
 	}
 
 	public function checkContestPermission($user_id)
@@ -91,5 +91,20 @@ class MDL_Contest
 			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_SIGN_UP);
 
 		return true;
+	}
+
+	public function addRecord($user_id, $record_id)
+	{
+		if (!isset($this->cmeta[$user_id]))
+			$this->cmeta[$user_id] = new MDL_Contest_Meta($this->contest_id, $user_id);
+
+		$records = $this->cmeta[$user_id]->getVar('records');
+		if ($records === false)
+			$records = array();
+		else
+			$records = explode(',',$records);
+
+		$records[] = $record_id;
+		$this->cmeta[$user_id]->setVar('records', implode(',', $records));
 	}
 }
