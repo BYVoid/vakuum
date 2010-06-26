@@ -19,11 +19,6 @@ class BFL_Database_Abstract
 		$this->connect();
 	}
 
-	public function __destruct()
-	{
-		$this->pdo = NULL;
-	}
-
 	protected function connect()
 	{
 		$db_info = BFL_Register::getVar('db_info');
@@ -40,12 +35,12 @@ class BFL_Database_Abstract
 			die ("Database Error: " . $e->getMessage());
 		}
 	}
-	
+
 	public function lock($table)
 	{
 		if (!is_array($table))
 			$table = array($table);
-			
+
 		$sql = 'lock tables ';
 		$sql .= implode(',',$table);
 
@@ -58,14 +53,14 @@ class BFL_Database_Abstract
 			die ("Database Error: " . $e->getMessage());
 		}
 	}
-	
+
 	public function unlock()
 	{
 		$this->pdo->exec('unlock tables');
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $SQL
 	 * @return BFL_Database_Query
 	 */
@@ -73,9 +68,9 @@ class BFL_Database_Abstract
 	{
 		return new BFL_Database_Query($SQL,$this->pdo);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param string $table
 	 * @param string or array $sets
 	 * @param string $clause
@@ -90,7 +85,7 @@ class BFL_Database_Abstract
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $table
 	 * @param array $items
 	 * @return BFL_Database_Query
@@ -107,9 +102,9 @@ class BFL_Database_Abstract
 		$SQL = "INSERT INTO {$table} ( {$column} ) VALUES ( {$values} )";
 		return $this->factory($SQL);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param string $table
 	 * @param string $clause
 	 * @return BFL_Database_Query

@@ -9,7 +9,7 @@ class BFL_PathOption
 	protected static $_instance = NULL;
 	private $base_path,$path_option,$query_string;
 	private $request_path;
-	
+
 	/**
 	 * getInstance
 	 * @return BFL_PathOption
@@ -22,9 +22,9 @@ class BFL_PathOption
 		}
 		return self::$_instance;
 	}
-	
+
 	protected function __clone(){}
-	
+
 	protected function __construct()
 	{
 		$this->query_string = $_GET;
@@ -32,14 +32,14 @@ class BFL_PathOption
 		$this->base_path = BFL_Register::getVar('base_path');
 		BFL_Register::unsetVar('request_path');
 		BFL_Register::unsetVar('base_path');
-		
+
 		$this->base_path .= '/'.$this->getPathSection(0).'/'.$this->getPathSection(1);
 		if ($this->base_path[0] == '/')
 			$this->base_path = substr($this->base_path,1);
-		
+
 		$path = $this->request_path;
 		unset($path[1],$path[2]);
-		
+
 		$iskey = false;
 		$key = '';
 		$result = array();
@@ -53,7 +53,7 @@ class BFL_PathOption
 		}
 		$this->path_option = $result;
 	}
-	
+
 	public function getPathSection($index)
 	{
 		++$index;
@@ -63,10 +63,10 @@ class BFL_PathOption
 				$this->request_path[$index] = 'index';
 		}
 		else if (!isset($this->request_path[$index]))
-			$this->request_path[$index] = '';
+			$this->request_path[$index] = false;
 		return $this->request_path[$index];
 	}
-	
+
 	public function getURL($options=array())
 	{
 		$path_option = $query_string = array();
@@ -91,10 +91,10 @@ class BFL_PathOption
 
 		foreach($options as $key=>$value)
 			$path_option[$key] = $value;
-		
+
 		return MDL_Locator::makeURL($this->base_path,$path_option,$query_string);
 	}
-	
+
 	public function getVar($key)
 	{
 		if (isset($this->path_option[$key]))
@@ -103,12 +103,12 @@ class BFL_PathOption
 			return $this->query_string[$key];
 		return false;
 	}
-	
+
 	public function getAll()
 	{
 		return array_merge($this->path_option,$this->query_string);
 	}
-	
+
 	public function getQueryString()
 	{
 		return $_SERVER['QUERY_STRING'];

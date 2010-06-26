@@ -48,7 +48,7 @@
 		<td>状态</td>
 	</tr>
 <?php foreach($contest_config->getProblems() as $problem): ?>
-	<?php $problem_url = $this->locator->getURL('problem_single').'/'. $problem['prob_name'] ?>
+	<?php $problem_url = $this->locator->getURL('contest/entry').'/'. $contest_id .'/' . $problem['alias'] ?>
 	<tr>
 		<td><?php echo $problem['alias'] ?></td>
 		<td><a href="<?php echo $problem_url ?>"><?php echo $problem['prob_title'] ?></a></td>

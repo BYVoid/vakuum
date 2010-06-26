@@ -38,20 +38,20 @@ class MDL_Contest_Info
 			),
 		);
 	}
-	
+
 	public function __toString()
 	{
 		return serialize($this);
 	}
-	
+
 	public function __sleep()
 	{
 		return array('config');
 	}
-	
+
 	protected $config;
 	private $cache;
-	
+
 	public function __construct($config_string = '')
 	{
 		if ($config_string != '')
@@ -59,7 +59,7 @@ class MDL_Contest_Info
 			$this->config = $this->decodeConfig($config_string);
 		}
 	}
-	
+
 	protected function decodeConfig($config_string)
 	{
 		$rs = BFL_XML::XML2Array($config_string);
@@ -67,47 +67,47 @@ class MDL_Contest_Info
 			$rs['problems'] = array($rs['problems']);
 		return $rs;
 	}
-	
+
 	public function getName()
 	{
 		return $this->config['name'];
 	}
-	
+
 	public function getDesc()
 	{
 		return $this->config['desc'];
 	}
-	
+
 	public function getSignUpTimeStart()
 	{
 		return $this->config['time']['sign_up_start'];
 	}
-	
+
 	public function getSignUpTimeEnd()
 	{
 		return $this->config['time']['sign_up_end'];
 	}
-	
+
 	public function getContestTimeStart()
 	{
 		return $this->config['time']['contest_start'];
 	}
-	
+
 	public function getContestTimeEnd()
 	{
 		return $this->config['time']['contest_end'];
 	}
-	
+
 	public function getContestTimeLimit()
 	{
 		return $this->config['time']['contest_time_limit'];
 	}
-	
+
 	public function getPenaltyTime()
 	{
 		return $this->config['rules']['penalty_time'];
 	}
-	
+
 	public function getProblems()
 	{
 		$problems = array();
@@ -120,7 +120,7 @@ class MDL_Contest_Info
 				$prob_names = MDL_Problem_Show::getProblemName($prob_id);
 				$this->cache['problems'][$i]['prob_name'] = $prob_names['prob_name'];
 				$this->cache['problems'][$i]['prob_title'] = $prob_names['prob_title'];
-				
+
 				$problems[$i] = array_merge($problems[$i], array
 					(
 						'prob_name' => $this->cache['problems'][$i]['prob_name'],
@@ -130,13 +130,29 @@ class MDL_Contest_Info
 		}
 		return $problems;
 	}
-	
+
+	public function getProbIDbyAlias($prob_alias)
+	{
+		foreach ($this->config['problems'] as $i => $problem)
+		{
+			if ($prob_alias == strtolower($problem['alias']))
+				return $problem['prob_id'];
+		}
+		throw new MDL_Exception_Contest(MDL_Exception_Contest::INVALID_PROB_ALIAS);
+	}
+
 	public function countCaseScore()
 	{
 		return (bool) $this->config['rules']['case_point'];
 	}
-	
+
 	public function isDuringSignUp($t_time)
+	{
+		return $t_time >= $this->config['time']['sign_up_start'] &&
+				$t_time < $this->config['time']['sign_up_end'];
+	}
+
+	public function isDuringContest($t_time)
 	{
 		return $t_time >= $this->config['time']['contest_start'] &&
 				$t_time < $this->config['time']['contest_end'];
