@@ -82,8 +82,8 @@ class MDL_User
 	protected function getNamesByID()
 	{
 		$db = BFL_Database :: getInstance();
-		$stmt = $db->factory('select `user_name`,`user_nickname` from '.DB_TABLE_USER.' WHERE `user_id` = :user_id');
-		$stmt->bindParam(':user_id', $this->getID());
+		$stmt = $db->factory('select * from '.DB_TABLE_USER.' WHERE `user_id` = :user_id');
+		$stmt->bindValue(':user_id', $this->getID());
 		$stmt->execute();
 		$rs = $stmt->fetch();
 

@@ -1,7 +1,4 @@
-<?php $this->title='提交记录 #'.$this->record['record_id'] ?>
-<?php $this->display('header.php') ?>
-
-<?php 
+<?php
 $compile_explaination = array
 (
 	0 => '编译指令错误',
@@ -19,40 +16,50 @@ $result_explaination = array
 	5 => '禁止系统调用',
 	6 => '执行失败',
 );
+
+$record_id = $this->record->getID();
+
+$problem = $this->record->getProblem();
+$prob_id = $problem->getID();
+$prob_name = $problem->getName();
+$prob_title = $problem->getTitle();
+$prob_path = $this->locator->getURL('problem').'/'.$prob_id;
+
+$user = $this->record->getUser();
+$user_id = $user->getID();
+$user_name = $user->getName();
+$user_nickname = $user->getNickname();
+$user_path = $this->locator->getURL('user/detail').'/'.$user_name;
+
+$record_source = $this->locator->getURL('record/source').'/'. $record_id;
+$record_info = $this->record->getInfo();
+$language = $record_info->language;
+$source_length = $record_info->source_length;
+$submit_time = $this->formatTime($record_info->submit_time);
 ?>
 
-<?php $record_id = $this->record['record_id'] ?>
-<?php $prob_id = $this->record['record_prob_id'] ?>
-<?php $prob_name = $this->record['prob_name']?>
-<?php $prob_title = $this->record['prob_title']?>
-<?php $prob_path = $this->locator->getURL('problem_single').'/'.$prob_id ?>
-<?php $user_id = $this->record['record_user_id'] ?>
-<?php $user_name = $this->record['user_name'] ?>
-<?php $user_nickname = $this->record['user_nickname'] ?>
-<?php $user_path = $this->locator->getURL('user_detail').'/'.$user_name ?>
-<?php $record_source = $this->locator->getURL('record_source').'/'. $record_id ?>
-
-<?php $language = $this->record['detail']['lang'] ?>
-<?php $source_length = $this->record['detail']['source_length'] ?>
-<?php $submit_time = $this->formatTime($this->record['detail']['submit_time']) ?>
+<?php $this->title='提交记录 #'.$record_id ?>
+<?php $this->display('header.php') ?>
 
 <?php
-$display = $this->record['detail']['display'];
+$display = $record_info->getDisplay();
 
 if ($display->showRunResult())
 {
-	$status_text = showStatus($this->record['detail']['status'],$this->record['detail']['result_text']);
-	$score = $this->record['detail']['score'];
-	$time_used = $this->record['detail']['time'];
-	$memory_used = $this->record['detail']['memory'];
+	$status_text = showStatus($record_info->status,$record_info->result_text);
+	$score = $record_info->score;
+	$time_used = $record_info->time;
+	$memory_used = $record_info->memory;
 }
+
+$record_result = $record_info->getResult();
 
 if ($display->showCompileResult())
 {
-	$compiled = isset($this->record['detail']['result']['compile']);
-	if ($compiled)
+	$compile_result = $record_result->getCompile();
+	$compiled = $compile_result != false;
+	if ($compile_result)
 	{
-		$compile_result = $this->record['detail']['result']['compile'];
 		if (isset($compile_result['result']))
 		{
 			if ($compile_result['result'] == 0)
@@ -68,11 +75,13 @@ if ($display->showCompileResult())
 
 if ($display->showCaseResult())
 {
-	$execute_result = array();
-	if (isset($this->record['detail']['result']['execute']))
-		$execute_result = $this->record['detail']['result']['execute']['case'];
+	$execute_result = $record_result->getExecute();
+	if (!$execute_result)
+		$execute_result = array();
 }
 ?>
+
+
 <table border="1">
 	<tr>
 		<td>记录编号</td>
@@ -80,7 +89,7 @@ if ($display->showCaseResult())
 	</tr>
 	<tr>
 		<td>题目</td>
-		<td><a href='<?php echo $prob_path ?>'><?php echo $prob_name ?></a></td>
+		<td><a href='<?php echo $prob_path ?>'><?php echo $prob_title ?></a></td>
 	</tr>
 	<tr>
 		<td>用户</td>
