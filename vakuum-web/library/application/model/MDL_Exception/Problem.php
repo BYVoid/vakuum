@@ -8,8 +8,9 @@ class MDL_Exception_Problem extends MDL_Exception
 {
 	const FIELD_PROBLEM = "problem";
 	const INVALID_PROB_ID = "invalid_prob_id";
+	const INVALID_PROB_NAME = "invalid_prob_name";
 	const UNVALIDATED_PROBLEM = "unvalidated_problem";
-	
+
 	public function __construct($message)
 	{
 		$this->desc[self::FIELD_PROBLEM] = $message;

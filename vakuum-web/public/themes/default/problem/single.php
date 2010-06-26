@@ -1,25 +1,31 @@
-<?php $this->title=$this->problem['prob_title'] ?>
+<?php
+/**
+ *
+ * @var MDL_Problem
+ */
+$problem = $this->problem;
+
+$prob_id = $problem->getID();
+$prob_name = $problem->getName();
+$prob_title = $problem->getTitle();
+$prob_contents = $problem->getContents();
+$prob_info = $problem->getInfo();
+$input = $prob_info['data_config']['input'];
+$output = $prob_info['data_config']['output'];
+$checker = $prob_info['data_config']['checker'];
+$time_limit = $prob_info['data_config']['time_limit'];
+$memory_limit = $prob_info['data_config']['memory_limit'];
+$output_limit = $prob_info['data_config']['output_limit'];
+$case_count = count($prob_info['data_config']['case']);
+$judge_source_length_max = MDL_Config::getInstance()->getVar('judge_source_length_max');
+if ($time_limit == 0) $time_limit = MDL_Config::getInstance()->getVar('judge_default_time_limit');
+if ($memory_limit == 0) $memory_limit = MDL_Config::getInstance()->getVar('judge_default_memory_limit');
+if ($output_limit == 0) $output_limit = MDL_Config::getInstance()->getVar('judge_default_output_limit');
+$checker=($checker['type']=='standard')?"标准检查器":"特殊检查器";
+?>
+
+<?php $this->title = $prob_title ?>
 <?php $this->display('header.php') ?>
-
-<?php $prob_id = $this->problem['prob_id'] ?>
-<?php $prob_name = $this->problem['prob_name'] ?>
-<?php $prob_title = $this->problem['prob_title'] ?>
-<?php $prob_content = $this->problem['prob_content'] ?>
-
-<?php $input = $this->problem['data_config']['input'] ?>
-<?php $output = $this->problem['data_config']['output'] ?>
-<?php $checker = $this->problem['data_config']['checker'] ?>
-<?php $time_limit = $this->problem['data_config']['time_limit'] ?>
-<?php $memory_limit = $this->problem['data_config']['memory_limit'] ?>
-<?php $output_limit = $this->problem['data_config']['output_limit'] ?>
-<?php $case_count = count($this->problem['data_config']['case']) ?>
-
-<?php $judge_source_length_max = MDL_Config::getInstance()->getVar('judge_source_length_max') ?>
-<?php if ($time_limit == 0) $time_limit = MDL_Config::getInstance()->getVar('judge_default_time_limit') ?>
-<?php if ($memory_limit == 0) $memory_limit = MDL_Config::getInstance()->getVar('judge_default_memory_limit') ?>
-<?php if ($output_limit == 0) $output_limit = MDL_Config::getInstance()->getVar('judge_default_output_limit') ?>
-<?php $checker=($checker['type']=='standard')?"标准检查器":"特殊检查器" ?>
-
 <table>
 	<tr>
 		<td><?php echo $this->escape($prob_title) ?></td>
@@ -89,7 +95,7 @@
 </table>
 
 <div id = "problem_content">
-<?php echo $prob_content ?>
+<?php echo $prob_contents ?>
 </div>
 
 <?php $this->display('footer.php') ?>

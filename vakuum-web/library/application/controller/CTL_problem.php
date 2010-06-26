@@ -12,7 +12,7 @@ class CTL_problem extends CTL_Abstract_Controller
 	{
 		//Show problem list
 		$page = $this->path_option->getVar('page');
-		if ($page===false)
+		if ($page === false)
 			$page = 1;
 
 		$list = MDL_Problem_List::getList($page,true);
@@ -20,7 +20,7 @@ class CTL_problem extends CTL_Abstract_Controller
 		$this->view->list = $list['list'];
 		$this->view->info = $list['info'];
 
-		$this->view->display('problem_list.php');
+		$this->view->display('problem/list.php');
 	}
 
 	public function SAC_otherAction()
@@ -32,12 +32,12 @@ class CTL_problem extends CTL_Abstract_Controller
 			$prob_id = $identifier;
 			try
 			{
-				$prob_names = MDL_Problem_Show::getProblemName($prob_id);
-				$prob_name = $prob_names['prob_name'];
+				$problem = new MDL_Problem($prob_id);
+				$prob_name = $problem->getName();
 			}
 			catch (MDL_Exception_Problem $e)
 			{
-				if ($e->testTopDesc(MDL_Exception_Problem::NOTFOUND))
+				if ($e->testTopDesc(MDL_Exception_Problem::INVALID_PROB_ID))
 				{
 					/* $identifier作爲prob_id未找到對應記錄，作爲prob_name再次査找 */
 					$prob_name = $identifier;
@@ -49,17 +49,17 @@ class CTL_problem extends CTL_Abstract_Controller
 			if ($prob_name != $prob_id)
 			{
 				/* 重定向到$prob_name路徑頁，如果$prob_name和$prob_id不同 */
-				$this->locator->redirect('problem_single',array(),'/'.$prob_name);
+				$this->locator->redirect('problem',array(),'/'.$prob_name);
 			}
 		}
 
 		$prob_name = $identifier;
 
 		/* $identifier作爲prob_name査找 */
-		$problem = MDL_Problem_Show::getProblemByName($prob_name);
+		$problem = new MDL_Problem(array('name' => $prob_id), MDL_Problem::GET_ALL);
 
 		$this->view->problem = $problem;
 		$this->view->submit_url = $this->locator->getURL('judge/submit');
-		$this->view->display('problem_single.php');
+		$this->view->display('problem/single.php');
 	}
 }
