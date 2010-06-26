@@ -12,31 +12,31 @@ class CTL_user extends CTL_Abstract_Controller
 	{
 		$this->locator->redirect('user_list');
 	}
-	
+
 	public function ACT_list()
 	{
 		$page = $this->path_option->getVar('page');
 		if ($page===false)
 			$page = 1;
-		
-		$rs = MDL_User_List::getList($page,array('register_time'));
-		
+
+		$rs = MDL_User_List::getList($page);
+
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];
-		
-		$this->view->display('user_list.php');
+
+		$this->view->display('user/list.php');
 	}
 
 	public function ACT_detail()
 	{
 		$user_name = $this->path_option->getPathSection(2);
 
-		$user = MDL_User_Detail::getUserByName($user_name);
-		
+		$user = new MDL_User($user_name, MDL_User::ID_USER_NAME, MDL_User::GET_ALL, MDL_User::GET_NONE);
+
 		$this->view->user = $user;
-		$this->view->display('user_single.php');
+		$this->view->display('user/single.php');
 	}
-	
+
 	public function ACT_space()
 	{
 		if (!$this->acl->check(array('general','unvalidated')))
@@ -44,7 +44,7 @@ class CTL_user extends CTL_Abstract_Controller
 		$this->view->user = BFL_Register :: getVar('personal');
 		$this->view->display('user_space.php');
 	}
-	
+
 	public function ACT_edit()
 	{
 		if (!$this->acl->check(array('general','unvalidated')))
@@ -52,16 +52,16 @@ class CTL_user extends CTL_Abstract_Controller
 		$this->view->user = BFL_Register :: getVar('personal');
 		$this->view->display('user_edit.php');
 	}
-	
+
 	public function ACT_doedit()
 	{
 		if (!$this->acl->check(array('general','unvalidated')))
 			$this->deny();
-		
+
 		$user = BFL_Register :: getVar('personal');
 		$user_id = BFL_ACL::getInstance()->getUserID();
 		$user_name = $user['user_name'];
-		
+
 		$user_info = array
 		(
 			'user_id'=> $user_id,
@@ -78,7 +78,7 @@ class CTL_user extends CTL_Abstract_Controller
 		);
 
 		MDL_User_Edit::edit($user_info);
-		
+
 		//TODO success message
 		$this->locator->redirect('user_space');
 	}

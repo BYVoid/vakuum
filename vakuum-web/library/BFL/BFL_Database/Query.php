@@ -9,7 +9,7 @@ class BFL_Database_Query
 	}
 
 	/**
-	 * 
+	 *
 	 * @var PDOStatement
 	 */
 	private $stmt;
@@ -19,9 +19,14 @@ class BFL_Database_Query
 		$this->stmt = $pdo->prepare($SQL);
 	}
 
-	public function bindParam($key,&$val)
+	public function bindParam($key,&$val,$data_type = PDO::PARAM_STR)
 	{
-		$this->stmt->bindParam($key,$val);
+		$this->stmt->bindParam($key,$val,$data_type);
+	}
+
+	public function bindValue($key,$val,$data_type = PDO::PARAM_STR)
+	{
+		$this->stmt->bindValue($key,$val,$data_type);
 	}
 
 	public function execute()
@@ -48,7 +53,7 @@ class BFL_Database_Query
 	{
 		return $this->stmt->fetchAll();
 	}
-	
+
 	public function rowCount()
 	{
 		return $this->stmt->rowCount();

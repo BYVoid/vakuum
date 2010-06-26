@@ -15,10 +15,11 @@ class MDL_Exception_User extends MDL_Exception
 	const INVALID_EMAIL = "invalid_email";
 	const INVALID_WEBSITE = "invalid_website";
 	const INVALID_MEMO = "invalid_memo";
-	
+	const INVALID_IDENTIFIER_SPEC = "invalid_identifier_spec";
+	const INVALID_INITIAL_GET = "invalid_initial_get";
 	const UNVALIDATED_USER = "unvalidated_user";
 	const USER_NAME_OCCUPIED = 'user_name_occupied';
-	
+
 	public function __construct($message)
 	{
 		$this->desc[self::FIELD_USER] = $message;
