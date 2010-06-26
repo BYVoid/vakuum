@@ -47,7 +47,7 @@ class CTL_record extends CTL_Abstract_Controller
 	{
 		$record_id = $this->path_option->getPathSection(2);
 
-		$record = MDL_Record::getRecordSource($record_id);
+		$record = new MDL_Record($record_id);
 
 		$this->view->record = $record;
 		$this->view->display('record/source.php');

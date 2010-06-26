@@ -1,5 +1,5 @@
 ;<?php exit ?>
-index = 
+index =
 plugins = public/plugins/
 
 problem_list = problem
@@ -31,7 +31,6 @@ judge_return = judge/return
 
 dologin = passport/dologin
 doregister = passport/doregister
-dosubmit = judge/submit
 
 error_not_found = error/NotFound
 error_permission_denied = error/PermissionDenied

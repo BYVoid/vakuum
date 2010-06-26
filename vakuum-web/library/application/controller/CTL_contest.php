@@ -5,7 +5,7 @@ class CTL_contest extends CTL_Abstract_Controller
 {
 	public function ACT_index()
 	{
-		$this->locator->redirect('contest_list');
+		$this->locator->redirect('contest/list');
 	}
 
 	public function ACT_list()
@@ -19,7 +19,7 @@ class CTL_contest extends CTL_Abstract_Controller
 		$this->view->list = $rs['list'];
 		$this->view->info = $rs['info'];
 
-		$this->view->display('contest_list.php');
+		$this->view->display('contest/list.php');
 	}
 
 	public function ACT_entry()
@@ -39,19 +39,34 @@ class CTL_contest extends CTL_Abstract_Controller
 
 		if ($prob_alias === false)
 		{
-			$this->view->display('contest_entry.php');
+			$this->view->display('contest/entry.php');
 		}
 		else
 		{
 			$prob_id = $contest->getConfig()->getProbIDbyAlias($prob_alias);
 
-			$problem = MDL_Problem_Show::getProblem($prob_id);
+			$problem = new MDL_Problem($prob_id,MDL_Problem::GET_ALL);
 
 			$this->view->problem = $problem;
 			$this->view->submit_url = $this->locator->getURL('contest/submit');
-			$this->view->display('problem_single.php');
+			$this->view->display('problem/single.php');
 		}
 	}
+
+	public function ACT_rank()
+	{
+		//TODO permission
+
+		$contest_id = $this->path_option->getPathSection(2);
+
+		$contest = new MDL_Contest($contest_id);
+
+		$this->view->contest = $contest;
+
+		$this->view->display('contest/rank.php');
+
+	}
+
 
 	public function ACT_signup()
 	{
@@ -62,7 +77,7 @@ class CTL_contest extends CTL_Abstract_Controller
 		$contest = new MDL_Contest($contest_id);
 
 		$this->view->contest = $contest;
-		$this->view->display('contest_signup.php');
+		$this->view->display('contest/signup.php');
 	}
 
 	public function ACT_dosignup()
@@ -103,6 +118,6 @@ class CTL_contest extends CTL_Abstract_Controller
 
 		MDL_Judger_Process::processTaskQueue();
 
-		$this->locator->redirect('record_detail',array(),'/'.$record_id);
+		$this->locator->redirect('record/detail',array(),'/'.$record_id);
 	}
 }

@@ -25,14 +25,14 @@
 	<?php $user_path = $this->locator->getURL('user/detail').'/'. $user_name ?>
 
 	<?php $judger_id = $record->getJudgerID() ?>
-	<?php $submit_time = $record->getInfo()->submit_time ?>
+	<?php $submit_time = $record->getSubmitTime() ?>
 	<?php $submit_time_text = $this->formatTime($submit_time)?>
 
 	<?php
-	$display = $record->getInfo()->getDisplay();
+	$display = $record->getDisplay();
 	if ($display->showRunResult())
 	{
-		$status_text = showStatus($record->getInfo()->status,$record->getInfo()->result_text);
+		$status_text = showStatus($record->getStatus(),$record->getResultText());
 	}
 	?>
 	<tr>

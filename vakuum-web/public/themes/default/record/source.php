@@ -1,10 +1,10 @@
-<?php $this->title='提交记录代码 #'.$this->record['record_id'] ?>
+<?php $record_id = $this->record->getID() ?>
+<?php $this->title='提交记录代码 #'.$record_id ?>
 <?php $this->display('header.php') ?>
 
-<?php $record_id = $this->record['record_id'] ?>
-<?php $source = $this->escape($this->record['source']) ?>
+<?php $source = $this->escape($this->record->getSource()) ?>
 
-<a href="<?php echo $this->locator->getURL('record_detail').'/'. $record_id?>">查看提交记录</a>
+<a href="<?php echo $this->locator->getURL('record/detail').'/'. $record_id?>">查看提交记录</a>
 
 <textarea class="codearea" readonly="readonly">
 <?php echo $source ?>

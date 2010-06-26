@@ -92,7 +92,7 @@ class MDL_Record
 	/**
 	 * @return MDL_Record_Info
 	 */
-	public function getInfo()
+	protected function getInfo()
 	{
 		if ($this->info == NULL)
 			$this->info = new MDL_Record_Info($this->getID());
@@ -114,77 +114,34 @@ class MDL_Record
 
 	}
 
-	public static function exists($record_id)
+	public function getSource()
 	{
-		$db = BFL_Database :: getInstance();
-		$stmt = $db->factory('select `record_id` from'. DB_TABLE_RECORD .' where `record_id` = :record_id');
-		$stmt->bindParam(':record_id', $record_id);
-		$stmt->execute();
-		$rs = $stmt->fetch();
-		return !empty($rs);
+		return $this->getInfo()->source;
 	}
 
-	public static function getRecordDetial($record_id)
+	public function getSubmitTime()
 	{
-		$rmeta = new MDL_Record_Meta($record_id);
-		$record_detail = $rmeta->getAll();
-
-		/* 獲取顯示權限信息 */
-		$display = new MDL_Record_DisplayConfig($record_detail['display']);
-
-		$record_detail['display'] = $display;
-
-		/* 顯示結果信息 */
-		$record_detail['source_length'] = strlen($record_detail['source']);
-		unset($record_detail['source']);
-
-		if (!$display->showRunResult())
-		{
-			unset($record_detail['status']);
-			unset($record_detail['result_text']);
-			unset($record_detail['score']);
-			unset($record_detail['time']);
-			unset($record_detail['memory']);
-		}
-
-		if (isset($record_detail['result']))
-		{
-			$record_detail['result'] = BFL_XML::XML2Array($record_detail['result']);
-
-			/* 顯示編譯信息 */
-			if (!$display->showCompileResult() && isset($record_detail['result']['compile']))
-				unset($record_detail['result']['compile']);
-
-			/* 顯示測試點信息 */
-			if (!$display->showCaseResult() && isset($result['execute']))
-				unset($record_detail['result']['execute']);
-		}
-
-		return $record_detail;
+		return $this->getInfo()->submit_time;
 	}
 
-
-
-	public static function getRecordSource($record_id)
+	public function getScore()
 	{
-		if (!self::exists($record_id))
-		{
-			throw new MDL_Exception_Record(MDL_Exception_Record::INVALID_RECORD_ID);
-		}
+		return $this->getInfo()->score;
+	}
 
-		$rmeta = new MDL_Record_Meta($record_id);
-		$display = new MDL_Record_DisplayConfig($rmeta->getVar('display'));
+	public function getDisplay()
+	{
+		return $this->getInfo()->getDisplay();
+	}
 
-		if (!$display->showCodeToPublic())
-		{
-			if (!$display->showCodeToOwner() ||
-					self::getUserID($record_id) != BFL_ACL::getInstance()->getUserID())
-				throw new MDL_Exception_Record(MDL_Exception_Record::PERMISSION_DENIED);
-		}
+	public function getStatus()
+	{
+		return $this->getInfo()->status;
+	}
 
-		$record['source'] = $rmeta->getVar('source');
-		$record['record_id'] = $record_id;
-		return $record;
+	public function getResultText()
+	{
+		return $this->getInfo()->result_text;
 	}
 
 	public static function completed($record_id)

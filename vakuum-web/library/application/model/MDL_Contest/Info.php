@@ -50,7 +50,7 @@ class MDL_Contest_Info
 	}
 
 	protected $config;
-	private $cache;
+	protected $problems = NULL;
 
 	public function __construct($config_string = '')
 	{
@@ -110,25 +110,21 @@ class MDL_Contest_Info
 
 	public function getProblems()
 	{
-		$problems = array();
-		foreach ($this->config['problems'] as $i => $problem)
+		if ($this->problems == NULL)
 		{
-			$prob_id = $problem['prob_id'];
-			$problems[$i] = $problem;
-			if (!isset($this->cache['problems'][$i]['prob_name']))
+			foreach ($this->config['problems'] as $i => $problem)
 			{
-				$prob_names = MDL_Problem_Show::getProblemName($prob_id);
-				$this->cache['problems'][$i]['prob_name'] = $prob_names['prob_name'];
-				$this->cache['problems'][$i]['prob_title'] = $prob_names['prob_title'];
+				$prob_id = $problem['prob_id'];
+				$alias = $problem['alias'];
+				$score = $problem['score'];
 
-				$problems[$i] = array_merge($problems[$i], array
-					(
-						'prob_name' => $this->cache['problems'][$i]['prob_name'],
-						'prob_title' => $this->cache['problems'][$i]['prob_title'],
-					));
+				$this->problems[$i] = new MDL_Problem($prob_id);
+				$this->problems[$i]->alias = $alias;
+				$this->problems[$i]->score = $score;
 			}
 		}
-		return $problems;
+
+		return $this->problems;
 	}
 
 	public function getProbIDbyAlias($prob_alias)

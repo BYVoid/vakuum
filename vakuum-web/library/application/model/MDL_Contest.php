@@ -2,20 +2,13 @@
 
 class MDL_Contest
 {
-	public function __toString()
-	{
-		return serialize($this);
-	}
-
-	public function __sleep()
-	{
-		return array('contest_id','contest_status','contest_config');
-	}
-
 	protected $contest_id;
 	protected $contest_status;
 	protected $contest_config;
-	private $cmeta;
+	protected $cmeta;
+	protected $sign_up_users = NULL;
+	protected $user_score = array();
+	protected $user_records = array();
 
 	public function __construct($contest_id, $contest_config = '', $contest_status = '')
 	{
@@ -93,18 +86,108 @@ class MDL_Contest
 		return true;
 	}
 
+	/**
+	 *
+	 * @param int $user_id
+	 * @return array(MDL_Record)
+	 */
+	public function getUserRecords($user_id)
+	{
+		if (!isset($this->user_records[$user_id]))
+		{
+			if (!isset($this->cmeta[$user_id]))
+				$this->cmeta[$user_id] = new MDL_Contest_Meta($this->contest_id, $user_id);
+
+			$records = $this->cmeta[$user_id]->getVar('records');
+
+			if ($records === false)
+				$this->user_records[$user_id] = array();
+			else
+			{
+				$records = explode(',',$records);
+
+				foreach ($records as $record_id)
+				{
+					$this->user_records[$user_id][] = new MDL_Record($record_id, MDL_Record::GET_NONE);
+				}
+			}
+		}
+
+		return $this->user_records[$user_id];
+	}
+
+	/**
+	 *
+	 * @param int $user_id
+	 * @return MDL_Record
+	 */
+	public function getUserLastRecordWithProblem($user_id, $prob_id)
+	{
+		$record = NULL;
+		$records = $this->getUserRecords($user_id);
+		foreach ($records as $record)
+		{
+			if ($record->getProblemID() == $prob_id)
+				$record = $record;
+		}
+		return $record;
+	}
+
 	public function addRecord($user_id, $record_id)
 	{
 		if (!isset($this->cmeta[$user_id]))
 			$this->cmeta[$user_id] = new MDL_Contest_Meta($this->contest_id, $user_id);
 
-		$records = $this->cmeta[$user_id]->getVar('records');
-		if ($records === false)
-			$records = array();
-		else
-			$records = explode(',',$records);
+		$records = $this->getUserRecords($user_id);
 
-		$records[] = $record_id;
-		$this->cmeta[$user_id]->setVar('records', implode(',', $records));
+		$record_ids = array();
+		foreach ($records as $record)
+			$record_ids[] = $record->getID();
+		$record_ids[] = $record_id;
+
+		$this->cmeta[$user_id]->setVar('records', implode(',', $record_ids));
+
+		$this->user_last_record[$user_id] = new MDL_Record($record_id, MDL_Record::GET_NONE);
+	}
+
+	public function getSignUpUsers()
+	{
+		if ($this->sign_up_users == NULL)
+		{
+			$db = BFL_Database::getInstance();
+			$stmt = $db->factory('select cmeta_user_id from '.DB_TABLE_CONTESTMETA.
+					'where `cmeta_contest_id`=:contest_id and `cmeta_key`="sign_up" ');
+			$stmt->bindParam(':contest_id', $this->contest_id);
+			$stmt->execute();
+
+			$this->sign_up_users = array();
+			while ($user_item = $stmt->fetch())
+			{
+				$user_id = $user_item['cmeta_user_id'];
+				$this->sign_up_users[] = new MDL_User($user_id, MDL_User::ID_USER_ID, MDL_User::GET_NONE);
+			}
+		}
+
+		return $this->sign_up_users;
+	}
+
+	public function getUserScore($user_id)
+	{
+		$problems = $this->getConfig()->getProblems();
+		$retval = 0;
+
+		foreach ($problems as $problem)
+		{
+			$record = $this->getUserLastRecordWithProblem($user_id, $problem->getID());
+			if ($record != NULL)
+				$retval += $record->getScore() * $problem->score;
+		}
+
+		return $retval;
+	}
+
+	public function getPenaltyTime($user_id)
+	{
+		return 0;
 	}
 }
