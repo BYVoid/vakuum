@@ -53,7 +53,7 @@ class MDL_Record_Info
 	/**
 	 * @return MDL_Record_Meta
 	 */
-	protected function getRecordMeta()
+	public function getRecordMeta()
 	{
 		if (empty($this->rmeta))
 			$this->rmeta = new MDL_Record_Meta($this->record_id);

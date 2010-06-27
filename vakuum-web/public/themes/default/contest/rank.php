@@ -27,7 +27,8 @@
 		<td><?php echo $contest->getPenaltyTime($user->getID()) ?></td>
 	<?php foreach($problems as $problem): ?>
 		<?php $record = $contest->getUserLastRecordWithProblem($user->getID(), $problem->getID()) ?>
-		<td><?php echo $record->getSubmitTime() ?></td>
+		<?php $subtime = $record != NULL ? $record->getSubmitTime() : 0 ?>
+		<td><?php echo $subtime ?></td>
 	<?php endforeach ?>
 	</tr>
 <?php endforeach ?>

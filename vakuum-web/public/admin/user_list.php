@@ -1,6 +1,13 @@
+<?php
+/**
+ *
+ * @var array(MDL_USER)
+ */
+$user_list = $this->list;
+unset($this->list);
+?>
 <?php $this->title='用户列表' ?>
 <?php $this->display('header.php') ?>
-<?php $user_list = $this->list ?>
 
 <p><a href="<?php echo $this->locator->getURL('admin_user_edit') ?>">添加</a></p>
 
@@ -11,10 +18,10 @@
 		<td>用户昵称</td>
 		<td>操作</td>
 	</tr>
-<?php foreach($user_list as $item): ?>
-	<?php $user_id = $item['user_id']?>
-	<?php $user_name = $item['user_name']?>
-	<?php $user_nickname = $item['user_nickname']?>
+<?php foreach($user_list as $user): ?>
+	<?php $user_id = $user->getID() ?>
+	<?php $user_name = $user->getName() ?>
+	<?php $user_nickname = $user->getNickname() ?>
 	<?php $user_edit = $this->locator->getURL('admin_user_edit').'/'.$user_id ?>
 	<tr>
 		<td><?php echo $user_id?></td>

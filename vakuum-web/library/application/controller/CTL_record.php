@@ -34,7 +34,7 @@ class CTL_record extends CTL_Abstract_Controller
 		$record = new MDL_Record($record_id);
 
 		/* FIXME */
-		if (!$record->getInfo()->getDisplay()->showInRecordList())
+		if (!$record->getDisplay()->showInRecordList())
 		{
 			$this->deny();
 		}

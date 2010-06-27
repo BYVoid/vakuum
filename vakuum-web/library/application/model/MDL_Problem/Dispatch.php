@@ -10,17 +10,17 @@ class MDL_Problem_Dispatch
 	{
 		$verify_result['testdata_path'] = MDL_Config::getInstance()->getVar('judger_testdata').$data_config['name'].'/';
 		$verify_result['overall'] = '';
-		
+
 		if (!file_exists($verify_result['testdata_path']))
 		{
 			//testdata_path not exist
 			$verify_result['overall'] = 'testdata_path';
 			return $verify_result;
 		}
-		
-		
+
+
 		$hash_code='';
-		
+
 		$verify_result['checker'] = true;
 		if ($data_config['checker']['type'] == 'custom')
 		{
@@ -35,14 +35,14 @@ class MDL_Problem_Dispatch
 				$verify_result['overall'] = 'checker';
 			}
 		}
-		
+
 		$success = true;
 		$case_id = 0;
 		foreach($data_config['case'] as $item)
 		{
 			$input_file = $verify_result['testdata_path'].$item['input'];
 			$output_file = $verify_result['testdata_path'].$item['output'];
-			
+
 			if (file_exists($input_file))
 			{
 				$verify_result['case'][$case_id]['input'] = true;
@@ -53,7 +53,7 @@ class MDL_Problem_Dispatch
 				$verify_result['case'][$case_id]['input'] = false;
 				$success = false;
 			}
-			
+
 			if (file_exists($output_file))
 			{
 				$verify_result['case'][$case_id]['output'] = true;
@@ -64,7 +64,7 @@ class MDL_Problem_Dispatch
 				$verify_result['case'][$case_id]['output'] = false;
 				$success = false;
 			}
-			
+
 			++$case_id;
 		}
 		$hash_code = sha1($hash_code);
@@ -79,10 +79,10 @@ class MDL_Problem_Dispatch
 			$problem_meta = new MDL_Problem_Meta($data_config['id']);
 			$problem_meta->setVar('verified',1);
 		}
-		
+
 		return $verify_result;
 	}
-	
+
 	public static function getJudgersTestdataVersion($data_config)
 	{
 		$judgers = MDL_Judger::getJudgers();
@@ -95,16 +95,16 @@ class MDL_Problem_Dispatch
 		}
 		return $judgers;
 	}
-	
+
 	public static function transmitTestdata($judger_id,$data_config)
 	{
 		$judger = MDL_Judger::getJudger($judger_id);
 		//Upload testdata files
 		MDL_Judger_Transmit::sendTestdata($judger['judger_config'],$data_config);
-		
+
 		$judger_url = $judger['judger_config']['url'];
 		$public_key = $judger['judger_config']['public_key'];
-		
+
 		return MDL_Judger_Data::updateTestdata($judger_url,$public_key,$data_config['name']);
 	}
 }

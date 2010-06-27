@@ -56,27 +56,22 @@ class MDL_Judge_Single
 
 	public static function stop($record_id)
 	{
-		try
+		$record = new MDL_Record($record_id);
+		$judger_id = $record->getJudgerID();
+
+		if ($judger_id != 0)
 		{
-			$judger_id = MDL_Record::getJudgerID($record_id);
-			if ($judger_id != 0)
-			{
-				$judger = MDL_Judger::getJudger($judger_id);
-			}
-		}
-		catch(MDL_Exception $e)
-		{
-			return;
+			$judger = MDL_Judger::getJudger($judger_id);
 		}
 
-		$record_meta = new MDL_Record_Meta($record_id);
+		$record_meta = $record->getInfo()->getRecordMeta();
 		$status = $record_meta->getVar('status');
 		if ($status == MDL_Judge_Record::STATUS_STOPPED)
 			return;
 
 		$record_meta->setVar('status',MDL_Judge_Record::STATUS_STOPPED);
 		$record_meta->setVar('result_text',MDL_Judge_Record::RESULT_EXECUTOR_ERROR);
-		$task_name = MDL_Record::getTaskName($record_id);
+		$task_name = $record->getTaskName();
 
 		if ($judger_id != 0)
 		{

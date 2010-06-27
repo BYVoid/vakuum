@@ -10,7 +10,7 @@ class MDL_Judge_Record
 	const STATUS_PENDING = 1;
 	const STATUS_RUNNING = 2;
 	const STATUS_STOPPED = 3;
-	
+
 	const RESULT_ACCEPTED = 0;
 	const RESULT_RUNTIME_ERROR = 1;
 	const RESULT_TIME_LIMIT_EXCEED = 2;
@@ -20,7 +20,7 @@ class MDL_Judge_Record
 	const RESULT_EXECUTOR_ERROR = 6;
 	const RESULT_WRONG_ANSWER = 7;
 	const RESULT_COMILATION_ERROR = 8;
-	
+
 	public static function createRecord($user_id,$prob_id,$lang,$source)
 	{
 		//create a new record
@@ -45,7 +45,7 @@ class MDL_Judge_Record
 		$display->setShowInRecordList();
 		$display->setShowRunResult();
 		$display = $display->getValue();
-		
+
 		//record metas
 		$meta = array
 		(
@@ -64,14 +64,14 @@ class MDL_Judge_Record
 
 		return $record_id;
 	}
-	
+
 	public static function pend($record_id,$judger_id)
 	{
 		$record_meta = new MDL_Record_Meta($record_id);
 		if ($record_meta->getVar('status') == self::STATUS_STOPPED)
 			return;
 		$record_meta->setVar('status',self::STATUS_PENDING);
-		
+
 		$db = BFL_Database :: getInstance();
 		$meta = array('`record_judger_id` = :judger_id');
 		$stmt = $db->update(DB_TABLE_RECORD , $meta ,'where `record_id`=:record_id');
@@ -80,7 +80,7 @@ class MDL_Judge_Record
 		$stmt->execute();
 
 	}
-	
+
 	public static function recordCompile($info)
 	{
 		$record_id = $info['record_id'];
@@ -88,13 +88,13 @@ class MDL_Judge_Record
 		$record_meta = new MDL_Record_Meta($record_id);
 		if ($record_meta->getVar('status') == self::STATUS_STOPPED)
 			return;
-		
+
 		$result = array
 		(
 			'compile' => $info
 		);
 		$result = BFL_XML::Array2XML($result);
-		
+
 		$record_meta->setVar('result',$result);
 		$record_meta->setVar('result_text',0);
 		$record_meta->setVar('status',self::STATUS_RUNNING);
@@ -108,7 +108,7 @@ class MDL_Judge_Record
 		$record_meta = new MDL_Record_Meta($info['record_id']);
 		if ($record_meta->getVar('status') == self::STATUS_STOPPED)
 			return;
-		
+
 		$result = $record_meta->getVar('result');
 
 		$result = BFL_XML::XML2Array($result);
@@ -123,7 +123,7 @@ class MDL_Judge_Record
 			$result['execute']['case']=$newCase;
 		}
 		$result = BFL_XML::Array2XML($result);
-		
+
 
 		$record_meta->setVar('result',$result);
 		$record_meta->setVar('result_text',$info['case_id']);
@@ -132,10 +132,12 @@ class MDL_Judge_Record
 
 	public static function recordComplete($info)
 	{
-		$record_meta = new MDL_Record_Meta($info['record_id']);
+		$record = new MDL_Record($info['record_id'], MDL_Record::GET_ALL);
+
+		$record_meta = $record->getInfo()->getRecordMeta();
 		if ($record_meta->getVar('status') == self::STATUS_STOPPED)
 			return;
-		
+
 		$meta = array
 		(
 			'result_text' => $info['fatal'],
@@ -145,17 +147,17 @@ class MDL_Judge_Record
 			'score' => $info['score'],
 		);
 		$record_meta->setMetas($meta);
-		
+
 		//get judger_id via record_id
-		$judger_id = MDL_Record::getJudgerID($info['record_id']);
-		
+		$judger_id = $record->getJudgerID();
+
 		//free judger
 		MDL_Judger::unlock($judger_id);
-		
+
 		//process task queue
 		MDL_Judger_Process::processTaskQueue();
 	}
-	
+
 	public static function resetRecord($record_id)
 	{
 		$db = BFL_Database :: getInstance();

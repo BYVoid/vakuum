@@ -92,7 +92,7 @@ class MDL_Record
 	/**
 	 * @return MDL_Record_Info
 	 */
-	protected function getInfo()
+	public function getInfo()
 	{
 		if ($this->info == NULL)
 			$this->info = new MDL_Record_Info($this->getID());
@@ -112,6 +112,11 @@ class MDL_Record
 	public function getJudger()
 	{
 
+	}
+
+	public function getTaskName()
+	{
+		return 'vkm_'.$this->getID();
 	}
 
 	public function getSource()
@@ -151,11 +156,6 @@ class MDL_Record
 		return $status == MDL_Judge_Record::STATUS_STOPPED;
 	}
 
-	public static function getTaskName($record_id)
-	{
-		return 'vkm_'.$record_id;
-	}
-
 	public static function getTask()
 	{
 		//find records whose record_judger_id = 0
@@ -176,7 +176,7 @@ class MDL_Record
 		$task['language'] = $record_meta->getVar('lang');
 		$task['source'] = $record_meta->getVar('source');
 		$submit_time = $record_meta->getVar('submit_time');
-		$task['task_name'] = self::getTaskName($task['record_id'],$submit_time);
+		$task['task_name'] = 'vkm_'. $task['record_id'];
 
 		$prob_names = MDL_Problem_Show::getProblemName($task['record_prob_id']);
 		$task['prob_name'] = $prob_names['prob_name'];

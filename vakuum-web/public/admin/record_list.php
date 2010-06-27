@@ -12,30 +12,31 @@
 		<td>提交时间</td>
 		<td>操作</td>
 	</tr>
-<?php foreach($record_list as $item): ?>
-	<?php $record_id = $item['record_id']?>
-	<?php $record_path = $this->locator->getURL('record_detail').'/'. $record_id ?>
-	
-	<?php $prob_id = $item['prob_id']?>
-	<?php $prob_name = $item['prob_name'] ?>
-	<?php $prob_title = $item['prob_title'] ?>
-	<?php $prob_path = $this->locator->getURL('problem_single').'/'. $prob_name ?>
-	
-	<?php $user_id = $item['user_id']?>
-	<?php $user_name = $item['user_name'] ?>
-	<?php $user_nickname = $item['user_nickname'] ?>
-	<?php $user_path = $this->locator->getURL('user_detail').'/'. $user_name ?>
-	
-	<?php $judger_id = $item['judger_id']?>
-	<?php $submit_time = $item['detail']['submit_time'] ?>
+<?php foreach($record_list as $record): ?>
+	<?php $record_id = $record->getID() ?>
+	<?php $record_path = $this->locator->getURL('record/detail').'/'. $record_id ?>
+
+	<?php $prob_id = $record->getProblemID() ?>
+	<?php $prob_name = $record->getProblem()->getName() ?>
+	<?php $prob_title = $record->getProblem()->getTitle() ?>
+	<?php $prob_path = $this->locator->getURL('problem/single').'/'. $prob_name ?>
+
+	<?php $user_id = $record->getUserID() ?>
+	<?php $user_name = $record->getUser()->getName() ?>
+	<?php $user_nickname = $record->getUser()->getNickName() ?>
+	<?php $user_path = $this->locator->getURL('user/detail').'/'. $user_name ?>
+
+	<?php $judger_id = $record->getJudgerID() ?>
+	<?php $submit_time = $record->getSubmitTime() ?>
 	<?php $submit_time_text = $this->formatTime($submit_time)?>
-	<?php $status_text = showStatus($item['detail']['status'],$item['detail']['result_text'])?>
-	
+
+	<?php $status_text = showStatus($record->getInfo()->status,$record->getInfo()->result_text)?>
+
 	<?php $record_source = $this->locator->getURL('record_source').'/'. $record_id ?>
 	<?php $record_delete = $this->locator->getURL('admin_record_delete').'/'. $record_id ?>
 	<?php $record_rejudge = $this->locator->getURL('admin_record_rejudge').'/record_id/'. $record_id ?>
 	<?php $record_stopjudge = $this->locator->getURL('admin_record_stopjudge').'/'. $record_id ?>
-	
+
 	<tr>
 		<td><?php echo $record_id?></td>
 		<td><a href='<?php echo $record_path ?>' target="_blank"><?php echo $status_text ?></a></td>
@@ -45,7 +46,7 @@
 		<td><?php echo $submit_time_text ?></td>
 		<td>
 			<a href="<?php echo $record_source ?>" target="_blank">查看代码</a>
-			<a href="<?php echo $record_delete ?>">永久删除</a> 
+			<a href="<?php echo $record_delete ?>">永久删除</a>
 			<a href="<?php echo $record_rejudge ?>" target="_blank">重新评测</a>
 			<a href="<?php echo $record_stopjudge ?>" >停止评测</a>
 		</td>

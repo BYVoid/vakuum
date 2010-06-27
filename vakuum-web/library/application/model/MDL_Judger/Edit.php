@@ -3,12 +3,11 @@ class MDL_Judger_Edit extends MDL_Judger
 {
 	public static function add($judger)
 	{
-		var_dump($judger);
 		if ($judger['judger_name'] == '')
 			throw new MDL_Exception('judger_name');
-		
+
 		$judger['judger_config'] = self::encodeConfig($judger['judger_config']);
-			
+
 		$db = BFL_Database :: getInstance();
 		$meta = array
 		(
@@ -19,7 +18,7 @@ class MDL_Judger_Edit extends MDL_Judger
 			'judger_count' => '0' ,
 			'judger_config' => ':judger_config',
 		);
-		
+
 		$stmt = $db->insert(DB_TABLE_JUDGER , $meta);
 		$stmt->bindParam(':judger_name', $judger['judger_name']);
 		$stmt->bindParam(':judger_priority', $judger['judger_priority']);
@@ -27,12 +26,12 @@ class MDL_Judger_Edit extends MDL_Judger
 		$stmt->bindParam(':judger_config', $judger['judger_config']);
 		$stmt->execute();
 	}
-	
+
 	public static function edit($judger)
 	{
 		$judger['judger_config'] = self::encodeConfig($judger['judger_config']);
 		$judger_id = $judger['judger_id'];
-		
+
 		$meta = array
 		(
 			'`judger_name` = :judger_name ',
@@ -40,7 +39,7 @@ class MDL_Judger_Edit extends MDL_Judger
 			'`judger_enabled` =:judger_enabled ' ,
 			'`judger_config` =:judger_config ',
 		);
-		
+
 		$db = BFL_Database :: getInstance();
 		$stmt = $db->update(DB_TABLE_JUDGER,$meta,'where `judger_id`=:judger_id');
 		$stmt->bindParam(':judger_id', $judger_id);
@@ -50,30 +49,30 @@ class MDL_Judger_Edit extends MDL_Judger
 		$stmt->bindParam(':judger_config', $judger['judger_config']);
 		$stmt->execute();
 	}
-	
+
 	public static function remove($judger_id)
 	{
 		$db = BFL_Database::getInstance();
-		
+
 		$stmt = $db->delete(DB_TABLE_JUDGER,'where `judger_id`=:judger_id');
 		$stmt->bindParam(':judger_id', $judger_id);
 		$stmt->execute();
-		
+
 	}
-	
+
 	public static function forceAvailable($judger_id)
 	{
 		$meta = array
 		(
 			'`judger_available` = 1 ',
 		);
-		
+
 		$db = BFL_Database :: getInstance();
 		$stmt = $db->update(DB_TABLE_JUDGER,$meta,'where `judger_id`=:judger_id');
 		$stmt->bindParam(':judger_id', $judger_id);
 		$stmt->execute();
 	}
-	
+
 	public static function getDefault()
 	{
 		$judger = array

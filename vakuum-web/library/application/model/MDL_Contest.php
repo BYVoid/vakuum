@@ -123,14 +123,14 @@ class MDL_Contest
 	 */
 	public function getUserLastRecordWithProblem($user_id, $prob_id)
 	{
-		$record = NULL;
+		$ret = NULL;
 		$records = $this->getUserRecords($user_id);
 		foreach ($records as $record)
 		{
 			if ($record->getProblemID() == $prob_id)
-				$record = $record;
+				$ret = $record;
 		}
-		return $record;
+		return $ret;
 	}
 
 	public function addRecord($user_id, $record_id)
@@ -180,7 +180,9 @@ class MDL_Contest
 		{
 			$record = $this->getUserLastRecordWithProblem($user_id, $problem->getID());
 			if ($record != NULL)
+			{
 				$retval += $record->getScore() * $problem->score;
+			}
 		}
 
 		return $retval;
