@@ -5,10 +5,11 @@ class MDL_Contest
 	protected $contest_id;
 	protected $contest_status;
 	protected $contest_config;
-	protected $cmeta;
+	protected $cmeta = NULL;
 	protected $sign_up_users = NULL;
 	protected $user_score = array();
 	protected $user_records = array();
+	protected $rank = NULL;
 
 	public function __construct($contest_id, $contest_config = '', $contest_status = '')
 	{
@@ -86,53 +87,6 @@ class MDL_Contest
 		return true;
 	}
 
-	/**
-	 *
-	 * @param int $user_id
-	 * @return array(MDL_Record)
-	 */
-	public function getUserRecords($user_id)
-	{
-		if (!isset($this->user_records[$user_id]))
-		{
-			if (!isset($this->cmeta[$user_id]))
-				$this->cmeta[$user_id] = new MDL_Contest_Meta($this->contest_id, $user_id);
-
-			$records = $this->cmeta[$user_id]->getVar('records');
-
-			if ($records === false)
-				$this->user_records[$user_id] = array();
-			else
-			{
-				$records = explode(',',$records);
-
-				foreach ($records as $record_id)
-				{
-					$this->user_records[$user_id][] = new MDL_Record($record_id, MDL_Record::GET_NONE);
-				}
-			}
-		}
-
-		return $this->user_records[$user_id];
-	}
-
-	/**
-	 *
-	 * @param int $user_id
-	 * @return MDL_Record
-	 */
-	public function getUserLastRecordWithProblem($user_id, $prob_id)
-	{
-		$ret = NULL;
-		$records = $this->getUserRecords($user_id);
-		foreach ($records as $record)
-		{
-			if ($record->getProblemID() == $prob_id)
-				$ret = $record;
-		}
-		return $ret;
-	}
-
 	public function addRecord($user_id, $record_id)
 	{
 		if (!isset($this->cmeta[$user_id]))
@@ -171,25 +125,17 @@ class MDL_Contest
 		return $this->sign_up_users;
 	}
 
-	public function getUserScore($user_id)
+	public function getSignUpUsersCount()
 	{
-		$problems = $this->getConfig()->getProblems();
-		$retval = 0;
-
-		foreach ($problems as $problem)
-		{
-			$record = $this->getUserLastRecordWithProblem($user_id, $problem->getID());
-			if ($record != NULL)
-			{
-				$retval += $record->getScore() * $problem->score;
-			}
-		}
-
-		return $retval;
+		return count($this->getSignUpUsers());
 	}
 
-	public function getPenaltyTime($user_id)
+	public function getRank($rank)
 	{
-		return 0;
+		if ($this->rank == NULL)
+		{
+			$this->rank = new MDL_Contest_Rank($this);
+		}
+		return $this->rank->getRank($rank);
 	}
 }

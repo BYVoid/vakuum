@@ -18,19 +18,18 @@
 		<td><a href="<?php echo $problem_url ?>" title="<?php echo $problem->getTitle() ?>"><?php echo $problem->alias ?></a></td>
 	<?php endforeach ?>
 	</tr>
-<?php $rank = 0 ?>
-<?php foreach($contest->getSignUpUsers() as $user): ?>
+<?php $total = $contest->getSignUpUsersCount() ?>
+<?php for ($rank = 0; $rank < $total; ++$rank): ?>
+	<?php $score = $contest->getRank($rank) ?>
 	<tr>
-		<td><?php echo ++$rank ?></td>
-		<td><?php echo $user->getNickname() ?></td>
-		<td><?php echo $contest->getUserScore($user->getID()) ?></td>
-		<td><?php echo $contest->getPenaltyTime($user->getID()) ?></td>
+		<td><?php echo $rank + 1 ?></td>
+		<td><?php echo $score->getUser()->getNickname() ?></td>
+		<td><?php echo $score->getScore() ?></td>
+		<td><?php echo $score->getPenaltyTime() ?></td>
 	<?php foreach($problems as $problem): ?>
-		<?php $record = $contest->getUserLastRecordWithProblem($user->getID(), $problem->getID()) ?>
-		<?php $subtime = $record != NULL ? $record->getSubmitTime() : 0 ?>
-		<td><?php echo $subtime ?></td>
+		<td><?php echo $score->getScoreWithProblem($problem) ?></td>
 	<?php endforeach ?>
 	</tr>
-<?php endforeach ?>
+<?php endfor ?>
 </table>
 <?php $this->display('footer.php') ?>
