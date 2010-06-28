@@ -11,7 +11,7 @@ class MDL_Record
 	protected $judger_id = NULL;
 	protected $info = NULL;
 
-	public function __construct($record_id, $initial_get = self::GET_ITEM, $addition = array())
+	public function __construct($record_id, $initial_get = self::GET_NONE, $addition = array())
 	{
 		$this->record_id = $record_id;
 

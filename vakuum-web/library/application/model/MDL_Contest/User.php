@@ -1,6 +1,6 @@
 <?php
 
-class MDL_Contest_Score
+class MDL_Contest_User
 {
 	protected $contest;
 	protected $user;
@@ -129,5 +129,49 @@ class MDL_Contest_Score
 	public function getPenaltyTime()
 	{
 		return 0;
+	}
+
+	public function signUp($check_sign_up_time = true)
+	{
+		if ($check_sign_up_time && !$this->getContest()->getConfig()->isDuringSignUp(time()))
+			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_DURING_SIGN_UP_TIME);
+
+		if ($this->checkSignUp())
+			throw new MDL_Exception_Contest(MDL_Exception_Contest::SIGN_UP_ALREADY);
+
+		$this->getMeta()->setVar('sign_up', time());
+	}
+
+	public function checkSignUp()
+	{
+		return $this->getMeta()->haveVar('sign_up');
+	}
+
+	public function checkContestPermission()
+	{
+		//檢査比賽時間
+		if (!$this->getContest()->getConfig()->isDuringContest(time()))
+			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_DURING_CONTEST_TIME);
+
+		//檢査是否報名
+		if (!$this->checkSignUp())
+			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_SIGN_UP);
+
+		return true;
+	}
+
+	public function addRecord($record_id)
+	{
+		$records = $this->getRecords();
+
+		$record_ids = array();
+		foreach ($records as $record)
+			$record_ids[] = $record->getID();
+		$record_ids[] = $record_id;
+
+		$this->getMeta()->setVar('records', implode(',', $record_ids));
+
+		$record = new MDL_Record($record_id);
+		$this->last_record[$record->getProblemID()] = $record;
 	}
 }

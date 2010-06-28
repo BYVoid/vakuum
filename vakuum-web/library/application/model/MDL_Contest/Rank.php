@@ -3,7 +3,7 @@
 class MDL_Contest_Rank
 {
 	protected $contest;
-	protected $scores = array();
+	protected $users = array();
 
 	public function __construct($contest)
 	{
@@ -33,19 +33,15 @@ class MDL_Contest_Rank
 
 	protected function initializeScore()
 	{
-		$scores = array();
-		foreach ($this->getContest()->getSignUpUsers() as $user)
-		{
-			$scores[] = new MDL_Contest_Score($this->getContest(), $user);
-		}
-		usort($scores, array($this,'score_cmp'));
-		$this->scores = $scores;
+		$users = $this->getContest()->getContestUsers();
+		usort($users, array($this,'score_cmp'));
+		$this->users = $users;
 	}
 
 	public function getRank($rank)
 	{
 		if (!isset($this->scores[$rank]))
 			$this->initializeScore();
-		return $this->scores[$rank];
+		return $this->users[$rank];
 	}
 }

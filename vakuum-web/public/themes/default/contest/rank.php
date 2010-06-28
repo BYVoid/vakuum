@@ -18,7 +18,7 @@
 		<td><a href="<?php echo $problem_url ?>" title="<?php echo $problem->getTitle() ?>"><?php echo $problem->alias ?></a></td>
 	<?php endforeach ?>
 	</tr>
-<?php $total = $contest->getSignUpUsersCount() ?>
+<?php $total = $contest->getContestUsersCount() ?>
 <?php for ($rank = 0; $rank < $total; ++$rank): ?>
 	<?php $score = $contest->getRank($rank) ?>
 	<tr>

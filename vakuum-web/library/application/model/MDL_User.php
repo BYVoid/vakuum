@@ -17,7 +17,7 @@ class MDL_User
 	protected $user_meta = NULL;
 
 	public function __construct($user_identidier, $idspec = self::ID_USER_ID,
-			$initial_get = self::GET_NAMES, $addition = array())
+			$initial_get = self::GET_NONE, $addition = array())
 	{
 		if ($idspec == self::ID_USER_ID)
 			$this->user_id = $user_identidier;
