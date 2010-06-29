@@ -61,12 +61,12 @@ class MDL_Record_Info
 	}
 
 	/**
-	 * @return MDL_Record_DisplayConfig
+	 * @return MDL_Record_Display
 	 */
 	public function getDisplay()
 	{
 		if (empty($this->display))
-			$this->display = new MDL_Record_DisplayConfig($this->getRecordMeta()->getVar('display'));
+			$this->display = new MDL_Record_Display($this->getRecordMeta()->getVar('display'));
 		return $this->display;
 	}
 

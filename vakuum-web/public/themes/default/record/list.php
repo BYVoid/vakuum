@@ -30,7 +30,7 @@
 
 	<?php
 	$display = $record->getDisplay();
-	if ($display->showRunResult())
+	if ($display->result)
 	{
 		$status_text = showStatus($record->getStatus(),$record->getResultText());
 	}

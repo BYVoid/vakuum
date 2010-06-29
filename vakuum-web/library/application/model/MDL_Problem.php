@@ -12,7 +12,7 @@ class MDL_Problem
 	protected $prob_meta;
 	protected $prob_info;
 
-	public function __construct($prob_identifier, $initial_get = self::GET_NAMES)
+	public function __construct($prob_identifier, $initial_get = self::GET_NONE)
 	{
 		$this->prob_id = $this->prob_name = $this->prob_title =
 		$this->prob_meta = $this->prob_contents = $this->prob_info = NULL;

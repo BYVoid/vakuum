@@ -44,7 +44,7 @@ $submit_time = $this->formatTime($record_info->submit_time);
 <?php
 $display = $record_info->getDisplay();
 
-if ($display->showRunResult())
+if ($display->result)
 {
 	$status_text = showStatus($record_info->status,$record_info->result_text);
 	$score = $record_info->score;
@@ -54,7 +54,7 @@ if ($display->showRunResult())
 
 $record_result = $record_info->getResult();
 
-if ($display->showCompileResult())
+if ($display->compile)
 {
 	$compile_result = $record_result->getCompile();
 	$compiled = $compile_result != false;
@@ -73,7 +73,7 @@ if ($display->showCompileResult())
 		$compile_result_message ='等待编译';
 }
 
-if ($display->showCaseResult())
+if ($display->case)
 {
 	$execute_result = $record_result->getExecute();
 	if (!$execute_result)
@@ -87,6 +87,7 @@ if ($display->showCaseResult())
 		<td>记录编号</td>
 		<td><?php echo $record_id ?> <a href='<?php echo $record_source ?>'>查看代码</a></td>
 	</tr>
+<?php if ($display->information): ?>
 	<tr>
 		<td>题目</td>
 		<td><a href='<?php echo $prob_path ?>'><?php echo $prob_title ?></a></td>
@@ -105,27 +106,28 @@ if ($display->showCaseResult())
 	</tr>
 	<tr>
 		<td>代码长度</td>
-		<td><?php echo $source_length ?> Bytes</td>
+		<td><?php echo $source_length ?> 字节</td>
 	</tr>
-<?php if ($display->showRunResult()): ?>
+<?php endif ?>
+<?php if ($display->result): ?>
 	<tr>
 		<td>状态</td>
 		<td><?php echo $status_text ?></td>
 	</tr>
 	<tr>
-		<td>得分</td>
-		<td><?php echo $score ?></td>
+		<td>通过比例</td>
+		<td><?php echo (int) ($score * 100) ?>%</td>
 	</tr>
 	<tr>
 		<td>时间使用</td>
-		<td><?php echo $time_used ?> ms</td>
+		<td><?php echo $time_used ?> 毫秒</td>
 	</tr>
 	<tr>
 		<td>内存使用</td>
-		<td><?php echo $memory_used ?> KB</td>
+		<td><?php echo $memory_used ?> 千字节</td>
 	</tr>
 <?php endif ?>
-<?php if ($display->showCompileResult()): ?>
+<?php if ($display->compile): ?>
 	<tr>
 		<td>编译结果</td>
 		<td>
@@ -138,7 +140,7 @@ if ($display->showCaseResult())
 		</td>
 	</tr>
 <?php endif?>
-<?php if ($display->showCaseResult()): ?>
+<?php if ($display->case): ?>
 	<tr>
 		<td>运行结果</td>
 		<td>

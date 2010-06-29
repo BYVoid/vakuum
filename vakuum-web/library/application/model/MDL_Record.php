@@ -101,12 +101,12 @@ class MDL_Record
 
 	public function getProblem()
 	{
-		return new MDL_Problem($this->getProblemID(), MDL_Problem::GET_NONE);
+		return new MDL_Problem($this->getProblemID());
 	}
 
 	public function getUser()
 	{
-		return new MDL_User($this->getUserID(), MDL_User::ID_USER_ID, MDL_User::GET_NONE);
+		return new MDL_User($this->getUserID());
 	}
 
 	public function getJudger()

@@ -33,12 +33,6 @@ class CTL_record extends CTL_Abstract_Controller
 
 		$record = new MDL_Record($record_id);
 
-		/* FIXME */
-		if (!$record->getDisplay()->showInRecordList())
-		{
-			$this->deny();
-		}
-
 		$this->view->record = $record;
 		$this->view->display('record/single.php');
 	}
@@ -48,6 +42,8 @@ class CTL_record extends CTL_Abstract_Controller
 		$record_id = $this->path_option->getPathSection(2);
 
 		$record = new MDL_Record($record_id);
+		if (!$record->getDisplay()->source && $record->getUser()->getID() != BFL_ACL::getInstance()->getUserID())
+			$this->deny();
 
 		$this->view->record = $record;
 		$this->view->display('record/source.php');

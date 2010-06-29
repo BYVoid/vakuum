@@ -43,8 +43,13 @@
 		<td><?php echo $this->formatTimeSection($contest_user->getPenaltyTime()) ?></td>
 	<?php endif ?>
 	<?php if ($display->problem): ?>
+		<?php $contest_start_time = $contest_config->getContestTimeStart() ?>
 		<?php foreach($problems as $problem): ?>
-			<td><?php echo (int) $contest_user->getScoreWithProblem($problem) ?></td>
+			<td>
+				<?php echo $this->formatTimeSection ($contest_user->getLastRecordWithProblem($problem)->getSubmitTime() - $contest_start_time) ?>
+				<br />(<?php echo count($contest_user->getRecordsWithProblem($problem)) ?>)
+				<br /><?php echo (int) $contest_user->getScoreWithProblem($problem) ?>
+			</td>
 		<?php endforeach ?>
 	<?php endif ?>
 	</tr>

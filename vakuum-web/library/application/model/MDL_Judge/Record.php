@@ -38,13 +38,8 @@ class MDL_Judge_Record
 		$record_id = $db->getLastInsertID();
 
 		// TODO: config default
-		$display = new MDL_Record_DisplayConfig();
-		$display->setShowCaseResult();
-		$display->setShowCodeToOwner();
-		$display->setShowCompileResult();
-		$display->setShowInRecordList();
-		$display->setShowRunResult();
-		$display = $display->getValue();
+		$display = new MDL_Record_Display();
+		$display->setAll(true);
 
 		//record metas
 		$meta = array
@@ -57,7 +52,7 @@ class MDL_Judge_Record
 			'time' => '0',
 			'source' => $source,
 			'score' => 0.00,
-			'display' => $display,
+			'display' => $display->encode(),
 		);
 		$record_meta = new MDL_Record_Meta($record_id);
 		$record_meta->setMetas($meta);

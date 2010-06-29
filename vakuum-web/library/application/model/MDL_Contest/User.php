@@ -70,7 +70,21 @@ class MDL_Contest_User
 
 	/**
 	 *
-	 * @param int $prob_id
+	 * @param MDL_Problem $problem
+	 * @return array(MDL_Record)
+	 */
+	public function getRecordsWithProblem($problem)
+	{
+		$records_prob = array();
+		foreach ($this->getRecords() as $record)
+			if ($record->getProblemID() == $problem->getID())
+				$records_prob[] = $record;
+		return $records_prob;
+	}
+
+	/**
+	 *
+	 * @param MDL_Problem $problem
 	 * @return MDL_Record
 	 */
 	public function getLastRecordWithProblem($problem)
@@ -78,14 +92,8 @@ class MDL_Contest_User
 		$prob_id = $problem->getID();
 		if (!isset($this->last_record[$prob_id]))
 		{
-			$ret = NULL;
-			$records = $this->getRecords();
-			foreach ($records as $record)
-			{
-				if ($record->getProblemID() == $prob_id)
-					$ret = $record;
-			}
-			$this->last_record[$prob_id] = $ret;
+			$records = $this->getRecordsWithProblem($problem);
+			$this->last_record[$prob_id] = $records[count($records) - 1];
 		}
 		return $this->last_record[$prob_id];
 	}
