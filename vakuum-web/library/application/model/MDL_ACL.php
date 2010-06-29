@@ -1,10 +1,10 @@
 <?php
-class BFL_ACL
+class MDL_ACL
 {
 	protected static $_instance = NULL;
 	/**
 	 * getInstance
-	 * @return BFL_ACL
+	 * @return MDL_ACL
 	 */
 	public static function getInstance()
 	{
@@ -16,11 +16,13 @@ class BFL_ACL
 	}
 
 	protected $prefix;
+	protected $null_user;
 
 	private function __clone(){}
 	private function __construct()
 	{
 		session_start();
+		$this->null_user = new MDL_User(0);
 	}
 
 	/**
@@ -37,60 +39,39 @@ class BFL_ACL
 			$this->setIdentity($default);
 		}
 	}
-	
+
 	public function resetSession()
 	{
 		unset($_SESSION[$this->prefix]);
 	}
-	
-	public function setUserID($UserID)
+
+	public function setUser($user)
 	{
-		$_SESSION[$this->prefix]['UserID'] = $UserID;
+		$_SESSION[$this->prefix]['user'] = $user;
 	}
-	
-	public function getUserID()
+
+	/**
+	 * @return MDL_User
+	 */
+	public function getUser()
 	{
-		if (isset($_SESSION[$this->prefix]['UserID']))
-			return $_SESSION[$this->prefix]['UserID'];
-		return 0;
+		if (isset($_SESSION[$this->prefix]['user']))
+			return $_SESSION[$this->prefix]['user'];
+		return $this->null_user;
 	}
-	
+
 	public function setIdentity($identity)
 	{
 		$identity = explode(',',$identity);
-		
+
 		$_SESSION[$this->prefix]['identity'] = $identity;
 	}
-	
+
 	public function getIdentity()
 	{
 		return $_SESSION[$this->prefix]['identity'];
 	}
 
-	public function allow($identity)
-	{
-		if (!is_array($identity))
-			$identity = array($identity);
-		foreach ($identity as $item)
-		{
-			if (in_array($item,$_SESSION[$this->prefix]['identity']))
-				return false;
-		}
-		return true;
-	}
-	
-	public function deny($identity)
-	{
-		if (!is_array($identity))
-			$identity = array($identity);
-		foreach ($identity as $item)
-		{
-			if (in_array($item,$_SESSION[$this->prefix]['identity']))
-				return true;
-		}
-		return false;
-	}
-	
 	public function check($identity)
 	{
 		if (!is_array($identity))

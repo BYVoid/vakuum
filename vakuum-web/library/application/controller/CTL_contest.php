@@ -31,9 +31,9 @@ class CTL_contest extends CTL_Abstract_Controller
 		$prob_alias = $this->path_option->getPathSection(3);
 
 		$contest = new MDL_Contest($contest_id);
-		$user_id = BFL_ACL::getInstance()->getUserID();
+		$user = $this->acl->getUser();
 
-		$contest_user = new MDL_Contest_User($contest, new MDL_User($user_id));
+		$contest_user = new MDL_Contest_User($contest, $user);
 		$contest_user->checkContestPermission();
 
 		$this->view->contest = $contest;
@@ -87,9 +87,8 @@ class CTL_contest extends CTL_Abstract_Controller
 			$this->deny();
 
 		$contest_id = $this->path_option->getPathSection(2);
-		$user_id = BFL_ACL::getInstance()->getUserID();
-
-		$contest_user = new MDL_Contest_User(new MDL_Contest($contest_id), new MDL_User($user_id));
+		$user = $this->acl->getUser();
+		$contest_user = new MDL_Contest_User(new MDL_Contest($contest_id), $user);
 		$contest_user->signUp();
 
 		$this->locator->redirect('contest/list');
@@ -103,18 +102,17 @@ class CTL_contest extends CTL_Abstract_Controller
 		if ($this->config->getVar('judge_allowed') != 1)
 			$this->deny();
 
-
-		$user_id = BFL_ACL::getInstance()->getUserID();
+		$user = $this->acl->getUser();
 		$contest_id = $_POST['contest_id'];
 		$contest = new MDL_Contest($contest_id);
-		$contest_user = new MDL_Contest_User($contest, new MDL_User($user_id));
+		$contest_user = new MDL_Contest_User($contest,$user);
 		$contest_user->checkContestPermission();
 
 		$prob_id = $_POST['prob_id'];
 		$language = $_POST['lang'];
 		$source = file_get_contents($_FILES['source']['tmp_name']);
 
-		$record_id = MDL_Judge_Single::submit($user_id,$prob_id,$language,$source);
+		$record_id = MDL_Judge_Single::submit($user->getID(),$prob_id,$language,$source);
 
 		$contest_user->addRecord($record_id);
 

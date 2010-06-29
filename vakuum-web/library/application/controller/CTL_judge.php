@@ -12,14 +12,14 @@ class CTL_judge extends CTL_Abstract_Controller
 	{
 		if (!$this->acl->check('general'))
 			$this->deny();
-			
+
 		if ($this->config->getVar('judge_allowed') != 1)
 			$this->deny();
-		
+
 		set_time_limit(0);
 		ignore_user_abort(1);
-		
-		$user_id = BFL_ACL ::getInstance()->getUserID();
+
+		$user_id = $this->acl->getUser()->getID();
 		$prob_id = $_POST['prob_id'];
 		$prob_name = $_POST['prob_name'];
 		$lang = $_POST['lang'];
@@ -27,10 +27,10 @@ class CTL_judge extends CTL_Abstract_Controller
 
 		$record_id = MDL_Judge_Single::submit($user_id,$prob_id,$lang,$source);
 		MDL_Judger_Process::processTaskQueue();
-		
+
 		$this->locator->redirect('record_detail',array(),'/'.$record_id);
 	}
-	
+
 	public function writeRecord($rs)
 	{
 		$info = $rs['info'];
@@ -49,7 +49,7 @@ class CTL_judge extends CTL_Abstract_Controller
 			default:
 		}
 	}
-	
+
 	public function ACT_return()
 	{
 		$server = new BFL_RemoteAccess_Server($this->config->getVar('judge_return_key'));
@@ -57,7 +57,7 @@ class CTL_judge extends CTL_Abstract_Controller
 		$server->listen();
 
 	}
-	
+
 	private function fail($desc)
 	{
 		switch ($desc)

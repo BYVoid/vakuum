@@ -35,7 +35,7 @@ if ($bind_address != '' && $bind_address != BFL_General::getServerAddress())
 }
 
 //初始化用戶會話
-BFL_ACL::getInstance()->initialize(SESSION_PREFIX,'guest');
+MDL_ACL::getInstance()->initialize(SESSION_PREFIX,'guest');
 MDL_User_Auth::getLoginedUserInformation();
 
 //加載插件

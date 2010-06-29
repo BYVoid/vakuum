@@ -17,10 +17,10 @@ abstract class CTL_Abstract_Controller
 	 * @var MDL_Config
 	 */
 	protected $config;
-	
+
 	/**
 	 * The ACL object
-	 * @var BFL_ACL
+	 * @var MDL_ACL
 	 */
 	protected $acl;
 
@@ -41,20 +41,20 @@ abstract class CTL_Abstract_Controller
 	 */
 	public function __construct()
 	{
-		$this->config = MDL_Config :: getInstance();
-		$this->acl = BFL_ACL :: getInstance();
-		$this->locator = MDL_Locator :: getInstance();
+		$this->config = MDL_Config::getInstance();
+		$this->acl = MDL_ACL::getInstance();
+		$this->locator = MDL_Locator::getInstance();
 		$this->view = MDL_View::getInstance();
-		
+
 		$this->view->setTheme( $this->config->getVar('theme') );
 		$this->path_option = BFL_PathOption::getInstance();
 	}
-	
+
 	public function deny()
 	{
 		throw new MDL_Exception(MDL_Exception::PERMISSION_DENIED);
 	}
-	
+
 	public function notFound()
 	{
 		throw new MDL_Exception(MDL_Exception::NOTFOUND);

@@ -166,7 +166,7 @@ class MDL_User_Edit extends MDL_User_Common
 			$user_meta->unsetVar('validation_code');
 
 			MDL_User_Auth::logout();
-			BFL_ACL::getInstance()->setUserID($user['user_id']);
+			MDL_ACL::getInstance()->setUser(new MDL_User($rs['user_id']));
 		}
 	}
 }

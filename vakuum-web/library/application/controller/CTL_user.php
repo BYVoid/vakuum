@@ -59,7 +59,7 @@ class CTL_user extends CTL_Abstract_Controller
 			$this->deny();
 
 		$user = BFL_Register :: getVar('personal');
-		$user_id = BFL_ACL::getInstance()->getUserID();
+		$user_id = $this->acl->getUser()->getID();
 		$user_name = $user['user_name'];
 
 		$user_info = array

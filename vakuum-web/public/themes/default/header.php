@@ -20,13 +20,13 @@
 	<a href="<?php echo $this->locator->getURL('contest_list')?>">比赛</a>
 	<a href="<?php echo $this->locator->getURL('user_list')?>">用户</a>
 	<a href="<?php echo $this->locator->getURL('judger_list')?>">评测机</a>
-<?php if(BFL_ACL::getInstance()->check(array('general','unvalidated'))):?>
+<?php if(MDL_ACL::getInstance()->check(array('general','unvalidated'))):?>
 	<a href="<?php echo $this->locator->getURL('user_space')?>">个人</a>
 	<a href="<?php echo $this->locator->getURL('passport_dologout')?>">登出</a>
 <?php else:?>
 	<a href="<?php echo $this->locator->getURL('passport')?>">登录</a>
 <?php endif ?>
-<?php if(BFL_ACL::getInstance()->check('administrator')):?>
+<?php if(MDL_ACL::getInstance()->check('administrator')):?>
 	<a href="<?php echo $this->locator->getURL('admin_index')?>">后台管理</a>
 <?php endif ?>
 </p>

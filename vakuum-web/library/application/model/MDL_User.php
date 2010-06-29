@@ -61,7 +61,7 @@ class MDL_User
 
 	public function getID()
 	{
-		if ($this->user_id == NULL)
+		if ($this->user_id === NULL)
 		{
 			$db = BFL_Database :: getInstance();
 			$stmt = $db->factory('select * from '.DB_TABLE_USER.' where `user_name`=:user_name');
