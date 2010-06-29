@@ -77,7 +77,7 @@ class MDL_Contest_User
 	{
 		$records_prob = array();
 		foreach ($this->getRecords() as $record)
-			if ($record->getProblemID() == $problem->getID())
+			if ($record->getProblem()->getID() == $problem->getID())
 				$records_prob[] = $record;
 		return $records_prob;
 	}
@@ -180,6 +180,6 @@ class MDL_Contest_User
 		$this->getMeta()->setVar('records', implode(',', $record_ids));
 
 		$record = new MDL_Record($record_id);
-		$this->last_record[$record->getProblemID()] = $record;
+		$this->last_record[$record->getProblem()->getID()] = $record;
 	}
 }

@@ -6,8 +6,8 @@ class MDL_Record
 	const GET_ALL = 2;
 
 	protected $record_id = NULL;
-	protected $prob_id = NULL;
-	protected $user_id = NULL;
+	protected $problem = NULL;
+	protected $user = NULL;
 	protected $judger_id = NULL;
 	protected $info = NULL;
 
@@ -35,10 +35,10 @@ class MDL_Record
 			switch ($key)
 			{
 				case 'user_id':
-					$this->user_id = $value;
+					$this->user = new MDL_User($value);
 					break;
 				case 'prob_id':
-					$this->prob_id = $value;
+					$this->problem = new MDL_Problem($value);
 					break;
 				case 'judger_id':
 					$this->judger_id = $value;
@@ -58,8 +58,8 @@ class MDL_Record
 		if (empty($record))
 			throw new MDL_Exception_Record(MDL_Exception_Record::INVALID_RECORD_ID);
 
-		$this->prob_id = $record['record_prob_id'];
-		$this->user_id = $record['record_user_id'];
+		$this->problem = new MDL_Problem($record['record_prob_id']);
+		$this->user = new MDL_User($record['record_user_id']);
 		$this->judger_id = $record['record_judger_id'];
 	}
 
@@ -70,18 +70,29 @@ class MDL_Record
 		return $this->record_id;
 	}
 
-	public function getProblemID()
+	/**
+	 * @return MDL_Problem
+	 */
+	public function getProblem()
 	{
-		if ($this->prob_id == NULL)
+		if ($this->problem == NULL)
 			$this->initializeRecord();
-		return $this->prob_id;
+		return $this->problem;
 	}
 
-	public function getUserID()
+	/**
+	 * @return MDL_User
+	 */
+	public function getUser()
 	{
-		if ($this->user_id == NULL)
+		if ($this->user == NULL)
 			$this->initializeRecord();
-		return $this->user_id;
+		return $this->user;
+	}
+
+	public function getJudger()
+	{
+
 	}
 
 	public function getJudgerID()
@@ -97,21 +108,6 @@ class MDL_Record
 		if ($this->info == NULL)
 			$this->info = new MDL_Record_Info($this->getID());
 		return $this->info;
-	}
-
-	public function getProblem()
-	{
-		return new MDL_Problem($this->getProblemID());
-	}
-
-	public function getUser()
-	{
-		return new MDL_User($this->getUserID());
-	}
-
-	public function getJudger()
-	{
-
 	}
 
 	public function getTaskName()
