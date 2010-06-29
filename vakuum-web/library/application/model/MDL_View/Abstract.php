@@ -2,17 +2,17 @@
 abstract class MDL_View_Abstract extends BFL_View
 {
 	public $header,$footer;
-	
+
 	protected function getViewURL()
 	{
 		return MDL_Locator::makePublicURL($this->getViewPath());
 	}
-	
+
 	protected function getCommonURL()
 	{
 		return MDL_Locator::makePublicURL('public/common/');
 	}
-	
+
 	protected function loadHeader()
 	{
 		$rs = "<!--Stylesheet Description Start-->\n";
@@ -29,10 +29,10 @@ abstract class MDL_View_Abstract extends BFL_View
 			$rs .= "<!-- {$key} -->\n";
 		}
 		$rs .= "<!--Javascript Description End-->\n";
-		
+
 		return $rs;
 	}
-	
+
 	protected function getScriptExecutingTime()
 	{
 		return BFL_Timer :: getScriptExecutingTime();
@@ -48,12 +48,21 @@ abstract class MDL_View_Abstract extends BFL_View
 		$config = MDL_Config :: getInstance();
 		return date($config->getVar('time_format'),$time);
 	}
-	
+
+	protected function formatTimeSection($time)
+	{
+		$hour = (int) $time / 3600;
+		$time %= 3600;
+		$minute = $time / 60;
+		$second = $time % 60;
+		return sprintf('%02d:%02d:%02d', $hour, $minute, $second);
+	}
+
 	protected function escape($str)
 	{
 		return htmlspecialchars($str);
 	}
-	
+
 	protected function showInputbox($value="",$name="",$id="",$size = -1,$readonly=false,$disabled=false,$password=false,$maxlen = -1,$addition = "")
 	{
 		$html = "<input";
@@ -80,7 +89,7 @@ abstract class MDL_View_Abstract extends BFL_View
 		$html .= "/>";
 		return $html;
 	}
-	
+
 	protected function showCheckbox($checked = false,$name="",$id="",$disabled=false,$addition = "")
 	{
 		$html = "<input type=\"checkbox\" value=\"1\"";
@@ -97,7 +106,7 @@ abstract class MDL_View_Abstract extends BFL_View
 		$html .= "/>";
 		return $html;
 	}
-	
+
 	protected function showRadio($value = 1,$checked = false,$name="",$id="",$disabled=false,$addition = "")
 	{
 		$html = "<input type=\"radio\" value=\"{$value}\"";

@@ -82,9 +82,14 @@ class MDL_Contest
 	public function getRank($rank)
 	{
 		if ($this->rank == NULL)
-		{
 			$this->rank = new MDL_Contest_Rank($this);
-		}
 		return $this->rank->getRank($rank);
+	}
+
+	public function getRankDisplay()
+	{
+		if ($this->rank == NULL)
+			$this->rank = new MDL_Contest_Rank($this);
+		return $this->rank->getRankDisplay();
 	}
 }

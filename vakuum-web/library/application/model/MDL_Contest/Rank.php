@@ -44,4 +44,9 @@ class MDL_Contest_Rank
 			$this->initializeScore();
 		return $this->users[$rank];
 	}
+
+	public function getRankDisplay()
+	{
+		return $this->getContest()->getConfig()->getRankDisplay('during');
+	}
 }

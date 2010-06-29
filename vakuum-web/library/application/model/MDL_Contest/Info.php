@@ -153,4 +153,9 @@ class MDL_Contest_Info
 		return $t_time >= $this->config['time']['contest_start'] &&
 				$t_time < $this->config['time']['contest_end'];
 	}
+
+	public function getRankDisplay($period)
+	{
+		return new MDL_Contest_Rank_Display($this->config['permissions'][$period]['rank_display']);
+	}
 }
