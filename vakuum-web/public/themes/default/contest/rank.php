@@ -4,7 +4,7 @@
 <?php $display = $contest->getRankDisplay() ?>
 
 <?php $this->title="比赛排名 - ".$contest_config->getName() ?>
-<?php $this->display('header.php') ?>
+<?php $this->display('contest/header.php') ?>
 
 <?php if ($display->list): ?>
 

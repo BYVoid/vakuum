@@ -1,10 +1,9 @@
-<?php $this->title="报名参赛" ?>
-<?php $this->display('header.php') ?>
-
 <?php $contest = $this->contest ?>
 <?php $contest_id = $contest->getID() ?>
 <?php $contest_config = $contest->getConfig() ?>
 
+<?php $this->title="报名参赛" ?>
+<?php $this->display('contest/header.php') ?>
 
 <table border="1">
 	<tr>

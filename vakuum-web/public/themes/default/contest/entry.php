@@ -4,7 +4,7 @@
 <?php $contest_rank_path = $this->locator->getURL('contest/rank').'/'.$contest_id ?>
 
 <?php $this->title="比赛 - ".$contest_config->getName() ?>
-<?php $this->display('header.php') ?>
+<?php $this->display('contest/header.php') ?>
 
 <table border="1">
 	<tr>

@@ -37,11 +37,9 @@ class MDL_Judge_Record
 		$stmt->execute();
 		$record_id = $db->getLastInsertID();
 
-		// TODO: config default
-		$display = new MDL_Record_Display();
-		$display->setAll(true);
+		$default_display = MDL_Config::getInstance()->getVar('record_display_default');
+		$display = new MDL_Record_Display($default_display);
 
-		//record metas
 		$meta = array
 		(
 			'lang' => $lang,
