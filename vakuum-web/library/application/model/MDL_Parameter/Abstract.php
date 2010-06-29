@@ -20,27 +20,24 @@ abstract class MDL_Parameter_Abstract
 
 	protected function initialize()
 	{
-		$condition = "";
 		$this->idmeta = array();
+		$condition = "(";
 
-		if (is_array($this->ids) && count($this->ids) > 0)
+		if (is_array($this->ids))
 		{
-			$condition = "(";
 			foreach($this->ids as $key => $value)
 			{
 				$condition .= "`{$key}` = {$value} and ";
 				$this->idmeta[$key] = $value;
 			}
-			$condition .= " 1)";
 		}
 
+		$condition .= " 1)";
 		$this->condition = $condition;
-		if ($condition != "")
-			$condition = "WHERE ". $condition;
 
 		//Read database to fetch all metas of $ids
 		$db = BFL_Database :: getInstance();
-		$stmt = $db->factory("select `{$this->key_name}`,`{$this->value_name}` from {$this->table_name} {$condition}");
+		$stmt = $db->factory("select `{$this->key_name}`,`{$this->value_name}` from {$this->table_name} where {$condition}");
 		$stmt->execute();
 
 		$this->_array = array();
@@ -138,7 +135,7 @@ abstract class MDL_Parameter_Abstract
 	 * Set a group of metas
 	 * @param array $items
 	 */
-	public function setMetas($items)
+	public function setVars($items)
 	{
 		foreach ($items as $key => $value)
 		{

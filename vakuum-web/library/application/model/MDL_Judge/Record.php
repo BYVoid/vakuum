@@ -53,7 +53,7 @@ class MDL_Judge_Record
 			'display' => $display->encode(),
 		);
 		$record_meta = new MDL_Record_Meta($record_id);
-		$record_meta->setMetas($meta);
+		$record_meta->setVars($meta);
 
 		return $record_id;
 	}
@@ -139,7 +139,7 @@ class MDL_Judge_Record
 			'memory' =>  $info['memory'],
 			'score' => $info['score'],
 		);
-		$record_meta->setMetas($meta);
+		$record_meta->setVars($meta);
 
 		//get judger_id via record_id
 		$judger_id = $record->getJudgerID();
@@ -167,6 +167,6 @@ class MDL_Judge_Record
 			'time' => '0',
 			'score' => 0.00,
 		);
-		$record_meta->setMetas($meta);
+		$record_meta->setVars($meta);
 	}
 }

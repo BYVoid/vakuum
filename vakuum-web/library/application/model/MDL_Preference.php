@@ -8,10 +8,10 @@ class MDL_Preference
 		$preferences['register_form_restrict'] = unserialize($preferences['register_form_restrict']);
 		return $preferences;
 	}
-	
+
 	public static function editPreferences($preferences)
 	{
 		$config = MDL_Config::getInstance();
-		$config->setMetas($preferences);
+		$config->setVars($preferences);
 	}
 }
