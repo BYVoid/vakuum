@@ -21,7 +21,7 @@ class MDL_Judge_Record
 	const RESULT_WRONG_ANSWER = 7;
 	const RESULT_COMILATION_ERROR = 8;
 
-	public static function createRecord($user_id,$prob_id,$lang,$source)
+	public static function createRecord($user_id,$prob_id,$lang,$source,$display)
 	{
 		//create a new record
 		$db = BFL_Database :: getInstance();
@@ -36,9 +36,6 @@ class MDL_Judge_Record
 		$stmt->bindParam(':user_id', $user_id);
 		$stmt->execute();
 		$record_id = $db->getLastInsertID();
-
-		$default_display = MDL_Config::getInstance()->getVar('record_display_default');
-		$display = new MDL_Record_Display($default_display);
 
 		$meta = array
 		(
@@ -102,9 +99,14 @@ class MDL_Judge_Record
 		if ($record_meta->getVar('status') == self::STATUS_STOPPED)
 			return;
 
-		$result = $record_meta->getVar('result');
+		if (isset($record_meta->result))
+		{
+			$result = $record_meta->result;
+			$result = BFL_XML::XML2Array($result);
+		}
+		else
+			$result = array();
 
-		$result = BFL_XML::XML2Array($result);
 		if (isset($result['execute']['case']))
 		{
 			if (!isset($result['execute']['case'][0]))

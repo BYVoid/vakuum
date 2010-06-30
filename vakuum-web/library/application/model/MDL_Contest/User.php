@@ -51,19 +51,16 @@ class MDL_Contest_User
 	{
 		if ($this->records == NULL)
 		{
-			$records = $this->getMeta()->getVar('records');
-
-			if ($records === false)
-				$this->records = array();
-			else
+			if (isset($this->getMeta()->records))
 			{
-				$records = explode(',',$records);
-
+				$records = explode(',',$this->getMeta()->records);
 				foreach ($records as $record_id)
 				{
 					$this->records[] = new MDL_Record($record_id, MDL_Record::GET_NONE);
 				}
 			}
+			else
+				$this->records = array();
 		}
 		return $this->records;
 	}
@@ -93,7 +90,11 @@ class MDL_Contest_User
 		if (!isset($this->last_record[$prob_id]))
 		{
 			$records = $this->getRecordsWithProblem($problem);
-			$this->last_record[$prob_id] = $records[count($records) - 1];
+			if (count($records) > 0)
+				$record = $records[count($records) - 1];
+			else
+				$record = NULL;
+			$this->last_record[$prob_id] = $record;
 		}
 		return $this->last_record[$prob_id];
 	}

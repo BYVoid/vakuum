@@ -158,4 +158,9 @@ class MDL_Contest_Info
 	{
 		return new MDL_Contest_Rank_Display($this->config['permissions'][$period]['rank_display']);
 	}
+
+	public function getRecordDisplay($period)
+	{
+		return new MDL_Contest_Rank_Display($this->config['permissions'][$period]['record_display']);
+	}
 }

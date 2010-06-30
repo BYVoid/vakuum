@@ -3,9 +3,18 @@ class MDL_Record_Result
 {
 	protected $result;
 
-	public function __construct($result)
+	public function __construct($record_meta)
 	{
-		$this->result = BFL_XML::XML2Array($result);
+		if (isset($record_meta->result))
+		{
+			$result = $record_meta->result;
+
+			$result = BFL_XML::XML2Array($result);
+		}
+		else
+			$result = array();
+
+		$this->result = $result;
 	}
 
 	public function getCompile()

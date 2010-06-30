@@ -15,14 +15,11 @@
 	<?php $contest_name = $contest_config->getName() ?>
 	<?php $contest_desc = $contest_config->getDesc() ?>
 	<?php $contest_path = $this->locator->getURL('contest/entry').'/'. $contest_id ?>
-	<?php $contest_signup_path = $this->locator->getURL('contest/signup').'/'. $contest_id ?>
-
 	<tr>
 		<td><?php echo $contest_id?></td>
 		<td><?php echo $this->escape($contest_name) ?></td>
 		<td><?php echo $this->escape($contest_desc) ?></td>
 		<td>
-			<a href="<?php echo $contest_signup_path ?>">报名参赛</a>
 			<a href="<?php echo $contest_path ?>">进入比赛</a>
 		</td>
 	</tr>

@@ -1,7 +1,6 @@
 <?php $contest = $this->contest ?>
 <?php $contest_id = $contest->getID() ?>
 <?php $contest_config = $contest->getConfig() ?>
-<?php $contest_rank_path = $this->locator->getURL('contest/rank').'/'.$contest_id ?>
 
 <?php $this->title="比赛 - ".$contest_config->getName() ?>
 <?php $this->display('contest/header.php') ?>
@@ -41,7 +40,7 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><a href="<?php echo $contest_rank_path ?>">查看排名</a></td>
+		<td><a href="<?php echo $this->locator->getURL('contest/dosignup').'/'.$contest_id ?>">立即报名</a></td>
 	</tr>
 </table>
 

@@ -45,10 +45,15 @@
 	<?php if ($display->problem): ?>
 		<?php $contest_start_time = $contest_config->getContestTimeStart() ?>
 		<?php foreach($problems as $problem): ?>
+			<?php $record = $contest_user->getLastRecordWithProblem($problem) ?>
 			<td>
-				<?php echo $this->formatTimeSection ($contest_user->getLastRecordWithProblem($problem)->getSubmitTime() - $contest_start_time) ?>
-				<br />(<?php echo count($contest_user->getRecordsWithProblem($problem)) ?>)
+			<?php if ($record != NULL): ?>
+				<?php echo $this->formatTimeSection ($record->getSubmitTime() - $contest_start_time) ?>
 				<br /><?php echo (int) $contest_user->getScoreWithProblem($problem) ?>
+				(<?php echo count($contest_user->getRecordsWithProblem($problem)) ?>)
+			<?php else: ?>
+				未提交
+			<?php endif ?>
 			</td>
 		<?php endforeach ?>
 	<?php endif ?>

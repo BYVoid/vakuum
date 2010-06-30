@@ -6,7 +6,7 @@
  */
 class MDL_Judge_Single
 {
-	public static function submit($user_id,$prob_id,$lang,$source)
+	public static function submit($user_id,$prob_id,$lang,$source,$display)
 	{
 		//TODO verify problem allowence
 		$problem = MDL_Problem_Show::getProblem($prob_id);
@@ -23,7 +23,7 @@ class MDL_Judge_Single
 		$source = self::convertEncode($source);
 
 		//create new record
-		$record_id = MDL_Judge_Record::createRecord($user_id,$prob_id,$lang,$source);
+		$record_id = MDL_Judge_Record::createRecord($user_id,$prob_id,$lang,$source,$display);
 
 		return $record_id;
 	}

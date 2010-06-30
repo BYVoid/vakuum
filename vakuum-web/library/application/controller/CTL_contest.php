@@ -68,19 +68,6 @@ class CTL_contest extends CTL_Abstract_Controller
 
 	}
 
-
-	public function ACT_signup()
-	{
-		if (!$this->acl->check(array('general')))
-			$this->deny();
-
-		$contest_id = $this->path_option->getPathSection(2);
-		$contest = new MDL_Contest($contest_id);
-
-		$this->view->contest = $contest;
-		$this->view->display('contest/signup.php');
-	}
-
 	public function ACT_dosignup()
 	{
 		if (!$this->acl->check(array('general')))
@@ -112,7 +99,8 @@ class CTL_contest extends CTL_Abstract_Controller
 		$language = $_POST['lang'];
 		$source = file_get_contents($_FILES['source']['tmp_name']);
 
-		$record_id = MDL_Judge_Single::submit($user->getID(),$prob_id,$language,$source);
+		$record_display = $contest->getConfig()->getRecordDisplay('during');
+		$record_id = MDL_Judge_Single::submit($user->getID(),$prob_id,$language,$source,$record_display);
 
 		$contest_user->addRecord($record_id);
 

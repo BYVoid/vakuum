@@ -105,7 +105,9 @@ abstract class MDL_Parameter_Abstract
 	public function unsetVar($key)
 	{
 		if (!$this->haveVar($key))
+		{
 			throw new MDL_Exception_Meta(MDL_Exception_Meta::NON_EXISTENT_VARIBLE);
+		}
 		unset($this->varibles[$key]);
 		$this->modified[$key] = self::REMOVE;
 	}
@@ -118,7 +120,13 @@ abstract class MDL_Parameter_Abstract
 	public function getVar($key)
 	{
 		if (!$this->haveVar($key))
+		{
+			if (DEBUG)
+			{
+				var_dump($key);
+			}
 			throw new MDL_Exception_Meta(MDL_Exception_Meta::NON_EXISTENT_VARIBLE);
+		}
 		return $this->varibles[$key];
 	}
 
@@ -155,7 +163,7 @@ abstract class MDL_Parameter_Abstract
 
 	public function __isset($key)
 	{
-		$this->haveVar($key);
+		return $this->haveVar($key);
 	}
 
 	public function __unset($key)

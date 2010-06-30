@@ -73,7 +73,7 @@ class MDL_Record_Info
 	public function getResult()
 	{
 		if (empty($this->result))
-			$this->result = new MDL_Record_Result($this->getRecordMeta()->getVar('result'));
+			$this->result = new MDL_Record_Result($this->getRecordMeta());
 		return $this->result;
 	}
 }

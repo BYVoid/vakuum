@@ -22,7 +22,11 @@ class MDL_ACL
 	private function __construct()
 	{
 		session_start();
-		$this->null_user = new MDL_User(0);
+		$this->null_user = new MDL_User(0, MDL_User::ID_USER_ID, MDL_User::GET_NONE, array
+		(
+			'user_name' => 'guest',
+			'user_nickName' => 'Guest',
+		));
 	}
 
 	/**
