@@ -36,14 +36,27 @@
 	</tr>
 	<tr>
 		<td>计算罚时</td>
-		<td><?php echo $this->escape($contest_config->getPenaltyTime()) ?></td>
+		<td><?php echo showBool($contest_config->getPenaltyTime()) ?></td>
 	</tr>
 	<tr>
-		<td></td>
-		<td><a href="<?php echo $this->locator->getURL('contest/dosignup').'/'.$contest_id ?>">立即报名</a></td>
+		<td>比赛状态</td>
+		<td><?php echo $this->escape($contest->getStatus()) ?></td>
+	</tr>
+	<tr>
+		<td>你的状态</td>
+		<td>
+			<?php if ($this->contest_user->isSignUped()): ?>
+				已经報名
+			<?php else: ?>
+				还未报名
+				<a href="<?php echo $this->locator->getURL('contest/dosignup').'/'.$contest_id ?>">立即报名</a>
+			<?php endif ?>
+		</td>
 	</tr>
 </table>
 
+<?php if ($this->contest_user->canViewProblem()): ?>
+<p>请注意，点击下面任意一个题目的链接以后即开始计时。</p>
 <table border="1">
 	<tr>
 		<td>代号</td>
@@ -60,5 +73,7 @@
 		<td>状态</td>
 	</tr>
 <?php endforeach ?>
+
+<?php endif ?>
 </table>
 <?php $this->display('footer.php') ?>

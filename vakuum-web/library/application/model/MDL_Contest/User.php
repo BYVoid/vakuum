@@ -140,33 +140,38 @@ class MDL_Contest_User
 		return 0;
 	}
 
-	public function signUp($check_sign_up_time = true)
+	public function getStartTime()
 	{
-		if ($check_sign_up_time && !$this->getContest()->getConfig()->isDuringSignUp(time()))
-			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_DURING_SIGN_UP_TIME);
-
-		if ($this->checkSignUp())
-			throw new MDL_Exception_Contest(MDL_Exception_Contest::SIGN_UP_ALREADY);
-
-		$this->getMeta()->setVar('sign_up', time());
+		if (!isset($this->getMeta()->start_time))
+			$this->setStart();
+		return $this->getMeta()->start_time;
 	}
 
-	public function checkSignUp()
+	public function isSignUped()
 	{
-		return $this->getMeta()->haveVar('sign_up');
+		return isset($this->getMeta()->sign_up_time);
 	}
 
-	public function checkContestPermission()
+	public function isDuringUserContest()
 	{
-		//檢査比賽時間
-		if (!$this->getContest()->getConfig()->isDuringContest(time()))
-			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_DURING_CONTEST_TIME);
+		return $this->getContest()->isDuringContest() &&
+				time() < $this->getStartTime() + $this->getContest()->getConfig()->getContestTimeLimit();
+	}
 
-		//檢査是否報名
-		if (!$this->checkSignUp())
-			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_SIGN_UP);
+	public function canViewProblem()
+	{
+		return !$this->getContest()->isBeforeContest() && $this->isSignUped();
+	}
 
-		return true;
+	public function canSubmit()
+	{
+		return $this->isDuringUserContest() && $this->isSignUped();
+	}
+
+	public function setStart()
+	{
+		if (!isset($this->getMeta()->start_time))
+			$this->getMeta()->start_time = time();
 	}
 
 	public function addRecord($record_id)
@@ -182,5 +187,16 @@ class MDL_Contest_User
 
 		$record = new MDL_Record($record_id);
 		$this->last_record[$record->getProblem()->getID()] = $record;
+	}
+
+	public function signUp($check_sign_up_time = true)
+	{
+		if ($check_sign_up_time && !$this->getContest()->getConfig()->isDuringSignUp(time()))
+			throw new MDL_Exception_Contest(MDL_Exception_Contest::NOT_DURING_SIGN_UP_TIME);
+
+		if ($this->isSignUped())
+			throw new MDL_Exception_Contest(MDL_Exception_Contest::SIGN_UP_ALREADY);
+
+		$this->getMeta()->sign_up_time = time();
 	}
 }

@@ -88,6 +88,20 @@ a:hover
 	background-color: #F1FEDB;
 }
 
+#problem_content
+{
+	border: 1px solid;
+	margin: 10px;
+	padding: 5px;
+	height: 500px;
+	width: 96%;
+	
+	overflow-y: scroll;
+	background-color:#FFFFFF;
+	font-size: 1.1em;
+	font-family: monospace;
+}
+
 .codearea
 {
 	border: 1px solid;

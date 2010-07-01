@@ -32,10 +32,9 @@ class CTL_contest extends CTL_Abstract_Controller
 
 		$contest = new MDL_Contest($contest_id);
 		$user = $this->acl->getUser();
-
 		$contest_user = new MDL_Contest_User($contest, $user);
-		$contest_user->checkContestPermission();
 
+		$this->view->contest_user = $contest_user;
 		$this->view->contest = $contest;
 
 		if ($prob_alias === false)
@@ -44,8 +43,11 @@ class CTL_contest extends CTL_Abstract_Controller
 		}
 		else
 		{
-			$prob_id = $contest->getConfig()->getProbIDbyAlias($prob_alias);
+			if (!$contest_user->canViewProblem())
+				$this->deny();
 
+			$contest_user->setStart();
+			$prob_id = $contest->getConfig()->getProbIDbyAlias($prob_alias);
 			$problem = new MDL_Problem($prob_id,MDL_Problem::GET_ALL);
 
 			$this->view->problem = $problem;
@@ -56,8 +58,6 @@ class CTL_contest extends CTL_Abstract_Controller
 
 	public function ACT_rank()
 	{
-		//TODO permission
-
 		$contest_id = $this->path_option->getPathSection(2);
 
 		$contest = new MDL_Contest($contest_id);
@@ -78,7 +78,7 @@ class CTL_contest extends CTL_Abstract_Controller
 		$contest_user = new MDL_Contest_User(new MDL_Contest($contest_id), $user);
 		$contest_user->signUp();
 
-		$this->locator->redirect('contest/list');
+		$this->locator->redirect('contest/entry',NULL,'/'.$contest_id);
 	}
 
 	public function ACT_submit()
@@ -93,7 +93,8 @@ class CTL_contest extends CTL_Abstract_Controller
 		$contest_id = $_POST['contest_id'];
 		$contest = new MDL_Contest($contest_id);
 		$contest_user = new MDL_Contest_User($contest,$user);
-		$contest_user->checkContestPermission();
+		if (!$contest_user->canSubmit())
+			$this->deny();
 
 		$prob_id = $_POST['prob_id'];
 		$language = $_POST['lang'];

@@ -92,4 +92,19 @@ class MDL_Contest
 			$this->rank = new MDL_Contest_Rank($this);
 		return $this->rank->getRankDisplay();
 	}
+
+	public function isBeforeContest()
+	{
+		return time() < $this->getConfig()->getContestTimeStart();
+	}
+
+	public function isAfterContest()
+	{
+		return time() >= $this->getConfig()->getContestTimeStart();
+	}
+
+	public function isDuringContest()
+	{
+		return !$this->isBeforeContest() && !$this->isAfterContest();
+	}
 }
