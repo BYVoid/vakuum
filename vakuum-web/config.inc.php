@@ -14,6 +14,7 @@ define('DB_PREFIX','vakuum_');
 
 //SESSION COOKIE前缀
 define('SESSION_PREFIX','vakdev');
+define('CACHE_PREFIX','vakuum_dev_byvoid');
 //加密码
 define('PWD_ENCWORD','vakuum_develop');
 
