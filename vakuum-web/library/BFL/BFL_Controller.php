@@ -2,7 +2,7 @@
 class BFL_Controller
 {
 	protected static $_instance = NULL;
-	
+
 	/**
 	 * Get Instance
 	 * @return BFL_Controller
@@ -15,20 +15,21 @@ class BFL_Controller
 		}
 		return self::$_instance;
 	}
-	
+
 	public static function redirect($address)
 	{
-		header("Location: {$address}");
+		@header('Location: '.$address);
+		echo '<p>Redirecting to <a href="'.$address.'">'.$address.'</a></p>';
 		exit;
 	}
-	
+
 	private $nf_class,$nf_method;
 	private $custom_controller_router;
 	private $request_path,$base_path;
 	private $controller_prefix,$action_prefix;
 
 	private function __clone(){}
-	
+
 	private function __construct()
 	{
 		$this->custom_controller_router=array();
@@ -48,7 +49,7 @@ class BFL_Controller
 		else
 			die('not found');
 	}
-	
+
 	public function setNotFound($callback)
 	{
 		$this->not_found_callback = $callback;
@@ -59,10 +60,10 @@ class BFL_Controller
 		$this->actCustomRouter();
 		$this->formatPath();
 		$path_option = BFL_PathOption::getInstance();
-		
+
 		$class_name = $this->controller_prefix.'_'.$path_option->getPathSection(0);
 		$action_name = $this->action_prefix.'_'.$path_option->getPathSection(1);
-		
+
 		if (BFL_Loader::controllerExist($class_name))
 		{
 			$ctl = new $class_name;
@@ -86,7 +87,7 @@ class BFL_Controller
 			return '';
 		return $_SERVER['PATH_INFO'];
 	}
-	
+
 	private function actCustomRouter()
 	{
 		foreach ($this->custom_controller_router as $item)
@@ -106,7 +107,7 @@ class BFL_Controller
 			}
 		}
 	}
-	
+
 	private function formatPath()
 	{
 		$this->request_path = explode('/',$this->request_path);
@@ -119,7 +120,7 @@ class BFL_Controller
 		BFL_Register::setVar('request_path',$this->request_path);
 		BFL_Register::setVar('base_path',$this->base_path);
 	}
-	
+
 	public function setCustomControllerRouter($path_prefix,$controller_name)
 	{
 		$this->custom_controller_router[] = array($path_prefix,$controller_name);

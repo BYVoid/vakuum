@@ -114,7 +114,7 @@ class MDL_Problem
 		return $this->prob_contents;
 	}
 
-	protected function getProblemMeta()
+	public function getProblemMeta()
 	{
 		if ($this->prob_meta == NULL)
 		{

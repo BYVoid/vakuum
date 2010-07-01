@@ -16,14 +16,14 @@ class CTL_judge extends CTL_Abstract_Controller
 		if ($this->config->getVar('judge_allowed') != 1)
 			$this->deny();
 
-		set_time_limit(0);
-		ignore_user_abort(1);
-
 		$user_id = $this->acl->getUser()->getID();
 		$prob_id = $_POST['prob_id'];
-		$prob_name = $_POST['prob_name'];
 		$lang = $_POST['lang'];
 		$source = file_get_contents($_FILES['source']['tmp_name']);
+
+		$problem = new MDL_Problem($prob_id);
+		if (!$problem->getProblemMeta()->display || !$problem->getProblemMeta()->verified)
+			$this->deny();
 
 		$default_display = MDL_Config::getInstance()->getVar('record_display_default');
 		$display = new MDL_Record_Display($default_display);

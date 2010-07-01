@@ -50,8 +50,16 @@ abstract class CTL_Abstract_Controller
 		$this->path_option = BFL_PathOption::getInstance();
 	}
 
-	public function deny()
+	public function deny($deny_administrator = false)
 	{
+		if (!$deny_administrator && $this->acl->check('administrator'))
+		{
+			if (DEBUG)
+			{
+				echo 'Warning: This page is not allowed to access for general users.';
+			}
+			return;
+		}
 		throw new MDL_Exception(MDL_Exception::PERMISSION_DENIED);
 	}
 

@@ -57,6 +57,8 @@ class CTL_problem extends CTL_Abstract_Controller
 
 		/* $identifier作爲prob_name査找 */
 		$problem = new MDL_Problem(array('name' => $prob_name), MDL_Problem::GET_ALL);
+		if (!$problem->getProblemMeta()->display || !$problem->getProblemMeta()->verified)
+			$this->deny();
 
 		$this->view->problem = $problem;
 		$this->view->submit_url = $this->locator->getURL('judge/submit');
