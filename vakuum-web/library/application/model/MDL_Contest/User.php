@@ -9,6 +9,8 @@ class MDL_Contest_User
 	protected $last_record = array();
 	protected $score = NULL;
 	protected $score_problem = array();
+	protected $penalty_time = NULL;
+	protected $penalty_time_problem = array();
 
 	public function __construct($contest,$user)
 	{
@@ -132,12 +134,34 @@ class MDL_Contest_User
 
 	public function getPenaltyTimeWithProblem($problem)
 	{
-		return 0;
+		$prob_id = $problem->getID();
+		if (!isset($this->penalty_time_problem[$prob_id]))
+		{
+			$record = $this->getLastRecordWithProblem($problem);
+			if ($record != NULL && $record->getScore() != 0)
+			{
+				$penalty = $record->getSubmitTime() - $this->getContest()->getConfig()->getContestTimeStart()
+						+ count($this->getRecordsWithProblem($problem)) * 20 * 60;
+			}
+			else
+				$penalty = 0;
+			$this->penalty_time_problem[$prob_id] = $penalty;
+		}
+		return $this->penalty_time_problem[$prob_id];
 	}
 
 	public function getPenaltyTime()
 	{
-		return 0;
+		if ($this->penalty_time == NULL)
+		{
+			$retval = 0;
+
+			foreach ($this->getContest()->getConfig()->getProblems() as $problem)
+				$retval += $this->getPenaltyTimeWithProblem($problem);
+
+			$this->penalty_time = $retval;
+		}
+		return $this->penalty_time;
 	}
 
 	public function getStartTime()
@@ -154,8 +178,10 @@ class MDL_Contest_User
 
 	public function isDuringUserContest()
 	{
+		$contest_time_limit = $this->getContest()->getConfig()->getContestTimeLimit();
 		return $this->getContest()->isDuringContest() &&
-				time() < $this->getStartTime() + $this->getContest()->getConfig()->getContestTimeLimit();
+				(	time() < $this->getStartTime() + $contest_time_limit
+					|| $contest_time_limit == 0 );
 	}
 
 	public function canViewProblem()

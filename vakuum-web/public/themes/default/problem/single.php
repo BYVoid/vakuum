@@ -47,7 +47,7 @@ $checker=($checker['type']=='standard')?'':'特殊检查器';
 </table>
 <?php echo $this->escape($checker) ?>
 
-<div id="problem_content">
+<div id="problem_content" class="content_box">
 <?php echo $prob_contents ?>
 </div>
 

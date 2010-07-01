@@ -11,9 +11,6 @@ class MDL_Contest
 	public function __construct($contest_id)
 	{
 		$this->contest_id = $contest_id;
-
-		//$this->contest_status = $contest_status;
-		//$this->contest_config = new MDL_Contest_Info($contest_config);
 	}
 
 	public function getID()
@@ -59,8 +56,8 @@ class MDL_Contest
 		{
 			$db = BFL_Database::getInstance();
 			$stmt = $db->factory('select cmeta_user_id from '.DB_TABLE_CONTESTMETA.
-					'where `cmeta_contest_id`=:contest_id and `cmeta_key`="sign_up" ');
-			$stmt->bindParam(':contest_id', $this->contest_id);
+					'where `cmeta_contest_id`=:contest_id and `cmeta_key`="sign_up_time" ');
+			$stmt->bindValue(':contest_id', $this->contest_id);
 			$stmt->execute();
 
 			$this->contest_users = array();
@@ -100,7 +97,7 @@ class MDL_Contest
 
 	public function isAfterContest()
 	{
-		return time() >= $this->getConfig()->getContestTimeStart();
+		return time() >= $this->getConfig()->getContestTimeEnd();
 	}
 
 	public function isDuringContest()

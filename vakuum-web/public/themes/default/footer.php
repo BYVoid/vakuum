@@ -1,9 +1,10 @@
 </div>
 
 <div id="footer">
-<p>Server Time: <?php echo $this->formatTime(time()); ?></p>
-<p>Script Executing Time: <?php printf("%.0f",$this->getScriptExecutingTime() * 1000) ?>ms</p>
-<p>Database Query: <?php echo $this->getDatabaseQueryCount() ?></p>
+Powered by Vakuum
+<small>Processed in <?php printf("%.0f",$this->getScriptExecutingTime() * 1000) ?>ms,
+<?php echo $this->getDatabaseQueryCount() ?> db queries</small>
+<small><?php echo $this->formatTime(time()); ?></small>
 </div>
 
 </div>

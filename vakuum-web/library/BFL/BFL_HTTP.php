@@ -71,19 +71,20 @@ class BFL_HTTP
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
 			$rs = curl_exec($ch);
 			curl_close($ch);
 		}
 		else
 		{
-			$query = htmlspecialchars_decode(http_build_query($request));
+			$query = http_build_query($request);
 			$opts = array
 			(
 				'http'=>array
 				(
 					'method'=>"POST",
 					'header'=>'Content-type: application/x-www-form-urlencoded; charset=utf-8'."\r\n". 'Content-length: '.strlen($query),
-					'content'=>$query
+					'content'=> $query
 				)
 			);
 			$context = stream_context_create($opts);

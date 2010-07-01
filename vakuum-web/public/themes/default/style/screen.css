@@ -88,7 +88,7 @@ a:hover
 	background-color: #F1FEDB;
 }
 
-#problem_content
+.content_box
 {
 	border: 1px solid;
 	margin: 10px;
