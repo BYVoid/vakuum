@@ -17,6 +17,7 @@ $problem_list = $this->list;
 		<td>Title</td>
 	</tr>
 <?php foreach($problem_list as $problem): ?>
+	<?php if (!$problem->getProblemMeta()->display || !$problem->getProblemMeta()->verified) continue ?>
 	<?php $prob_id = $problem->getID() ?>
 	<?php $prob_name = $problem->getName() ?>
 	<?php $prob_path = $this->locator->getURL('problem').'/'.$prob_name ?>

@@ -31,7 +31,7 @@ class CTL_user extends CTL_Abstract_Controller
 	{
 		$user_name = $this->path_option->getPathSection(2);
 
-		$user = new MDL_User($user_name, MDL_User::ID_USER_NAME, MDL_User::GET_ALL, MDL_User::GET_NONE);
+		$user = new MDL_User($user_name, MDL_User::ID_USER_NAME, MDL_User::GET_ALL);
 
 		$this->view->user = $user;
 		$this->view->display('user/single.php');

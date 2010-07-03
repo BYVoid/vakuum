@@ -87,4 +87,21 @@ class MDL_ACL
 		}
 		return false;
 	}
+
+	public function allowAdmin()
+	{
+		if ($this->check('administrator'))
+		{
+			if (DEBUG)
+			{
+				if (!BFL_Register::haveVar('warning_adminaccess'))
+				{
+					BFL_Register::setVar('warning_adminaccess',true);
+					echo 'Warning: This page is not allowed to access by general users.';
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 }

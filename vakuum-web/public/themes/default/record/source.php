@@ -7,7 +7,7 @@
 
 <a href="<?php echo $this->locator->getURL('record/detail').'/'. $record_id?>">查看提交记录</a>
 
-<?php if ($record->getDisplay()->source): ?>
+<?php if ($record->canViewSource()): ?>
 	<textarea class="codearea" readonly="readonly"><?php echo $source ?></textarea>
 <?php endif ?>
 

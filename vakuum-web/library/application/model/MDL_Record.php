@@ -145,6 +145,30 @@ class MDL_Record
 		return $this->getInfo()->result_text;
 	}
 
+	public function canViewSource($user = NULL)
+	{
+		if ($this->getDisplay()->source)
+			return true;
+
+		if (MDL_ACL::getInstance()->allowAdmin())
+			return true;
+
+		if ($user == NULL)
+			MDL_ACL::getInstance()->getUser();
+
+		if ($this->getUser()->getID() == $user->getID())
+			return true;
+	}
+
+	public function canView($key)
+	{
+		if ($this->getDisplay()->$key)
+			return true;
+
+		if (MDL_ACL::getInstance()->allowAdmin())
+			return true;
+	}
+
 	public static function completed($record_id)
 	{
 		$rmeta = new MDL_Record_Meta($record_id);

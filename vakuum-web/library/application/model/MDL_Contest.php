@@ -90,6 +90,15 @@ class MDL_Contest
 		return $this->rank->getRankDisplay();
 	}
 
+	public function canView($key)
+	{
+		if ($this->getRankDisplay()->$key)
+			return true;
+
+		if (MDL_ACL::getInstance()->allowAdmin())
+			return true;
+	}
+
 	public function isBeforeContest()
 	{
 		return time() < $this->getConfig()->getContestTimeStart();

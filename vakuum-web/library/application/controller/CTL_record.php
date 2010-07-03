@@ -42,7 +42,7 @@ class CTL_record extends CTL_Abstract_Controller
 		$record_id = $this->path_option->getPathSection(2);
 
 		$record = new MDL_Record($record_id);
-		if (!$record->getDisplay()->source && $record->getUser()->getID() != $this->acl->getUser()->getID())
+		if (!$record->canViewSource())
 			$this->deny();
 
 		$this->view->record = $record;

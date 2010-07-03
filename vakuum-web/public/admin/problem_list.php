@@ -30,7 +30,7 @@ $problem_list = $this->list;
 	<tr>
 		<td><?php echo $prob_id?></td>
 		<td><?php echo $prob_name?></td>
-		<td><?php echo $prob_title ?></td>
+		<td><a href="<?php echo $prob_path ?>"><?php echo $prob_title ?></a></td>
 		<td>
 			<a href="<?php echo $prob_edit?>">编辑题目</a>
 			<a href="<?php echo $prob_data?>">数据设置</a>

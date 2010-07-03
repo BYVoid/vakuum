@@ -52,14 +52,8 @@ abstract class CTL_Abstract_Controller
 
 	public function deny($deny_administrator = false)
 	{
-		if (!$deny_administrator && $this->acl->check('administrator'))
-		{
-			if (DEBUG)
-			{
-				echo 'Warning: This page is not allowed to access for general users.';
-			}
+		if (!$deny_administrator && $this->acl->allowAdmin())
 			return;
-		}
 		throw new MDL_Exception(MDL_Exception::PERMISSION_DENIED);
 	}
 
