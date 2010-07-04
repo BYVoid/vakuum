@@ -1,6 +1,5 @@
 <?php $this->title='比赛列表' ?>
 <?php $this->display('header.php') ?>
-<?php $contest_list = $this->list ?>
 
 <table border="1">
 	<tr>
@@ -9,7 +8,7 @@
 		<td>简介</td>
 		<td></td>
 	</tr>
-<?php foreach($contest_list as $contest): ?>
+<?php foreach($this->list->getList() as $contest): ?>
 	<?php $contest_id = $contest->getID() ?>
 	<?php $contest_config = $contest->getConfig() ?>
 	<?php $contest_name = $contest_config->getName() ?>
@@ -27,7 +26,7 @@
 </table>
 
 <div style="padding-top: 1em">
-<?php echo list_navigation::show($this->info['page_count'],$this->info['current_page']) ?>
+<?php echo list_navigation::show($this->list->getPageCount(),$this->list->getCurrentPage()) ?>
 </div>
 
 <?php $this->display('footer.php') ?>

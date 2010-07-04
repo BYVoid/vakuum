@@ -19,10 +19,9 @@ class CTL_record extends CTL_Abstract_Controller
 		if ($page === false)
 			$page = 1;
 
-		$rs = MDL_Record_List::getList($page);
+		$list = new MDL_Record_List($page);
 
-		$this->view->list = $rs['list'];
-		$this->view->info = $rs['info'];
+		$this->view->list = $list;
 
 		$this->view->display('record/list.php');
 	}

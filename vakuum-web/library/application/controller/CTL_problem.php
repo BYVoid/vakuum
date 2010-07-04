@@ -15,10 +15,9 @@ class CTL_problem extends CTL_Abstract_Controller
 		if ($page === false)
 			$page = 1;
 
-		$list = MDL_Problem_List::getList($page,true);
+		$list = new MDL_Problem_List($page);
 
-		$this->view->list = $list['list'];
-		$this->view->info = $list['info'];
+		$this->view->list = $list;
 
 		$this->view->display('problem/list.php');
 	}

@@ -4,59 +4,100 @@
  *
  * @author BYVoid
  */
-class MDL_List
+abstract class MDL_List
 {
-	/**
-	 * Get Data Set
-	 * @param string $sql
-	 * @return array DataSet
-	 */
-	public static function getList($sql,$current_page,$page_size)
+	protected $current_page = NULL;
+	protected $page_size = NULL;
+	protected $list = NULL;
+	protected $item_count = NULL;
+	protected $page_count = NULL;
+	protected $sql_prefix = '';
+
+	public function getItemCount()
 	{
-		//Restrict $current_page to positive integer
-		$current_page = (int)$current_page;
+		if ($this->list == NULL)
+			$this->updateList();
+		return $this->item_count;
+	}
+
+	public function getPageCount()
+	{
+		if ($this->list == NULL)
+			$this->updateList();
+		return $this->page_count;
+	}
+
+	public function getCurrentPage()
+	{
+		return $this->current_page;
+	}
+
+	public function getPageSize()
+	{
+		return $this->page_size;
+	}
+
+	public function getList()
+	{
+		if ($this->list == NULL)
+			$this->updateList();
+		return $this->list;
+	}
+
+	public function setPageSize($page_size)
+	{
+		$this->page_size = (int) $page_size;
+		$this->list = NULL;
+	}
+
+	public function setCurrentPage($page)
+	{
+		$this->current_page = (int) $page;
+		$this->list = NULL;
+	}
+
+	protected function setSQLPrefix($sql)
+	{
+		$this->sql_prefix = $sql;
+		$this->list = NULL;
+	}
+
+	protected function __construct()
+	{
+
+	}
+
+	protected function updateList()
+	{
+		$current_page = $this->getCurrentPage();
 		if ($current_page <= 0)
 			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
-		
-		$page_size = (int)$page_size;
+
+		$page_size = $this->getPageSize();
 		if ($page_size <= 0)
-			throw new MDL_Exception_Config(MDL_Exception_Config::INVALID_PAGE_SIZE);
-		
-		$db = BFL_Database :: getInstance();
-		$stmt = $db->factory($sql);
+			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE_SIZE);
+
+		$sql = $this->sql_prefix;
+		$stmt = BFL_Database::getInstance()->factory($sql);
 		$stmt->execute();
 
-		//Compute $row_count and $page_count
-		$item_count = $rs = $stmt->rowCount();
-		$stmt = NULL;
-		$page_count = (int)ceil($item_count / $page_size);
+		$item_count = $stmt->rowCount();
+		$page_count = (int) ceil($item_count / $page_size);
 		if ($page_count == 0)
 			$page_count = 1;
-		$info = array
-		(
-			'item_count' => $item_count,
-			'page_count' => $page_count,
-			'page_size' => $page_size,
-			'current_page' => $current_page,
-		);
-		
-		//Restrict $current_page not to be more than $page_count
+
+		$this->item_count = $item_count;
+		$this->page_count = $page_count;
+
 		if ($current_page > $page_count)
-		{
 			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
-		}
+
 		$offset = $page_size * ($current_page - 1);
-		
+
 		//Fetch list with LIMIT
 		$sql.= " LIMIT {$offset},{$page_size}";
-		$stmt = $db->factory($sql);
+		$stmt = BFL_Database::getInstance()->factory($sql);
 		$stmt->execute();
-		$result = $stmt->fetchAll();
-		
-		return array
-		(
-			'list' => $result,
-			'info' => $info,
-		);
+		$this->list = $stmt->fetchAll();
 	}
 }

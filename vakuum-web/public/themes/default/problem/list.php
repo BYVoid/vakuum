@@ -1,11 +1,3 @@
-<?php
-/**
- *
- * @var array(MDL_Problem)
- */
-$problem_list = $this->list;
-?>
-
 <?php $this->title='题目列表' ?>
 <?php $this->display('header.php') ?>
 <?php  ?>
@@ -16,7 +8,7 @@ $problem_list = $this->list;
 		<td>Name</td>
 		<td>Title</td>
 	</tr>
-<?php foreach($problem_list as $problem): ?>
+<?php foreach($this->list->getList() as $problem): ?>
 	<?php if (!$problem->getProblemMeta()->display || !$problem->getProblemMeta()->verified) continue ?>
 	<?php $prob_id = $problem->getID() ?>
 	<?php $prob_name = $problem->getName() ?>
@@ -30,7 +22,7 @@ $problem_list = $this->list;
 <?php endforeach?>
 </table>
 <div style="padding-top: 1em">
-<?php echo list_navigation::show($this->info['page_count'],$this->info['current_page']) ?>
+<?php echo list_navigation::show($this->list->getPageCount(),$this->list->getCurrentPage()) ?>
 </div>
 
 <?php $this->display('footer.php') ?>

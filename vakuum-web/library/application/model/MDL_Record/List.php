@@ -4,28 +4,33 @@
  *
  * @author BYVoid
  */
-class MDL_Record_List
+class MDL_Record_List extends MDL_List
 {
-	public static function getList($page,$page_size = 0)
+	public function __construct($page = 0, $page_size = 0)
 	{
-		$config = MDL_Config::getInstance();
 		if ($page_size == 0)
-			$page_size = $config->getVar('record_list_page_size');
+			$page_size = MDL_Config::getInstance()->problem_list_page_size;
 
-		$sql = 'select * from ' . DB_TABLE_RECORD . ' order by record_id desc';
-		$rs = MDL_List::getList($sql,$page,$page_size);
+		$this->setPageSize($page_size);
+		$this->setCurrentPage($page);
 
+		$sql = 'select * from '. DB_TABLE_RECORD. ' order by record_id desc';
+		$this->setSQLPrefix($sql);
 
-		foreach($rs['list'] as $i => $value)
-		{
-			$rs['list'][$i] = new MDL_Record($value['record_id'],MDL_Record::GET_NONE,array(
-				'user_id' => $value['record_user_id'],
-				'prob_id' => $value['record_prob_id'],
-				'judger_id' => $value['record_judger_id'],
-			));
-		}
-
-		return $rs;
+		parent::__construct();
 	}
 
+	public function getList()
+	{
+		parent::getList();
+		foreach ($this->list as $i => $item)
+		{
+			$this->list[$i] = new MDL_Record($item['record_id'], MDL_Record::GET_NONE, array(
+				'user_id' => $item['record_user_id'],
+				'prob_id' => $item['record_prob_id'],
+				'judger_id' => $item['record_judger_id'],
+			));
+		}
+		return $this->list;
+	}
 }

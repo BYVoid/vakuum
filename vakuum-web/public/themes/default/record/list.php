@@ -1,6 +1,5 @@
 <?php $this->title='提交记录列表' ?>
 <?php $this->display('header.php') ?>
-<?php $record_list = $this->list ?>
 
 <table border="1">
 	<tr>
@@ -10,7 +9,7 @@
 		<td>评测机</td>
 		<td>提交时间</td>
 	</tr>
-<?php foreach($record_list as $record): ?>
+<?php foreach($this->list->getList() as $record): ?>
 	<?php $record_id = $record->getID() ?>
 	<?php $record_path = $this->locator->getURL('record/detail').'/'. $record_id ?>
 
@@ -45,7 +44,7 @@
 <?php endforeach?>
 </table>
 <div style="padding-top: 1em">
-<?php echo list_navigation::show($this->info['page_count'],$this->info['current_page']) ?>
+<?php echo list_navigation::show($this->list->getPageCount(),$this->list->getCurrentPage()) ?>
 </div>
 
 <?php $this->display('footer.php') ?>

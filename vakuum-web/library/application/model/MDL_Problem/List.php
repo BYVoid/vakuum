@@ -1,30 +1,27 @@
 <?php
-class MDL_Problem_List
+class MDL_Problem_List extends MDL_List
 {
-	public static function getList($page,$check_display = false)
+	public function __construct($page = 0, $page_size = 0)
 	{
-		$config = MDL_Config::getInstance();
-		$page_size = $config->getVar('problem_list_page_size');
+		if ($page_size == 0)
+			$page_size = MDL_Config::getInstance()->problem_list_page_size;
 
-		$sql = 'select `prob_id` from '.DB_TABLE_PROB;
+		$this->setPageSize($page_size);
+		$this->setCurrentPage($page);
 
-		$list = MDL_List::getList($sql,$page,$page_size);
+		$sql = 'select `prob_id` from '. DB_TABLE_PROB;
+		$this->setSQLPrefix($sql);
 
-		foreach ($list['list'] as $i => $item)
-		{
-			$list['list'][$i] = new MDL_Problem($item['prob_id']);
-		}
-
-		return $list;
+		parent::__construct();
 	}
 
-	public static function getRecords($prob_id)
+	public function getList()
 	{
-		$db = BFL_Database::getInstance();
-		$stmt = $db->factory('select `record_id` from '.DB_TABLE_RECORD.' where `record_prob_id`=:prob_id');
-		$stmt->bindParam(':prob_id', $prob_id);
-		$stmt->execute();
-		$records = $stmt->fetchAll();
-		return $records;
+		parent::getList();
+		foreach ($this->list as $i => $item)
+		{
+			$this->list[$i] = new MDL_Problem($item['prob_id']);
+		}
+		return $this->list;
 	}
 }

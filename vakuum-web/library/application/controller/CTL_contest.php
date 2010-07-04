@@ -11,13 +11,12 @@ class CTL_contest extends CTL_Abstract_Controller
 	public function ACT_list()
 	{
 		$page = $this->path_option->getVar('page');
-		if ($page===false)
+		if ($page === false)
 			$page = 1;
 
-		$rs = MDL_Contest_List::getList($page);
+		$list = new MDL_Contest_List($page);
 
-		$this->view->list = $rs['list'];
-		$this->view->info = $rs['info'];
+		$this->view->list = $list;
 
 		$this->view->display('contest/list.php');
 	}

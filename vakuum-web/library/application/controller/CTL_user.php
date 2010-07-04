@@ -19,10 +19,9 @@ class CTL_user extends CTL_Abstract_Controller
 		if ($page===false)
 			$page = 1;
 
-		$rs = MDL_User_List::getList($page);
+		$list = new MDL_User_List($page);
 
-		$this->view->list = $rs['list'];
-		$this->view->info = $rs['info'];
+		$this->view->list = $list;
 
 		$this->view->display('user/list.php');
 	}

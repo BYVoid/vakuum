@@ -1,6 +1,6 @@
 <?php
 
-class MDL_Contest_List extends MDL_Contest
+class MDL_Contest_List extends MDL_List
 {
 	function def()
 	{
@@ -38,26 +38,28 @@ class MDL_Contest_List extends MDL_Contest
 			),
 		);
 	}
-		
-	public static function getList($page,$check_display = false)
-	{
-		$config = MDL_Config::getInstance();
-		$page_size = $config->getVar('contest_list_page_size');
-		
-		$sql = 'select * from '.DB_TABLE_CONTEST;
 
-		$listinfo = MDL_List::getList($sql,$page,$page_size);
-		
-		foreach($listinfo['list'] as $i => $item)
+	public function __construct($page = 0, $page_size = 0)
+	{
+		if ($page_size == 0)
+			$page_size = MDL_Config::getInstance()->problem_list_page_size;
+
+		$this->setPageSize($page_size);
+		$this->setCurrentPage($page);
+
+		$sql = 'select * from '. DB_TABLE_CONTEST;
+		$this->setSQLPrefix($sql);
+
+		parent::__construct();
+	}
+
+	public function getList()
+	{
+		parent::getList();
+		foreach ($this->list as $i => $item)
 		{
-			$listinfo['list'][$i] = new MDL_Contest($item['contest_id'], $item['contest_config'], $item['contest_status']);
+			$this->list[$i] = new MDL_Contest($item['contest_id'], $item['contest_config'], $item['contest_status']);
 		}
-		
-		if ($check_display)
-		{
-			
-		}
-		
-		return $listinfo;
+		return $this->list;
 	}
 }
