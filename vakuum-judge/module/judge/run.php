@@ -27,7 +27,7 @@ function writeExecutorConfigFile($program,$time_limit,$memory_limit,$output_limi
 		$prob_config['memory_limit'] = $memory_limit;
 	if ($output_limit != 0)
 		$prob_config['output_limit'] = $output_limit;
-		
+
 	$xml = BFL_XML::Array2XML($prob_config);
 	file_put_contents("prob.xml",$xml);
 }
@@ -71,7 +71,7 @@ if (isset($testdata['additional_file']))
 {
 	if (!is_array($testdata['additional_file']))
 		$openfile[] = $testdata['additional_file'];
-	else
+	else if (!empty($testdata['additional_file']))
 		$openfile = array_merge($openfile,$testdata['additional_file']);
 }
 
@@ -93,22 +93,22 @@ foreach($testdata['case'] as $case)
 	if (isset($case['memory_limit']))
 		$memory_limit = $case['memory_limit'];
 	if (isset($case['output_limit']))
-		$memory_limit = $case['output_limit'];
-	
+		$output_limit = $case['output_limit'];
+
 	if (!file_exists($testdata_path.$case['input']))
 		return 'testdata';
 	creatlink("{$testdata_path}{$case['input']}",$file_input);
-	
+
 	//Create configure file for executor
 	writeExecutorConfigFile($binary_file,$time_limit,$memory_limit,$output_limit,$openfile);
-	
+
 	$this->execute("{$executor} prob.xml",$stdout,$stderr);
 	list($result,$option,$time_used,$memory_used) = explode(" ",$stdout);
-	
+
 	$total_time += $time_used;
 	if ($memory_used > $max_memory)
 		$max_memory = $memory_used;
-	
+
 	$post_result = array
 	(
 		'type' => 'execute',
@@ -123,21 +123,21 @@ foreach($testdata['case'] as $case)
 			'check_message' => '',
 		)
 	);
-	
+
 	if ($result == 0)
 	{
 		//Run successfully
 		if (!file_exists($testdata_path.$case['output']))
 			return 'testdata';
-		
+
 		creatlink("{$testdata_path}{$case['output']}",$file_answer);
 		$this->execute("{$checker} {$file_input} {$file_output} {$file_answer}",$stdout,$stderr);
-		
+
 		list($score,$message) = explode("\n",$stdout);
 		$post_result['info']['score'] = $score;
 		$post_result['info']['check_message'] = $message;
 		$total_score += $score;
-		
+
 		if ($fatal == 0 && $score != 1.00)
 		{
 			//Wrong Answer
@@ -151,7 +151,8 @@ foreach($testdata['case'] as $case)
 			$fatal = $result;
 		}
 	}
-	
+	if (file_exists('executor.log'))
+		rename('executor.log', 'executor_'.$case_id.'.log');
 	$this->sendBack($post_result);
 }
 

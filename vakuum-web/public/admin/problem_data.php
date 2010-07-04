@@ -60,7 +60,7 @@
 								</td>
 							</tr>
 						</table>
-					
+
 					</td>
 				</tr>
 				<tr>
@@ -155,7 +155,7 @@ function addAditionalFile()
 
 function delAditionalFile(obj)
 {
-	$(obj.parentNode.parentNode).remove();  
+	$(obj.parentNode.parentNode).remove();
 }
 
 function addCase()
@@ -179,13 +179,13 @@ $(document).ready(function()
 
 	checker_language = $('#checker option[value="<?php echo $this->escape($this->data_config['checker']['custom']['language']) ?>"]');
 	checker_language.attr('selected','selected');
-	
+
 	<?php foreach($this->data_config['additional_file'] as $item): ?>
 	addAditionalFile("<?php echo $this->escape($item) ?>");
 	<?php endforeach; ?>
 
 	<?php foreach($this->data_config['case'] as $item): ?>
-	addCase("<?php echo $this->escape($item['input']) ?>","<?php echo $this->escape($item['output']) ?>","<?php echo $this->escape($item['time_limit']) ?>","<?php echo $this->escape($item['memory_limit']) ?>","<?php echo $this->escape($item['output_limit']) ?>");
+	addCase("<?php echo $this->escape($item['input']) ?>","<?php echo $this->escape($item['output']) ?>","<?php echo $this->escape(isset($item['time_limit'])?$item['time_limit']:'') ?>","<?php echo $this->escape(isset($item['memory_limit'])?$item['memory_limit']:'') ?>","<?php echo $this->escape(isset($item['output_limit'])?$item['output_limit']:'') ?>");
 	<?php endforeach; ?>
 });
 

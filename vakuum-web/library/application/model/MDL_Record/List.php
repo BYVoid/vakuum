@@ -12,7 +12,7 @@ class MDL_Record_List
 		if ($page_size == 0)
 			$page_size = $config->getVar('record_list_page_size');
 
-		$sql = 'select * from ' . DB_TABLE_RECORD;
+		$sql = 'select * from ' . DB_TABLE_RECORD . ' order by record_id desc';
 		$rs = MDL_List::getList($sql,$page,$page_size);
 
 

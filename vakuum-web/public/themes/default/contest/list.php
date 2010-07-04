@@ -23,8 +23,8 @@
 			<a href="<?php echo $contest_path ?>">进入比赛</a>
 		</td>
 	</tr>
-	</table>
 <?php endforeach?>
+</table>
 
 <div style="padding-top: 1em">
 <?php echo list_navigation::show($this->info['page_count'],$this->info['current_page']) ?>

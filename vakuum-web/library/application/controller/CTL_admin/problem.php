@@ -159,14 +159,7 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		if ($verify_result['overall'] != '')
 			die('problem not verified');
 
-		try
-		{
-			$rs = MDL_Problem_Dispatch::transmitTestdata($judger_id,$data_config);
-		}
-		catch(MDL_Exception $e)
-		{
-			$desc = $e->dieInfo();
-		}
+		$rs = MDL_Problem_Dispatch::transmitTestdata($judger_id,$data_config);
 
 		if ($rs['version'] == $data_config['version'] && $rs['hash_code'] == $verify_result['hash_code'])
 		{

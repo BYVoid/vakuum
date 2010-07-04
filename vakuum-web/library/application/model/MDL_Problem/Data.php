@@ -6,7 +6,7 @@
  */
 class MDL_Problem_Data
 {
-	
+
 	public static function getDataConfig($prob_id,$prob_name,$prob_title)
 	{
 		$prob_meta = new MDL_Problem_Meta($prob_id);
@@ -17,7 +17,7 @@ class MDL_Problem_Data
 		}
 		else
 			$data_config = array();
-		
+
 		$new_data_config = array
 		(
 			'id' => $prob_id,
@@ -26,12 +26,12 @@ class MDL_Problem_Data
 			'input' => isset($data_config['input'])?$data_config['input']:"",
 			'output' => isset($data_config['output'])?$data_config['output']:"",
 			'checker' => isset($data_config['checker'])?$data_config['checker']:"std_checker",
-		
+
 			'time_limit' => isset($data_config['time_limit'])?$data_config['time_limit']:"",
 			'memory_limit' => isset($data_config['memory_limit'])?$data_config['memory_limit']:"",
 			'output_limit' => isset($data_config['output_limit'])?$data_config['output_limit']:"",
 		);
-		
+
 		$new_data_config['checker'] = array
 		(
 			'name' => isset($data_config['checker']['name'])?$data_config['checker']['name']:"std_checker",
@@ -42,7 +42,7 @@ class MDL_Problem_Data
 				'language' => isset($data_config['checker']['custom']['language'])?$data_config['checker']['custom']['language']:"",
 			),
 		);
-		
+
 		if (isset($data_config['additional_file']))
 		{
 			if (!is_array($data_config['additional_file']))
@@ -51,35 +51,34 @@ class MDL_Problem_Data
 		}
 		else
 			$new_data_config['additional_file'] = array();
-		
+
 		if (isset($data_config['case']))
 		{
 			if (!isset($data_config['case'][0]))
 				$data_config['case'] = array($data_config['case']);
 			foreach($data_config['case'] as $item)
 			{
-				$new_data_config['case'][] = array
-				(
-					'input' => isset($item['input'])?$item['input']:'',
-					'output' => isset($item['output'])?$item['output']:'',
-					'time_limit' => isset($item['time_limit'])?$item['time_limit']:'',
-					'memory_limit' => isset($item['memory_limit'])?$item['memory_limit']:'',
-					'output_limit' => isset($item['output_limit'])?$item['output_limit']:'',
-				);
+				$newcase = array();
+				foreach (array('input','output','time_limit','memory_limit','output_limit') as $key)
+				{
+					if (isset($item[$key]))
+						$newcase[$key] = $item[$key];
+				}
+				$new_data_config['case'][] = $newcase;
 			}
 		}
 		else
 			$new_data_config['case'] = array();
-		
-			
+
+
 		if (isset($data_config['version']))
 			$new_data_config['version'] = $data_config['version'];
 		else
 			$new_data_config['version'] = 0;
-		
+
 		return $new_data_config;
 	}
-	
+
 	/**
 	 * getNextProblemID
 	 * @return int
@@ -96,7 +95,7 @@ class MDL_Problem_Data
 			$prob_id = $rs['maxid'] + 1;
 		return $prob_id;
 	}
-	
+
 	/**
 	 * edit
 	 * @param array $data_config
@@ -112,7 +111,7 @@ class MDL_Problem_Data
 		$prob_meta->setVar('data_config',$data_config);
 		$prob_meta->setVar('verified',0);
 	}
-	
+
 	/**
 	 * format
 	 * @param array $data_config
@@ -125,30 +124,30 @@ class MDL_Problem_Data
 			throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_PROB_ID);
 		$prob_id = $data_config['id'];
 		$problem_meta = new MDL_Problem_Meta($prob_id);
-		
+
 		if (!isset($data_config['name']) || $data_config['name']=="")
 			throw new MDL_Exception_Problem_Edit(MDL_Exception_Problem_Edit::INVALID_PROB_NAME);
 		$new_data_config['name'] = $data_config['name'];
-		
+
 		foreach(array('input','output','checker') as $key)
 		{
 			if (!isset($data_config[$key]) || $data_config[$key]=="")
 				throw new MDL_Exception_Problem_Edit('invalid_data_'.$key);
 			$new_data_config[$key] = $data_config[$key];
 		}
-		
+
 		if ($new_data_config['checker']['type'] == 'standard')
 			unset($new_data_config['checker']['custom']);
-		
+
 		if (isset($data_config['additional_file']))
 			$new_data_config['additional_file'] = $data_config['additional_file'];
-		
+
 		foreach(array('time_limit','memory_limit','output_limit') as $key)
 		{
 			if (isset($data_config[$key]))
 				$new_data_config[$key] = (int)($data_config[$key]);
 		}
-		
+
 		if (isset($data_config['case_input']))
 		{
 			$case_count = count($data_config['case_input']);

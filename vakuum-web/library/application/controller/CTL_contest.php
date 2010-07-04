@@ -63,9 +63,36 @@ class CTL_contest extends CTL_Abstract_Controller
 		$contest = new MDL_Contest($contest_id);
 
 		$this->view->contest = $contest;
-
 		$this->view->display('contest/rank.php');
+	}
 
+	public function ACT_record()
+	{
+		$contest_id = $this->path_option->getVar('contest');
+		$user_id = $this->path_option->getVar('user');
+		$problem_id = $this->path_option->getVar('problem');
+
+		$contest = new MDL_Contest($contest_id);
+		$user = new MDL_User($user_id);
+		$contest_user = new MDL_Contest_User($contest, $user);
+
+		if ($problem_id != NULL)
+		{
+			$problem = new MDL_Problem($problem_id);
+			$records = $contest_user->getRecordsWithProblem($problem);
+		}
+		else
+		{
+			$records = $contest_user->getRecords();
+		}
+
+		$this->view->list = $records;
+		$this->view->info = array(
+			'page_count' => 1,
+			'current_page' => 1,
+		);
+
+		$this->view->display('record/list.php');
 	}
 
 	public function ACT_dosignup()

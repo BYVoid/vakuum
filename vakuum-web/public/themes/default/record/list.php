@@ -17,7 +17,7 @@
 	<?php $prob_id = $record->getProblem()->getID() ?>
 	<?php $prob_name = $record->getProblem()->getName() ?>
 	<?php $prob_title = $record->getProblem()->getTitle() ?>
-	<?php $prob_path = $this->locator->getURL('problem/single').'/'. $prob_name ?>
+	<?php $prob_path = $this->locator->getURL('problem').'/'. $prob_name ?>
 
 	<?php $user_id = $record->getUser()->getID() ?>
 	<?php $user_name = $record->getUser()->getName() ?>

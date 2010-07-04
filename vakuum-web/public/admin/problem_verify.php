@@ -51,7 +51,7 @@
 							</tr>
 							<?php endif ?>
 						</table>
-						
+
 					</td>
 				</tr>
 				<tr>
@@ -100,9 +100,9 @@
 					<td>输出限制(KB)</td>
 				</tr>
 				<?php foreach($this->data_config['case'] as $item): ?>
-				<?php if($item['time_limit']=='') $item['time_limit']=$this->data_config['time_limit'] ?>
-				<?php if($item['memory_limit']=='') $item['memory_limit']=$this->data_config['memory_limit'] ?>
-				<?php if($item['output_limit']=='') $item['output_limit']=$this->data_config['output_limit'] ?>
+				<?php if(!isset($item['time_limit'])) $item['time_limit']=$this->data_config['time_limit'] ?>
+				<?php if(!isset($item['memory_limit'])) $item['memory_limit']=$this->data_config['memory_limit'] ?>
+				<?php if(!isset($item['output_limit'])) $item['output_limit']=$this->data_config['output_limit'] ?>
 				<?php $input_verify = $this->verify_result['case'][$case_id]['input']?"[Yes]":"[No]" ?>
 				<?php $output_verify = $this->verify_result['case'][$case_id]['output']?"[Yes]":"[No]" ?>
 				<tr>
@@ -129,7 +129,7 @@
 <?php else:?>
 <p>已通过验证，请进入下一步。</p>
 <form action="<?php echo $this->locator->getURL('admin_problem_dispatch') ?>/<?php echo $this->data_config['id'] ?>" method="get">
-<input type="submit" value="下一步" /> 
+<input type="submit" value="下一步" />
 </form>
 <?php endif ?>
 

@@ -24,7 +24,7 @@
 		<?php $problems = $contest_config->getProblems() ?>
 		<?php foreach($problems as $problem): ?>
 			<?php $problem_url = $this->locator->getURL('contest/entry').'/'. $contest_id .'/' . $problem->alias ?>
-			<td><a href="<?php echo $problem_url ?>" title="<?php echo $problem->getTitle() ?>"><?php echo $problem->alias ?></a></td>
+			<td><a href="<?php echo $problem_url ?>"><?php echo $problem->alias ?>(<?php echo $problem->getTitle() ?>)</a></td>
 		<?php endforeach ?>
 	<?php endif ?>
 	</tr>
@@ -49,10 +49,9 @@
 			<td>
 			<?php if ($record != NULL): ?>
 				<?php echo $this->formatTimeSection ($record->getSubmitTime() - $contest_start_time) ?>
+				<?php $record_url = MDL_Locator::makeURL('contest/record',array('contest'=>$contest->getID(),'user'=>$contest_user->getUser()->getID(),'problem' => $problem->getID())) ?>
 				<br /><?php echo (int) $contest_user->getScoreWithProblem($problem) ?>
-				(<?php echo count($contest_user->getRecordsWithProblem($problem)) ?>)
-			<?php else: ?>
-				未提交
+				<a href="<?php echo $record_url?>">(<?php echo count($contest_user->getRecordsWithProblem($problem)) ?>)</a>
 			<?php endif ?>
 			</td>
 		<?php endforeach ?>

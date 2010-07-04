@@ -11,7 +11,7 @@ class Judge
 	const RESULT_WRONG_ANSWER = 7;
 	const RESULT_COMILATION_ERROR = 8;
 	private $task_name,$prob_name,$source_file,$binary_file,$language,$return_url,$public_key;
-	
+
 	public function __construct($task_name,$prob_name,$source_file,$language,$return_url,$public_key)
 	{
 		$this->task_name = $task_name;
@@ -22,19 +22,19 @@ class Judge
 		$this->return_url = $return_url;
 		$this->public_key = $public_key;
 	}
-	
+
 	public function compile()
 	{
 		require('compile.php');
 		return $result;
 	}
-	
+
 	public function run()
 	{
 		require('run.php');
 		return $summary;
 	}
-	
+
 	public function complete($info)
 	{
 		$post_result = array
@@ -44,12 +44,12 @@ class Judge
 		);
 		$this->sendBack($post_result);
 	}
-	
+
 	private function checkStop()
 	{
 		return file_exists('stop.action');
 	}
-	
+
 	private function fileread($fp)
 	{
 		$str = '';
@@ -60,7 +60,7 @@ class Judge
 		}
 		return $str;
 	}
-	
+
 	private function execute($command,&$stdout,&$stderr)
 	{
 		writelog("EXECUTE:".$command);
@@ -74,16 +74,16 @@ class Judge
 		{
 			$fpout = $pipes[1];
 			$fperr = $pipes[2];
-	
+
 			$stdout = $this->fileread($fpout);
 			$stderr = $this->fileread($fperr);
-			
+
 			fclose($fpout);
 			fclose($fperr);
 			proc_close($process);
 		}
 	}
-	
+
 	private function sendBack($post_result)
 	{
 		if ($this->checkStop())
@@ -95,10 +95,10 @@ class Judge
 		$client = new BFL_RemoteAccess_Client($return_url,$public_key,0);
 		$client->writeRecord($post_result);
 	}
-	
+
 	function clear()
 	{
-		//if (!DEBUG_MODE)
+		if (!DEBUG_MODE)
 		{
 			$dirname = $this->task_name;
 			chdir('..');
