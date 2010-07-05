@@ -29,12 +29,22 @@ class MDL_Cache
 		if (!is_dir($this->cache_path))
 			mkdir($this->cache_path);
 
-		$this->default_expire = 60;
+		$this->default_expire = 86400;
+	}
+
+	public function keyEncode($key)
+	{
+		return sha1($key);
+	}
+
+	public function getPath($key)
+	{
+		return $this->cache_path . $this->keyEncode($key);
 	}
 
 	public function getExpire($key)
 	{
-		$filename = $this->cache_path . $key . '_expire';
+		$filename = $this->getPath($key) . '_expire';
 		if (file_exists($filename))
 			return (int) file_get_contents($filename);
 		else
@@ -43,7 +53,7 @@ class MDL_Cache
 
 	public function exist($key)
 	{
-		$filename = $this->cache_path . $key;
+		$filename = $this->getPath($key);
 
 		if (file_exists($filename))
 		{
@@ -65,7 +75,8 @@ class MDL_Cache
 			$this->set($key, $default_value);
 			return $default_value;
 		}
-		return file_get_contents($this->cache_path . $key);
+		$value = file_get_contents($this->getPath($key));
+		return unserialize($value);
 	}
 
 	public function set($key, $value, $expire = NULL)
@@ -73,8 +84,11 @@ class MDL_Cache
 		if ($expire == NULL)
 			$expire = $this->default_expire;
 		$expire += time();
-		file_put_contents($this->cache_path . $key, $value);
-		file_put_contents($this->cache_path . $key . '_expire', $expire);
+
+		$value = serialize($value);
+
+		file_put_contents($this->getPath($key), $value);
+		file_put_contents($this->getPath($key) . '_expire', $expire);
 	}
 
 	public function __get($key)

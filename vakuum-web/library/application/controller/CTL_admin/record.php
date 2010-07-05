@@ -11,13 +11,12 @@ class CTL_admin_record extends CTL_admin_Abstract
 	public function ACT_list()
 	{
 		$page = $this->path_option->getVar('page');
-		if ($page===false)
+		if ($page === false)
 			$page = 1;
 
-		$rs = MDL_Record_List::getList($page,50);
+		$list = new MDL_Record_List($page);
 
-		$this->view->list = $rs['list'];
-		$this->view->info = $rs['info'];
+		$this->view->list = $list;
 
 		$this->view->display('record_list.php');
 	}
@@ -37,9 +36,7 @@ class CTL_admin_record extends CTL_admin_Abstract
 		$prob_id = $this->path_option->getVar('prob_id');
 		if ($prob_id !== false)
 		{
-			MDL_Problem_Show::getProblemName($prob_id);
-
-			MDL_Judge_Single::rejudgeProblem($prob_id);
+			MDL_Judge_Single::rejudgeProblem(new MDL_Problem($prob_id));
 			$this->locator->redirect('admin_problem_list');
 		}
 	}

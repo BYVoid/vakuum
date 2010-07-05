@@ -10,7 +10,6 @@ abstract class MDL_List
 	protected $page_size = NULL;
 	protected $list = NULL;
 	protected $item_count = NULL;
-	protected $page_count = NULL;
 	protected $sql_prefix = '';
 
 	public function getItemCount()
@@ -22,9 +21,10 @@ abstract class MDL_List
 
 	public function getPageCount()
 	{
-		if ($this->list == NULL)
-			$this->updateList();
-		return $this->page_count;
+		$page_count = (int) ceil($this->item_count/ $this->getPageSize());
+		if ($page_count == 0)
+			$page_count = 1;
+		return $page_count;
 	}
 
 	public function getCurrentPage()
@@ -47,12 +47,16 @@ abstract class MDL_List
 	public function setPageSize($page_size)
 	{
 		$this->page_size = (int) $page_size;
+		if ($this->page_size <= 0)
+			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE_SIZE);
 		$this->list = NULL;
 	}
 
 	public function setCurrentPage($page)
 	{
 		$this->current_page = (int) $page;
+		if ($this->current_page <= 0)
+			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
 		$this->list = NULL;
 	}
 
@@ -69,29 +73,17 @@ abstract class MDL_List
 
 	protected function updateList()
 	{
-		$current_page = $this->getCurrentPage();
-		if ($current_page <= 0)
-			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
-
-		$page_size = $this->getPageSize();
-		if ($page_size <= 0)
-			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE_SIZE);
-
 		$sql = $this->sql_prefix;
 		$stmt = BFL_Database::getInstance()->factory($sql);
 		$stmt->execute();
 
 		$item_count = $stmt->rowCount();
-		$page_count = (int) ceil($item_count / $page_size);
-		if ($page_count == 0)
-			$page_count = 1;
-
 		$this->item_count = $item_count;
-		$this->page_count = $page_count;
 
-		if ($current_page > $page_count)
+		$current_page = $this->getCurrentPage();
+		if ($current_page > $this->getPageCount())
 			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
-
+		$page_size = $this->getPageSize();
 		$offset = $page_size * ($current_page - 1);
 
 		//Fetch list with LIMIT
@@ -99,5 +91,24 @@ abstract class MDL_List
 		$stmt = BFL_Database::getInstance()->factory($sql);
 		$stmt->execute();
 		$this->list = $stmt->fetchAll();
+	}
+
+	protected function separatePage($list)
+	{
+		$this->item_count = $item_count = count($list);
+
+		$current_page = $this->getCurrentPage();
+		$page_size = $this->getPageSize();
+		$page_count = $this->getPageCount();
+		if ($current_page > $page_count)
+			throw new MDL_Exception_List(MDL_Exception_List::INVALID_PAGE);
+
+		$offset = $page_size * ($current_page - 1);
+
+		$newlist = array();
+		for ($i = $offset; $i < $offset + $page_size && $i < $item_count; ++$i)
+			$newlist[] = $list[$i];
+
+		return $newlist;
 	}
 }

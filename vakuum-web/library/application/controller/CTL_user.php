@@ -19,7 +19,11 @@ class CTL_user extends CTL_Abstract_Controller
 		if ($page===false)
 			$page = 1;
 
+		$order_by = $this->path_option->getVar('by');
+		$order = $this->path_option->getVar('order');
+
 		$list = new MDL_User_List($page);
+		$list->setOrder($order_by, $order);
 
 		$this->view->list = $list;
 

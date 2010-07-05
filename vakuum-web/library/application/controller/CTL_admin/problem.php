@@ -14,10 +14,9 @@ class CTL_admin_problem extends CTL_admin_Abstract
 		if ($page===false)
 			$page = 1;
 
-		$rs = MDL_Problem_List::getList($page);
+		$list = new MDL_Problem_List($page);
 
-		$this->view->list = $rs['list'];
-		$this->view->info = $rs['info'];
+		$this->view->list = $list;
 
 		$this->view->display('problem_list.php');
 	}

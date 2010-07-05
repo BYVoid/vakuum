@@ -85,11 +85,10 @@ class CTL_contest extends CTL_Abstract_Controller
 			$records = $contest_user->getRecords();
 		}
 
-		$this->view->list = $records;
-		$this->view->info = array(
-			'page_count' => 1,
-			'current_page' => 1,
-		);
+
+		$list = new MDL_Record_List(1);
+		$list->setList($records);
+		$this->view->list = $list;
 
 		$this->view->display('record/list.php');
 	}

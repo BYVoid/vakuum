@@ -1,5 +1,22 @@
 <?php
 
+function getOrder()
+{
+	$path_option = BFL_PathOption::getInstance();
+	$order = $path_option->getVar('order');
+	if ($order == false)
+		$order = 'asc';
+	return $order;
+}
+
+function getOrderOp()
+{
+	if (getOrder() == 'asc')
+		return 'desc';
+	else
+		return 'asc';
+}
+
 function showBool($value)
 {
 	return $value ? '是' : '否';
@@ -10,7 +27,7 @@ function showStatus($status,$result_text)
 	if ($status == MDL_Judge_Record::STATUS_WAITING)
 		return '正在等待';
 	if ($status == MDL_Judge_Record::STATUS_PENDING)
-		return '正在分配';  
+		return '正在分配';
 	if ($status == MDL_Judge_Record::STATUS_RUNNING)
 	{
 		return '正在运行 #'. $result_text;

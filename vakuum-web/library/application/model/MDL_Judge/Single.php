@@ -45,12 +45,12 @@ class MDL_Judge_Single
 		MDL_Judger_Process::processTaskQueue();
 	}
 
-	public static function rejudgeProblem($prob_id)
+	public static function rejudgeProblem($problem)
 	{
-		$records = MDL_Problem_List::getRecords($prob_id);
+		$records = $problem->getRecords();
 		foreach($records as $record)
 		{
-			self::rejudgeSingle($record['record_id']);
+			self::rejudgeSingle($record->getID());
 		}
 	}
 

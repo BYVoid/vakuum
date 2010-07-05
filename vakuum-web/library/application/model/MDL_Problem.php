@@ -54,7 +54,7 @@ class MDL_Problem
 			if (empty($rs))
 				throw new MDL_Exception_Problem(MDL_Exception_Problem::INVALID_PROB_NAME);
 
-			$this->prob_id = $rs['prob_id'];
+			$this->prob_id = (int) $rs['prob_id'];
 			$this->prob_title = $rs['prob_title'];
 		}
 		return $this->prob_id;
@@ -72,6 +72,15 @@ class MDL_Problem
 		if ($this->prob_title == NULL)
 			$this->getNamesByID();
 		return $this->prob_title;
+	}
+
+	public function getURL($byname = true)
+	{
+		if ($byname)
+			$id = $this->getName();
+		else
+			$id = $this->getID();
+		return MDL_Locator::getInstance()->getURL('problem/'.$id);
 	}
 
 	protected function getNamesByID()
@@ -136,5 +145,19 @@ class MDL_Problem
 		}
 
 		return $this->prob_info;
+	}
+	
+	public function getRecords()
+	{
+		$db = BFL_Database :: getInstance();
+		$stmt = $db->factory('select `record_id` from '.DB_TABLE_RECORD.' where `record_prob_id`=:prob_id');
+		$stmt->bindValue(':prob_id', $this->getID());
+		$stmt->execute();
+
+		$records = array();
+		while ($rs = $stmt->fetch())
+			$records[] = new MDL_Record($rs['record_id']);
+
+		return $records;
 	}
 }

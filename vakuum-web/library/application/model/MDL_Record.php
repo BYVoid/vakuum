@@ -100,6 +100,11 @@ class MDL_Record
 		return $this->judger_id;
 	}
 
+	public function getURL()
+	{
+		return MDL_Locator::getInstance()->getURL('record/detail/'.$this->getID());
+	}
+
 	/**
 	 * @return MDL_Record_Info
 	 */

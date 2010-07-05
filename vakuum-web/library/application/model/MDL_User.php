@@ -113,14 +113,9 @@ class MDL_User
 		return $this->user_nickname;
 	}
 
-	public function getLink()
+	public function getURL()
 	{
 		return MDL_Locator::getInstance()->getURL('user/detail').'/'.$this->getName();
-	}
-
-	public function getLinkHTML()
-	{
-		return '<a href="'.$this->getLink().'">'.$this->getNickname().'</a>';
 	}
 
 	protected function getMeta()
@@ -139,5 +134,10 @@ class MDL_User
 			$this->user_info = $this->getMeta()->getAll();
 		}
 		return $this->user_info;
+	}
+
+	public function getRecord()
+	{
+		return new MDL_User_Record($this);
 	}
 }

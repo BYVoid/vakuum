@@ -25,12 +25,26 @@ class MDL_Record_List extends MDL_List
 		parent::getList();
 		foreach ($this->list as $i => $item)
 		{
-			$this->list[$i] = new MDL_Record($item['record_id'], MDL_Record::GET_NONE, array(
-				'user_id' => $item['record_user_id'],
-				'prob_id' => $item['record_prob_id'],
-				'judger_id' => $item['record_judger_id'],
-			));
+			if (!($this->list[$i] instanceof MDL_Record))
+			{
+				$this->list[$i] = new MDL_Record($item['record_id'], MDL_Record::GET_NONE, array(
+					'user_id' => $item['record_user_id'],
+					'prob_id' => $item['record_prob_id'],
+					'judger_id' => $item['record_judger_id'],
+				));
+			}
 		}
 		return $this->list;
+	}
+
+	public function setList($records)
+	{
+		$this->item_count = count($records);
+		$this->page_count = (int) ceil($this->item_count / $this->page_size);
+
+		$this->list = $records;
+
+
+		$this->page_size = count($records);
 	}
 }

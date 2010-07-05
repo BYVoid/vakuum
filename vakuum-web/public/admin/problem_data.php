@@ -160,10 +160,37 @@ function delAditionalFile(obj)
 
 function addCase()
 {
+	last_textboxs=$('#testcases > tbody > tr:last input:text');
 	$('#testcases > tbody').append($('#case_template tbody').html());
 	textboxs=$('#testcases > tbody > tr:last input:text');
 	for (i=0;i<5 && i<arguments.length;i++)
 		$(textboxs[i]).val(arguments[i]);
+	
+	if (arguments.length == 0 && last_textboxs[0] != undefined)
+	{
+		for (i=0;i<2;i++)
+		{
+			str = $(last_textboxs[i]).val();
+			for (j=str.length-1;j>=0;j--)
+			{
+				if (str[j] >= '0' && str[j] <= '9')
+				{
+					for (k=j-1;k>=0;k--)
+					{
+						if (!(str[k] >= '0' && str[k] <= '9'))
+						{
+							num = str.substr(k+1,j-k);
+							break;
+						}
+					}
+					num = Number(num) + 1;
+					str = str.substr(0,k+1) + num + str.substr(j+1);
+					break;
+				}
+			}
+			$(textboxs[i]).val(str);
+		}
+	}
 }
 
 function delCase(obj)

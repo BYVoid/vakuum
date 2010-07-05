@@ -34,7 +34,7 @@
 	<tr>
 		<td><?php echo $rank + 1 ?></td>
 	<?php if ($contest->canView('user')): ?>
-		<td><?php echo $contest_user->getUser()->getLinkHTML() ?></td>
+		<td><a href="<?php echo $contest_user->getUser()->getURL() ?>"><?php echo $contest_user->getUser()->getNickname() ?></a></td>
 	<?php endif ?>
 	<?php if ($contest->canView('score')): ?>
 		<td><?php echo (int) $contest_user->getScore() ?></td>

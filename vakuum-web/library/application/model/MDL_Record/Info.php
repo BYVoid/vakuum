@@ -1,16 +1,6 @@
 <?php
 class MDL_Record_Info
 {
-	public function __toString()
-	{
-		return serialize($this);
-	}
-
-	public function __sleep()
-	{
-		return array();
-	}
-
 	private static $m_initialized = false;
 	private static function mInitialize()
 	{
