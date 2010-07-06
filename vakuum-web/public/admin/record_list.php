@@ -18,12 +18,12 @@
 	<?php $prob_id = $record->getProblem()->getID() ?>
 	<?php $prob_name = $record->getProblem()->getName() ?>
 	<?php $prob_title = $record->getProblem()->getTitle() ?>
-	<?php $prob_path = $this->locator->getURL('problem/single').'/'. $prob_name ?>
+	<?php $prob_path = $record->getProblem()->getURL() ?>
 
 	<?php $user_id = $record->getUser()->getID() ?>
 	<?php $user_name = $record->getUser()->getName() ?>
 	<?php $user_nickname = $record->getUser()->getNickName() ?>
-	<?php $user_path = $this->locator->getURL('user/detail').'/'. $user_name ?>
+	<?php $user_path = $record->getUser()->getURL() ?>
 
 	<?php $judger_id = $record->getJudgerID() ?>
 	<?php $submit_time = $record->getSubmitTime() ?>
@@ -31,7 +31,6 @@
 
 	<?php $status_text = showStatus($record->getInfo()->status,$record->getInfo()->result_text)?>
 
-	<?php $record_source = $this->locator->getURL('record_source').'/'. $record_id ?>
 	<?php $record_delete = $this->locator->getURL('admin_record_delete').'/'. $record_id ?>
 	<?php $record_rejudge = $this->locator->getURL('admin_record_rejudge').'/record_id/'. $record_id ?>
 	<?php $record_stopjudge = $this->locator->getURL('admin_record_stopjudge').'/'. $record_id ?>
@@ -44,7 +43,6 @@
 		<td><?php echo $judger_id ?></td>
 		<td><?php echo $submit_time_text ?></td>
 		<td>
-			<a href="<?php echo $record_source ?>" target="_blank">查看代码</a>
 			<a href="<?php echo $record_delete ?>">永久删除</a>
 			<a href="<?php echo $record_rejudge ?>" target="_blank">重新评测</a>
 			<a href="<?php echo $record_stopjudge ?>" >停止评测</a>

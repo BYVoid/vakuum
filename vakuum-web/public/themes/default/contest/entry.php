@@ -66,11 +66,13 @@
 	</tr>
 <?php foreach($contest_config->getProblems() as $problem): ?>
 	<?php $problem_url = $this->locator->getURL('contest/entry').'/'. $contest_id .'/' . $problem->alias ?>
+	<?php $contest_user = new MDL_Contest_User($contest, MDL_ACL::getInstance()->getUser()) ?>
+	<?php $record = $contest_user->getLastRecordWithProblem($problem) ?>
 	<tr>
 		<td><?php echo $problem->alias ?></td>
 		<td><a href="<?php echo $problem_url ?>"><?php echo $problem->getTitle() ?></a></td>
 		<td><?php echo $problem->score ?></td>
-		<td>状态</td>
+		<td><?php echo $record != NULL?'已提交':'未提交' ?></td>
 	</tr>
 <?php endforeach ?>
 

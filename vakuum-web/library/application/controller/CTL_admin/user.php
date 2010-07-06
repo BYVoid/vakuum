@@ -7,29 +7,28 @@ class CTL_admin_user extends CTL_admin_Abstract
 	{
 		$this->locator->redirect('admin_user_list');
 	}
-	
+
 	public function ACT_list()
 	{
 		$page = $this->path_option->getVar('page');
-		if ($page===false)
+		if ($page === false)
 			$page = 1;
 
-		$rs = MDL_User_List::getList($page);
-		
-		$this->view->list = $rs['list'];
-		$this->view->info = $rs['info'];
-		
+		$rs = new MDL_User_List($page);
+
+		$this->view->list = $rs;
+
 		$this->view->display('user_list.php');
 	}
-	
+
 	public function ACT_edit()
 	{
 		$user_id = (int)$this->path_option->getPathSection(2);
-		
+
 		if ($user_id != 0)
 		{
 			$rs = MDL_User_Detail::getUser($user_id);
-			
+
 			$rs['action'] = 'edit';
 		}
 		else
@@ -44,14 +43,14 @@ class CTL_admin_user extends CTL_admin_Abstract
 				'memo' => '',
 				'identity' => 'general',
 			);
-			
+
 			$rs['action'] = 'add';
 		}
-		
+
 		$this->view->user = $rs;
 		$this->view->display('user_edit.php');
 	}
-	
+
 	public function ACT_doedit()
 	{
 		$identity=array();
@@ -59,7 +58,7 @@ class CTL_admin_user extends CTL_admin_Abstract
 			if ($value == 1)
 				$identity[] = $key;
 		$identity = implode(',',$identity);
-		
+
 		$user = array
 		(
 			'user_id' => $_POST['user_id'],
@@ -89,7 +88,7 @@ class CTL_admin_user extends CTL_admin_Abstract
 		}
 		else
 			$this->deny();
-		
+
 		$this->locator->redirect('admin_user_list');
 	}
 }

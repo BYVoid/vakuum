@@ -152,7 +152,13 @@ foreach($testdata['case'] as $case)
 		}
 	}
 	if (file_exists('executor.log'))
+	{
 		rename('executor.log', 'executor_'.$case_id.'.log');
+	}
+	if (file_exists($file_output))
+	{
+		rename($file_output, $file_output.$case_id);
+	}
 	$this->sendBack($post_result);
 }
 
