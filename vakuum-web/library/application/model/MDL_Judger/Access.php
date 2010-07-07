@@ -3,9 +3,8 @@ class MDL_Judger_Access
 {
 	public static function getState($judger)
 	{
-		$judger_config = $judger['judger_config'];
-		$url = $judger_config['url'];
-		$public_key = $judger_config['public_key'];
+		$url = $judger->getConfig()->getRemoteURL();
+		$public_key = $judger->getConfig()->getRemoteKey();
 		$client = new BFL_RemoteAccess_Client($url,$public_key);
 		$client->__throwException(true);
 		try
@@ -18,9 +17,14 @@ class MDL_Judger_Access
 		}
 		return $state;
 	}
-	
-	public static function sendRequest($judger_url,$public_key,$task,$return_url)
+
+	public static function sendRequest($judger, $task)
 	{
+		$judger_url = $judger->getConfig()->getRemoteURL();
+		$public_key = $judger->getConfig()->getRemoteKey();
+		$return_url = $config->getVar('judge_return_site') .
+				MDL_Locator::getInstance()->getURL('judge_return');
+
 		$task = array
 		(
 			'prob_name' => $task['prob_name'],
@@ -33,13 +37,13 @@ class MDL_Judger_Access
 		$client = new BFL_RemoteAccess_Client($judger_url,$public_key,1);
 		$client->judge($task);
 	}
-	
-	public static function stopJudge($task_name,$judger)
+
+	public static function stopJudge($task_name, $judger)
 	{
-		$client = new BFL_RemoteAccess_Client($judger['url'],$judger['public_key'],1);
+		$client = new BFL_RemoteAccess_Client($judger->getConfig()->getRemoteURL(), $judger->getConfig()->getRemoteKey(), 1);
 		$client->stopJudge($task_name);
 	}
-	
+
 	public static function getPublicKey()
 	{
 		return BFL_RemoteAccess_Common::keyhash(MDL_Config::getInstance()->getVar('judge_return_key'));

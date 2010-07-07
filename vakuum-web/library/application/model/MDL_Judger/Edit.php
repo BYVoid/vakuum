@@ -1,5 +1,5 @@
 <?php
-class MDL_Judger_Edit extends MDL_Judger
+class MDL_Judger_Edit
 {
 	public static function add($judger)
 	{
@@ -73,40 +73,8 @@ class MDL_Judger_Edit extends MDL_Judger
 		$stmt->execute();
 	}
 
-	public static function getDefault()
+	protected static function encodeConfig($config)
 	{
-		$judger = array
-		(
-			'judger_id' => 0,
-			'judger_name' => '',
-			'judger_priority' => 0,
-			'judger_enabled' => 1,
-			'judger_config' => array
-			(
-				'url' => '',
-				'public_key' => '',
-				'upload' => 'ftp',
-				'ftp' => array
-				(
-					'address' => '',
-					'user' => '',
-					'password' => '',
-					'path' => array
-					(
-						'task' => '',
-						'testdata' => '',
-					),
-				),
-				'share' => array
-				(
-					'path' => array
-					(
-						'task' => '',
-						'testdata' => '',
-					),
-				),
-			),
-		);
-		return $judger;
+		return BFL_XML::Array2XML($config);
 	}
 }

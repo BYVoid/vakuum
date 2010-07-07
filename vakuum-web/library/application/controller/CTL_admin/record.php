@@ -26,7 +26,8 @@ class CTL_admin_record extends CTL_admin_Abstract
 		$record_id = $this->path_option->getVar('record_id');
 		if ($record_id !== false)
 		{
-			if (!MDL_Record::completed($record_id))
+			$record = new MDL_Record($record_id);
+			if (!$record->judgeStopped())
 				throw new MDL_Exception_Judge(MDL_Exception_Judge::ALREADY_RUNNING);
 
 			MDL_Judge_Single::rejudgeSingle($record_id);

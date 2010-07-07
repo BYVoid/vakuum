@@ -6,31 +6,33 @@
  */
 class MDL_Judger_Transmit
 {
-	public static function sendTask($judger_config,$task_name,$source,$src_name)
+	public static function sendTask($judger,$task_name,$source,$src_name)
 	{
-		if ($judger_config['upload'] == 'share')
+		$judger_config = $judger->getConfig();
+		if ($judger_config->getUploadMethod() == 'share')
 		{
-			MDL_Judger_Transmit_Share::uploadTask($judger_config['share'],$task_name,$source,$src_name);
+			MDL_Judger_Transmit_Share::uploadTask($judger ,$task_name,$source,$src_name);
 		}
-		else if ($judger_config['upload'] == 'ftp')
+		else if ($judger_config->getUploadMethod() == 'ftp')
 		{
-			MDL_Judger_Transmit_FTP::uploadTask($judger_config['ftp'],$task_name,$source,$src_name);
+			MDL_Judger_Transmit_FTP::uploadTask($judger ,$task_name,$source,$src_name);
 		}
 		else
 		{
 			throw new MDL_Exception_Judge(MDL_Exception_Judge::INVALID_UPLOAD_METHOD);
 		}
 	}
-	
-	public static function sendTestdata($judger_config,$data_config)
+
+	public static function sendTestdata($judger,$data_config)
 	{
-		if ($judger_config['upload'] == 'share')
+		$judger_config = $judger->getConfig();
+		if ($judger_config->getUploadMethod() == 'share')
 		{
-			MDL_Judger_Transmit_Share::uploadTestdata($judger_config['share'],$data_config);
+			MDL_Judger_Transmit_Share::uploadTestdata($judger ,$data_config);
 		}
-		else if ($judger_config['upload'] == 'ftp')
+		else if ($judger_config->getUploadMethod() == 'ftp')
 		{
-			MDL_Judger_Transmit_FTP::uploadTestdata($judger['ftp'],$data_config);
+			MDL_Judger_Transmit_FTP::uploadTestdata($judger ,$data_config);
 		}
 		else
 		{

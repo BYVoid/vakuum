@@ -8,7 +8,7 @@ class MDL_Record
 	protected $record_id = NULL;
 	protected $problem = NULL;
 	protected $user = NULL;
-	protected $judger_id = NULL;
+	protected $judger = NULL;
 	protected $info = NULL;
 
 	public function __construct($record_id, $initial_get = self::GET_NONE, $addition = array())
@@ -41,7 +41,7 @@ class MDL_Record
 					$this->problem = new MDL_Problem($value);
 					break;
 				case 'judger_id':
-					$this->judger_id = $value;
+					$this->judger = new MDL_Judger($value);
 					break;
 			}
 		}
@@ -60,7 +60,7 @@ class MDL_Record
 
 		$this->problem = new MDL_Problem($record['record_prob_id']);
 		$this->user = new MDL_User($record['record_user_id']);
-		$this->judger_id = $record['record_judger_id'];
+		$this->judger = new MDL_Judger($record['record_judger_id']);
 	}
 
 	public function getID()
@@ -90,14 +90,14 @@ class MDL_Record
 		return $this->user;
 	}
 
+	/**
+	 * @return MDL_Judger
+	 */
 	public function getJudger()
 	{
-
-	}
-
-	public function getJudgerID()
-	{
-		return $this->judger_id;
+		if ($this->judger == NULL)
+			$this->initializeRecord();
+		return $this->judger;
 	}
 
 	public function getURL()
@@ -174,57 +174,9 @@ class MDL_Record
 			return true;
 	}
 
-	public static function completed($record_id)
+	public function judgeStopped()
 	{
-		$rmeta = new MDL_Record_Meta($record_id);
-		$status = (int)$rmeta->getVar('status');
+		$status = $this->getInfo()->getRecordMeta()->status;
 		return $status == MDL_Judge_Record::STATUS_STOPPED;
-	}
-
-	public static function getTask()
-	{
-		//find records whose record_judger_id = 0
-
-		$db = BFL_Database :: getInstance();
-		$stmt = $db->factory('select `record_id`,`record_prob_id` from '.DB_TABLE_RECORD.
-			' where `record_judger_id` = 0 order by `record_id` asc');
-
-		$stmt->execute();
-		$task = $stmt->fetch();
-
-		if (!$task)
-		{
-			return array();
-		}
-
-		$record_meta = new MDL_Record_Meta($task['record_id']);
-		$task['language'] = $record_meta->getVar('lang');
-		$task['source'] = $record_meta->getVar('source');
-		$submit_time = $record_meta->getVar('submit_time');
-		$task['task_name'] = 'vkm_'. $task['record_id'];
-
-		$prob_names = MDL_Problem_Show::getProblemName($task['record_prob_id']);
-		$task['prob_name'] = $prob_names['prob_name'];
-
-		unset($task['record_prob_id']);
-
-		return $task;
-	}
-
-	public static function getSrcname($task_name,$lang)
-	{
-		switch ($lang)
-		{
-			case 'c':
-				$suffix = '.c';
-				break;
-			case 'cpp':
-				$suffix = '.cpp';
-				break;
-			case 'pas':
-				$suffix = '.pas';
-				break;
-		}
-		return $task_name . $suffix;
 	}
 }

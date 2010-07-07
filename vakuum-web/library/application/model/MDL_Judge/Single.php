@@ -57,12 +57,7 @@ class MDL_Judge_Single
 	public static function stop($record_id)
 	{
 		$record = new MDL_Record($record_id);
-		$judger_id = $record->getJudgerID();
-
-		if ($judger_id != 0)
-		{
-			$judger = MDL_Judger::getJudger($judger_id);
-		}
+		$judger_id = $record->getJudger()->getID();
 
 		$record_meta = $record->getInfo()->getRecordMeta();
 		$status = $record_meta->getVar('status');
@@ -75,10 +70,10 @@ class MDL_Judge_Single
 
 		if ($judger_id != 0)
 		{
-			MDL_Judger_Access::stopJudge($task_name,$judger['judger_config']);
+			MDL_Judger_Access::stopJudge($task_name, $record->getJudger());
 			if ($status != MDL_Judge_Record::STATUS_WAITING)
 			{
-				MDL_Judger::unlock($judger_id);
+				$record->getJudger()->unlock();
 			}
 		}
 	}

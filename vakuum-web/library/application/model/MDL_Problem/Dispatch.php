@@ -85,25 +85,25 @@ class MDL_Problem_Dispatch
 
 	public static function getJudgersTestdataVersion($data_config)
 	{
-		$judgers = MDL_Judger::getJudgers();
-		foreach($judgers as $key=>$item)
+		$judgers = MDL_Judger_Set::getAllJudgers();
+		foreach($judgers as $key=>$judger)
 		{
-			$judger_url = $judgers[$key]['judger_config']['url'];
-			$public_key = $judgers[$key]['judger_config']['public_key'];
+			$judger_url = $judger->getConfig()->getRemoteURL();
+			$public_key = $judger->getConfig()->getRemoteKey();
 			$rs = MDL_Judger_Data::getTestdataVersion($judger_url,$public_key,$data_config['name']);
-			$judgers[$key] = array_merge($judgers[$key],$rs);
+			$judgers[$key]->testdataVersion = $rs;
 		}
 		return $judgers;
 	}
 
 	public static function transmitTestdata($judger_id,$data_config)
 	{
-		$judger = MDL_Judger::getJudger($judger_id);
+		$judger = new MDL_Judger($judger_id);
 		//Upload testdata files
-		MDL_Judger_Transmit::sendTestdata($judger['judger_config'],$data_config);
+		MDL_Judger_Transmit::sendTestdata($judger,$data_config);
 
-		$judger_url = $judger['judger_config']['url'];
-		$public_key = $judger['judger_config']['public_key'];
+		$judger_url = $judger->getConfig()->getRemoteURL();
+		$public_key = $judger->getConfig()->getRemoteKey();
 
 		return MDL_Judger_Data::updateTestdata($judger_url,$public_key,$data_config['name']);
 	}

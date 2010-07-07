@@ -143,11 +143,9 @@ class MDL_Judge_Record
 		);
 		$record_meta->setVars($meta);
 
-		//get judger_id via record_id
-		$judger_id = $record->getJudgerID();
-
-		//free judger
-		MDL_Judger::unlock($judger_id);
+		//unlock judger
+		$judger = $record->getJudger();
+		$judger->unlock();
 
 		//process task queue
 		MDL_Judger_Process::processTaskQueue();

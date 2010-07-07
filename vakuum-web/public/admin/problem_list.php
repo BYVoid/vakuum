@@ -27,9 +27,7 @@
 		<td>
 			<a href="<?php echo $prob_edit?>">编辑题目</a>
 			<a href="<?php echo $prob_data?>">数据设置</a>
-			<a href="<?php echo $prob_verify?>">数据验证</a>
-			<a href="<?php echo $prob_dispatch?>">数据分发</a>
-			<a href="<?php echo $prob_rejudge?>">重新评测所有记录</a>
+			<a href="<?php echo $prob_rejudge?>">重新评测</a>
 		</td>
 	</tr>
 <?php endforeach?>

@@ -25,7 +25,7 @@
 	<?php $user_nickname = $record->getUser()->getNickName() ?>
 	<?php $user_path = $record->getUser()->getURL() ?>
 
-	<?php $judger_id = $record->getJudgerID() ?>
+	<?php $judger_name = $record->getJudger()->getName() ?>
 	<?php $submit_time = $record->getSubmitTime() ?>
 	<?php $submit_time_text = $this->formatTime($submit_time)?>
 
@@ -40,7 +40,7 @@
 		<td><a href='<?php echo $record_path ?>' target="_blank"><?php echo $status_text ?></a></td>
 		<td><a href='<?php echo $prob_path ?>' target="_blank"><?php echo $prob_title ?></a></td>
 		<td><a href='<?php echo $user_path ?>' target="_blank"><?php echo $user_nickname ?></a></td>
-		<td><?php echo $judger_id ?></td>
+		<td><?php echo $judger_name ?></td>
 		<td><?php echo $submit_time_text ?></td>
 		<td>
 			<a href="<?php echo $record_delete ?>">永久删除</a>

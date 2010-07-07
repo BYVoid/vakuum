@@ -21,7 +21,7 @@
 	<?php $user_nickname = $record->getUser()->getNickName() ?>
 	<?php $user_path = $record->getUser()->getURL() ?>
 
-	<?php $judger_id = $record->getJudgerID() ?>
+	<?php $judger_name = $record->getJudger()->getName() ?>
 	<?php $submit_time_text = $this->formatTime($record->getSubmitTime())?>
 
 	<?php
@@ -34,7 +34,7 @@
 		<td><a href='<?php echo $record->getURL() ?>'><?php echo $status_text ?></a></td>
 		<td><a href='<?php echo $prob_path ?>'><?php echo $prob_title ?></a></td>
 		<td><a href='<?php echo $user_path ?>'><?php echo $user_nickname ?></a></td>
-		<td><?php echo $judger_id ?></td>
+		<td><?php echo $judger_name ?></td>
 		<td><?php echo $submit_time_text ?></td>
 	</tr>
 <?php endforeach?>

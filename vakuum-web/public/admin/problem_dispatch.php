@@ -16,14 +16,14 @@
 		<td>验证成功</td>
 		<td>分发</td>
 	</tr>
-	<?php foreach($this->judgers as $item):?>
-	<?php $verify_result = $current_version==$item['version']&&$current_hash_code==$item['hash_code'] ?>
+	<?php foreach($this->judgers as $judger):?>
+	<?php $verify_result = $current_version==$judger->testdataVersion['version']&&$current_hash_code==$judger->testdataVersion['hash_code'] ?>
 	<tr>
-		<td><?php echo $item['judger_id']?></td>
-		<td><?php echo $this->escape($item['judger_config']['url'])?></td>
-		<td><?php echo $this->escape($item['judger_config']['upload'])?></td>
-		<td id="verify_result_<?php echo $item['judger_id']?>"><?php echo $verify_result?"Yes":"No" ?></td>
-		<td><input value="<?php echo $item['judger_id']?>" type="checkbox" <?php if(!$verify_result): ?>checked="checked"<?php endif ?> /></td>
+		<td><?php echo $judger->getID() ?></td>
+		<td><?php echo $this->escape($judger->getConfig()->getRemoteURL())?></td>
+		<td><?php echo $this->escape($judger->getConfig()->getUploadMethod())?></td>
+		<td id="verify_result_<?php echo $judger->getID() ?>"><?php echo $verify_result?"Yes":"No" ?></td>
+		<td><input value="<?php echo $judger->getID() ?>" type="checkbox" <?php if(!$verify_result): ?>checked="checked"<?php endif ?> /></td>
 	</tr>
 	<?php endforeach ?>
 </table>
@@ -37,7 +37,7 @@ $(document).ready(function()
 {
 	$('#btnExecute').click
 	(
-		function(event)  
+		function(event)
 		{
 			$('#btnExecute').attr('disabled','disabled');
 			$("#divResult").html('');
@@ -59,7 +59,7 @@ $(document).ready(function()
 					{
 						$("#divResult").append('<p>正在向评测机 #' + this.judger_id + ' 传送数据...</p>');
 					},
-					success: function(xml)  
+					success: function(xml)
 					{
 						result = $(xml).find('overall').html();
 						if (result == '')
@@ -86,7 +86,7 @@ $(document).ready(function()
 					}
 				}
 			);
-			
+
 		}
 	);
 });
