@@ -1,5 +1,4 @@
 <?php
-
 class MDL_User_Record
 {
 	protected $user = NULL;
@@ -21,24 +20,26 @@ class MDL_User_Record
 	{
 		if ($this->records === NULL)
 		{
-			$cache_key = 'user_records_'.$this->getUser()->getID();
+			$user_id = $this->getUser()->getID();
+			$cache_key = 'user_records_'.$user_id;
 			$cache = MDL_Cache::getInstance();
 
 			if (!isset($cache->$cache_key))
 			{
 				$db = BFL_Database :: getInstance();
 				$stmt = $db->factory('select `record_id` from '.DB_TABLE_RECORD.' where `record_user_id`=:user_id');
-				$stmt->bindValue(':user_id', $this->getUser()->getID());
+				$stmt->bindValue(':user_id', $user_id);
 				$stmt->execute();
 
 				$records = array();
 				while ($rs = $stmt->fetch())
-					$records[] = new MDL_Record($rs['record_id'],MDL_Record::GET_ALL);
+					$records[] = new MDL_Record($rs['record_id'], MDL_Record::GET_ALL);
 
 				$cache->$cache_key = $records;
 			}
 
 			$records = $cache->$cache_key;
+
 			$this->records = $records;
 		}
 		return $this->records;

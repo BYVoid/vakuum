@@ -22,7 +22,7 @@ class MDL_Judger_Access
 	{
 		$judger_url = $judger->getConfig()->getRemoteURL();
 		$public_key = $judger->getConfig()->getRemoteKey();
-		$return_url = $config->getVar('judge_return_site') .
+		$return_url = MDL_Config::getInstance()->getVar('judge_return_site') .
 				MDL_Locator::getInstance()->getURL('judge_return');
 
 		$task = array

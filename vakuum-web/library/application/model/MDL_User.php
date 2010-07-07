@@ -15,6 +15,7 @@ class MDL_User
 	protected $user_password = NULL;
 	protected $user_info = NULL;
 	protected $user_meta = NULL;
+	protected $user_record = NULL;
 
 	public function __construct($user_identidier, $idspec = self::ID_USER_ID,
 			$initial_get = self::GET_NONE, $addition = array())
@@ -138,6 +139,8 @@ class MDL_User
 
 	public function getRecord()
 	{
-		return new MDL_User_Record($this);
+		if ($this->user_record == NULL)
+			$this->user_record = new MDL_User_Record($this);
+		return $this->user_record;
 	}
 }

@@ -24,6 +24,7 @@ class MDL_Record_Info
 		if (!self::$m_initialized)
 			self::mInitialize();
 		$this->record_id = $record_id;
+		$this->rmeta = new MDL_Record_Meta($this->record_id);
 	}
 
 	public function __get($property)
@@ -45,8 +46,6 @@ class MDL_Record_Info
 	 */
 	public function getRecordMeta()
 	{
-		if (empty($this->rmeta))
-			$this->rmeta = new MDL_Record_Meta($this->record_id);
 		return $this->rmeta;
 	}
 
