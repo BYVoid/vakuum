@@ -28,3 +28,7 @@ Vakuum系统分为vakuum-web和vakuum-judge两大模块。vakuum-web是一个在
 vakuum-web是基于PHP和MySQL的一个B/S应用程序，采用MVC（模型-视图-控制器）架构设计，负责与用户交互和与核心通信。支持于评测机分离或和一，支持多评测机协同作业，不需要daemon和底层权限。用户通过访问vakuum-web查看题目，提交代码，vakuum-web将请求派发给vakuum-judge终端。支持多评测机数据同步，支持测试数据分发管理。主要采用HTTP信道发送命令，FTP信道发送数据。
 
 vakuum-judge通信模块由PHP编写，收到请求以后，使用C语言编写的核心对代码进行编译，并在执行器沙盒中执行，保证系统安全。执行器使用ptrace监控用户程序的系统调用和文件调用，根据需求加以放行或禁止，同时支持内存峰值统计，内存限制，用户时间统计，时间限制，输出文件大小限制。
+
+## 許可
+
+GNU Public License v2
