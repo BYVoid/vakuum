@@ -1,6 +1,8 @@
 # Vakuum
 An open-source online judge for ACM/ICPC & Olympiad in Informatics.
 
+注意：Vakuum的開發已經停止，使用請自行承擔風險。
+
 ## Vakuum介绍
 Vakuum是一个基于Linux+PHP的在线评测系统（Online Judge），主要面向信息学竞赛（OI）和ACM/ICPC。
 
@@ -13,7 +15,7 @@ Vakuum是一个基于Linux+PHP的在线评测系统（Online Judge），主要�
 兼顾OI和ACM，支持个人赛、团队赛。比赛模式有在线赛（ACM），离线赛（OI），自由计时赛（USACO）。
 
 ### 晋级模式
-根据现有题库，由管理员设置或用户推荐一组晋级路线，即做完一组题目后才能进入下一组，并获得相应称号。参加USACO和UVA。
+根据现有题库，由管理员设置或用户推荐一组晋级路线，即做完一组题目后才能进入下一组，并获得相应称号。參照USACO和UVA。
 
 ### 问题讨论
 简洁、高效、可控。
